@@ -1,0 +1,139 @@
+---
+title: sample QC report
+subtitle:
+date: "`r Sys.Date()`"
+params: 
+  seqfile: NA
+  interactive: TRUE
+---
+
+# 1. summary of samples
+
+```{r, echo=FALSE}
+seqfile <- params$seqfile
+interactive <- params$interactive
+```
+
+```{r, echo=FALSE}
+sampleanno <- seqfile@QCresult$sample.annot
+ind.study <- sampleanno[,5] == "study"
+anno.study <- sampleanno[ind.study, ]
+## table(anno.study$population)
+## table(anno.study$gender)
+```
+We have a total of `r nrow(anno.study)` study samples from the population of `r unique(anno.study$population)`, with `r unname(table(anno.study$gender)[names(table(anno.study$gender)) %in% "female"])` female samples and `r unname(table(anno.study$gender)[names(table(anno.study$gender)) %in% "male"])` male samples. 
+
+# 2. Sample quality check
+
+Here is the list of all QC steps we have done. 
+
+```{r, echo=FALSE}
+(qcresults <- names(seqfile@QCresult)[names(seqfile@QCresult) %in% c("MissingRate", "SexCheck", "Inbreeding", "IBD", "PCA")])
+```
+
+## 2.1 sample missing rate check
+
+Samples with high missing rate (>0.1) are marked as "Yes" in the column of `outlier` and should be removed. The value of the `outlier` column is set to "NA" for benchmark samples.
+
+```{r, echo=FALSE}
+if("MissingRate" %in% qcresults){
+    res.mr <- seqfile@QCresult$MissingRate
+    ## tail(res.mr)
+    ## table(res.mr$outlier)
+    plotMissingRate(seqfile, interactive = interactive)    
+}else{
+    print("MissingRate check is not done yet!")
+}
+```
+There are `r sum(res.mr$outlier %in% "Yes")` problematic samples due to high missing rate.
+
+## 2.2 Sex check
+
+Samples are predicted to be female or male if the inbreeding coefficient is below 0.2, or greater than 0.8. The samples with discordant reported gender and predicted gender are considered as problematic. When the inbreeding coefficient is within the range of [0.2, 0.8], “0” will be shown in the column of `pred.sex` to indicate ambiguous gender, which would not be considered as problematic.  
+
+```{r, echo=FALSE}
+if("SexCheck" %in% qcresults){
+    res.sex <- seqfile@QCresult$SexCheck
+    tail(res.sex)
+    table(res.sex$sex, res.sex$pred.sex)
+    ## sample with gender mismatch
+    (prob.sex <- res.sex[res.sex$sex == "female" & res.sex$pred.sex == "male" | res.sex$sex == "male" & res.sex$pred.sex == "female", ])
+    plotSexCheck(seqfile, interactive = interactive)
+}else{
+    print("Sex check is not done yet!")
+}
+```
+There are `r nrow(prob.sex)` problematic samples due to gender mismatch.   
+
+## 2.3 Inbreeding check
+
+By using LD-pruned variants (by default), we calculate the inbreeding coefficients for each sample in the study cohort and for benchmark samples of the same population as the study cohort. Samples with inbreeding coefficients that are five standard deviations beyond the mean are considered problematic and shows "Yes" in the column of `outlier.5sd`. Benchmark samples in this column are set to be “NA”.  
+
+The estimate of inbreeding coefficient could be negative due to random sampling error, but a strongly negative value could reflect other factors, e.g. sample contamination events.
+
+```{r, echo=FALSE}
+if("Inbreeding" %in% qcresults){
+    res.inb <- seqfile@QCresult$Inbreeding
+    tail(res.inb)
+    table(res.inb$outlier.5sd)
+    ## sample with inbreeding outlier
+    (prob.inb <- res.inb[res.inb$outlier.5sd == "Yes" & !is.na(res.inb$outlier.5sd), ])
+    plotInbreeding(seqfile, interactive = interactive)
+}else{
+    print("Inbreeding outlier check is not done yet!")
+}
+```
+There are `r nrow(prob.inb)` problematic samples that are inbreeding outliers.   
+
+## 2.4 IBD check
+
+By using LD-pruned variants (by default), we calculate the IBD coefficients for all sample pairs, and then predict related sample pairs in study cohort using the support vector machine (SVM) method with linear kernel and the known relatedness embedded in benchmark data as training set.   
+
+Sample pairs with discordant self-reported and predicted relationship are considered as problematic. All predicted related pairs are also required to have coefficient of kinship >= 0.08. The sample with higher missing rate in each related pair is selected for removal from further analysis by function of `IBDRemove`.
+
+```{r, echo=FALSE}
+if("IBD" %in% qcresults){
+    res.ibd <- seqfile@QCresult$IBD
+    head(res.ibd)
+    table(res.ibd$label, res.ibd$pred.label)
+    ## sample with cryptic relatedness
+    (prob.ibd <- IBDRemove(seqfile))
+    plotIBD(seqfile, interactive = interactive)
+}else{
+    print("IBD check is not done yet!")
+}
+```
+There are `r nrow(prob.ibd$ibd.pairs)` problematic sample pairs with cryptic relationship.
+
+## 2.5 Population outlier check
+
+By using LD-pruned variants (by default), and benchmark samples as training dataset, we predict the ancestry for each sample in the study cohort using the top four principle components by support machine (SVM) with linear kernel.  
+
+Samples with discordant predicted and self-reported population groups are considered problematic. The function `PCA` performs the PCA analysis and identifies population outliers in study cohort.
+
+```{r, echo=FALSE}
+if("PCA" %in% qcresults){
+    res.pca <- seqfile@QCresult$PCA
+    tail(res.pca)
+    studyid <- sampleanno[ind.study, 1]
+    res.study <- res.pca[res.pca$sample %in% studyid, ]
+    (prob.pca <- res.study[res.study$pop != res.study$pred.pop, ])
+    plotPop(seqfile, interactive = interactive)
+}else{
+    print("Population outlier check is not done yet!")
+}
+```
+There are `r nrow(prob.pca)` problematic samples that are detected to be population outliers.   
+
+# 3. Summary of problematic samples.
+
+Here is the summary list of problematic samples. Problematic samples are identified by SeqSQC due to different reasons of high missing rate, gender mismatch, inbreeding outlier, cryptic relationship or population outlier.
+
+```{r, echo=FALSE}
+if ("problem.list" %in% names(seqfile@QCresult)){
+    (probs <- seqfile@QCresult$problem.list)
+}else{
+    (probs <- problemList(seqfile))
+}
+```
+

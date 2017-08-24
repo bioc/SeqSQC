@@ -1,0 +1,32 @@
+Package: SeqSQC
+Title: A bioconductor package for sample quality check with next generation sequencing data
+Version: 0.99.0
+Authors@R: person("Qian", "Liu", email = "qliu7@buffalo.edu", role = c("aut", "cre"))
+Description: The SeqSQC is designed to identify problematic samples in NGS data,
+    including samples with gender mismatch, contamination, cryptic relatedness, and
+    population outlier.
+Depends:
+    R (>= 3.3.0)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
+VignetteBuilder: knitr
+Imports:
+	e1071,
+	GenomicRanges,
+	GGally,
+	gdsfmt,
+	ggplot2,
+	IRanges,
+	methods,
+	rbokeh,
+	RColorBrewer,
+	reshape2,
+	rmarkdown,
+	S4Vectors,
+	SNPRelate
+Suggests:
+	BiocStyle,
+	knitr
+
