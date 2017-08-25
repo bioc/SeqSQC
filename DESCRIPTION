@@ -28,5 +28,6 @@ Imports:
 	SNPRelate
 Suggests:
 	BiocStyle,
-	knitr
+	knitr,
+	BiocViews
 

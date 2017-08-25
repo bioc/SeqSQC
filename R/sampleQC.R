@@ -23,7 +23,7 @@
 #' @importFrom utils write.table
 #' @examples
 #' \dontrun{
-#' sampleQC(vfile = system.file("extdata", "example.vcf", package="SeqSQC"), output = "testWrapUp",
+#' sampleQC(vfile = system.file("extdata", "example_sub.vcf", package="SeqSQC"), output = "testWrapUp",
 #' capture.region = system.file("extdata", "CCDS.Hs37.3.reduced.bed", package="SeqSQC"),
 #' sample.annot = system.file("extdata", "sampleAnnotation.txt", package="SeqSQC"),
 #' QCreport = TRUE, interactive = TRUE)
