@@ -2,7 +2,8 @@
 % Please edit documentation in R/Inbreeding.R
 \name{Inbreeding}
 \alias{Inbreeding}
-\title{Sample inbreeding check with SeqSQCclass input file.}
+\title{Sample inbreeding check with SeqSQCclass input file.
+Function to calculate population-specific inbreeding coefficients, and to predict inbreeding outliers that are five standard deviation beyond the mean.}
 \usage{
 Inbreeding(seqfile, remove.samples = NULL, LDprune = TRUE,
   missing.rate = 0.1, ss.cutoff = 300, maf = 0.01, hwe = 1e-06, ...)
@@ -28,6 +29,7 @@ Inbreeding(seqfile, remove.samples = NULL, LDprune = TRUE,
 a data frame with sample name, inbreeding coefficient, and an indicator of whether the inbreeding coefficient is five standard deviation beyond the mean.
 }
 \description{
+Sample inbreeding check with SeqSQCclass input file.
 Function to calculate population-specific inbreeding coefficients, and to predict inbreeding outliers that are five standard deviation beyond the mean.
 }
 \details{

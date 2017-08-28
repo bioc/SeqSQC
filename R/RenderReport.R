@@ -1,5 +1,4 @@
 #' Render the rmarkdown file for generating a sample QC report.
-#' 
 #' Function to render the pre-compiled rmarkdown file to generate the sample QC report. 
 #' @param input SeqSQCclass object with QC results.
 #' @param output a character string to define the file name for the QC report.

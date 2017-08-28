@@ -2,7 +2,8 @@
 % Please edit documentation in R/sampleQC.R
 \name{sampleQC}
 \alias{sampleQC}
-\title{The wrap-up function for sample QC of sequencing/GWAS data.}
+\title{The wrap-up function for sample QC of sequencing/GWAS data.
+A wrap-up function for sample QC. It reads in the variant genotypes in vcf/PLINK format, merges study cohort with benchmark data, and performs sample QC for the merged dataset.}
 \usage{
 sampleQC(vfile, output, capture.region = NULL, sample.annot = NULL,
   LDprune = TRUE, vfile.restrict = FALSE, slide.max.bp = 5e+05,
@@ -39,6 +40,7 @@ sampleQC(vfile, output, capture.region = NULL, sample.annot = NULL,
 \item{...}{Arguments to be passed to other methods.}
 }
 \description{
+The wrap-up function for sample QC of sequencing/GWAS data.
 A wrap-up function for sample QC. It reads in the variant genotypes in vcf/PLINK format, merges study cohort with benchmark data, and performs sample QC for the merged dataset.
 }
 \details{
@@ -46,8 +48,10 @@ For \code{vfile} with more than one file names, \code{sampleQC} will merge all d
 There are 3 columns in \code{sample.annot} file. col 1 is \code{sample} with sample ids, col 2 is \code{population} with values of "AFR/EUR/ASN/EAS/SAS", col 3 is \code{gender} with values of "male/female".
 }
 \examples{
-sampleQC(vfile = system.file("extdata", "example.vcf", package="SeqSQC"), output = "testWrapUp",
+\dontrun{
+sampleQC(vfile = system.file("extdata", "example_sub.vcf", package="SeqSQC"), output = "testWrapUp",
 capture.region = system.file("extdata", "CCDS.Hs37.3.reduced.bed", package="SeqSQC"),
 sample.annot = system.file("extdata", "sampleAnnotation.txt", package="SeqSQC"),
 QCreport = TRUE, interactive = TRUE)
+}
 }

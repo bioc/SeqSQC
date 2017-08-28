@@ -2,7 +2,8 @@
 % Please edit documentation in R/plotSexCheck.R
 \name{plotSexCheck}
 \alias{plotSexCheck}
-\title{Plot the X chromosome inbreeding coefficients.}
+\title{Plot the X chromosome inbreeding coefficients.
+Plot the inbreeding coefficients calculated from variants on chromosome X for each populaton.}
 \usage{
 plotSexCheck(seqfile, interactive = FALSE)
 }
@@ -12,6 +13,7 @@ plotSexCheck(seqfile, interactive = FALSE)
 \item{interactive}{whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format.}
 }
 \description{
+Plot the X chromosome inbreeding coefficients.
 Plot the inbreeding coefficients calculated from variants on chromosome X for each populaton.
 }
 \examples{

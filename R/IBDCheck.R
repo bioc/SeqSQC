@@ -1,5 +1,4 @@
 #' Sample relationship check with SeqSQCclass input file. 
-#'
 #' Function to calculate the IBD coefficients for all sample pairs and to predict related sample pairs in study cohort.
 #' @param seqfile SeqSQCclass input file, which includes the merged gds file for study cohort and benchmark.
 #' @param remove.samples a vector of sample names for removal from IBD calculation. Could be problematic samples identified from previous QC steps, or user-defined samples.

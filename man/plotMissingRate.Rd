@@ -2,7 +2,8 @@
 % Please edit documentation in R/plotMissingRate.R
 \name{plotMissingRate}
 \alias{plotMissingRate}
-\title{Plot the sample missing rate.}
+\title{Plot the sample missing rate. 
+Plot sample missing rates calculated for each population.}
 \usage{
 plotMissingRate(seqfile, interactive = FALSE)
 }
@@ -12,6 +13,7 @@ plotMissingRate(seqfile, interactive = FALSE)
 \item{interactive}{whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format.}
 }
 \description{
+Plot the sample missing rate. 
 Plot sample missing rates calculated for each population.
 }
 \examples{

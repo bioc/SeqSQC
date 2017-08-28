@@ -2,7 +2,8 @@
 % Please edit documentation in R/LoadVfile.R
 \name{LoadVfile}
 \alias{LoadVfile}
-\title{Data preprocessing for VCF or plink input from NGS or GWAS data.}
+\title{Data preprocessing for VCF or plink input from NGS or GWAS data.
+Function to read VCF or plink files, merge with benchmark data, and output as SeqSQCclass file.}
 \usage{
 LoadVfile(vfile, output, capture.region = NULL, sample.annot = NULL,
   LDprune = TRUE, vfile.restrict = FALSE, slide.max.bp = 5e+05,
@@ -32,6 +33,7 @@ LoadVfile(vfile, output, capture.region = NULL, sample.annot = NULL,
 \item{...}{Arguments to be passed to other methods.}
 }
 \description{
+Data preprocessing for VCF or plink input from NGS or GWAS data.
 Function to read VCF or plink files, merge with benchmark data, and output as SeqSQCclass file.
 }
 \details{
@@ -39,7 +41,9 @@ For \code{vfile} with more than one file names, \code{LoadVfile} will merge all 
 \code{sample.annot} file contains 3 columns with column names. col 1 is \code{sample} with sample ids; col 2 is \code{population} with values of "AFR/EUR/ASN/EAS/SAS"; col 3 is \code{gender} with values of "male/female".
 }
 \examples{
-LoadVfile(vfile = system.file("extdata", "example.vcf", package="SeqSQC"), output = "seqfile",
+\dontrun{
+LoadVfile(vfile = system.file("extdata", "example_sub.vcf", package="SeqSQC"), output = "seqfile",
 capture.region = system.file("extdata", "CCDS.Hs37.3.reduced.bed", package="SeqSQC"),
 sample.annot = system.file("extdata", "sampleAnnotation.txt", package="SeqSQC"))
+}
 }

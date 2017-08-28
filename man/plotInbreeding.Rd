@@ -2,7 +2,8 @@
 % Please edit documentation in R/plotInbreeding.R
 \name{plotInbreeding}
 \alias{plotInbreeding}
-\title{Plot the inbreeding coefficients.}
+\title{Plot the inbreeding coefficients.
+Plot inbreeding coefficients calculated from autosomal variants for each population.}
 \usage{
 plotInbreeding(seqfile, interactive = FALSE, sdcoef = 5)
 }
@@ -14,6 +15,7 @@ plotInbreeding(seqfile, interactive = FALSE, sdcoef = 5)
 \item{sdcoef}{how many standard deviation we need for identification of inbreeding outliers. The default is 5.}
 }
 \description{
+Plot the inbreeding coefficients.
 Plot inbreeding coefficients calculated from autosomal variants for each population.
 }
 \examples{

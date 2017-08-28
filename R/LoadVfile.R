@@ -1,5 +1,4 @@
 #' Data preprocessing for VCF or plink input from NGS or GWAS data.
-#'
 #' Function to read VCF or plink files, merge with benchmark data, and output as SeqSQCclass file.
 #' @param vfile vcf or PLINK input file (ped/map/bed/bim/fam with same basename). Vfile could be a vector of character strings, see details.
 #' @param output a character string for name of merged data in SeqSQCclass. 
@@ -72,7 +71,7 @@ LoadVfile <- function(vfile, output, capture.region=NULL, sample.annot=NULL, LDp
         add.gdsn(studycohort, "sample.annot", val=study.annot, check=FALSE)
     }else{
         message("Rewrite study cohort annotation file for PLINK data ...")
-        study.annot <- read.table(file=sample.annot, as.is=TRUE, header=T, stringsAsFactors=FALSE)
+        study.annot <- read.table(file=sample.annot, as.is=TRUE, header=TRUE, stringsAsFactors=FALSE)
         sampleanno <- read.gdsn(index.gdsn(studycohort, "sample.annot"))
 
         relations <- rep("", length(samples))

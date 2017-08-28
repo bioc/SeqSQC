@@ -2,7 +2,8 @@
 % Please edit documentation in R/PCACheck.R
 \name{PCACheck}
 \alias{PCACheck}
-\title{Population outlier check with SeqSQCclass input file.}
+\title{Population outlier check with SeqSQCclass input file.
+Function to perform principle component analysis for all samples and to infer sample ancestry.}
 \usage{
 PCACheck(seqfile, remove.samples = NULL, LDprune = TRUE,
   missing.rate = 0.1, ss.cutoff = 300, maf = 0.01, hwe = 1e-06, ...)
@@ -28,6 +29,7 @@ PCACheck(seqfile, remove.samples = NULL, LDprune = TRUE,
 a data frame with sample name, reported population, data resource (benchmark vs study cohort), the first four eigenvectors and the predicted population.
 }
 \description{
+Population outlier check with SeqSQCclass input file.
 Function to perform principle component analysis for all samples and to infer sample ancestry.
 }
 \details{

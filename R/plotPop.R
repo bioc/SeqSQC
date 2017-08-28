@@ -1,5 +1,4 @@
 #' Plot the PC axes for samples.
-#'
 #' Plot principle components for all sample.
 #' @param seqfile SeqSQCclass input file with PCA results.
 #' @param pc1 the eigenvector on x axis. The default is "EV1" for eigenvector 1.

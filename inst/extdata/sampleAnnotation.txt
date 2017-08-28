@@ -1,6 +1,0 @@
-sample	population	gender
-HG00105	EUR	male
-HG00115	EUR	male
-HG01695	EUR	female
-NA11930	EUR	male
-HG02585	EUR	male

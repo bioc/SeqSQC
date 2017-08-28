@@ -2,7 +2,8 @@
 % Please edit documentation in R/RenderReport.R
 \name{RenderReport}
 \alias{RenderReport}
-\title{Render the rmarkdown file for generating a sample QC report.}
+\title{Render the rmarkdown file for generating a sample QC report.
+Function to render the pre-compiled rmarkdown file to generate the sample QC report.}
 \usage{
 RenderReport(input, output, interactive = TRUE)
 }
@@ -14,5 +15,6 @@ RenderReport(input, output, interactive = TRUE)
 \item{interactive}{whether to generate interative plots in the report. The default is TRUE.}
 }
 \description{
+Render the rmarkdown file for generating a sample QC report.
 Function to render the pre-compiled rmarkdown file to generate the sample QC report.
 }

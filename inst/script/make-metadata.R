@@ -19,7 +19,7 @@ meta <- data.frame(
     Coordinate_1_based = TRUE,
     DataProvider = "1000 Genomes Project",
     Maintainer = "Qian Liu <qliu7@buffalo.edu>",
-    RDataPath = "SeqSQC",
+    RDataPath = "SeqSQC/benchmark_1000genomes.gds",
     Location_Prefix = "http://s3.amazonaws.com/experimenthub/",
     RDataClass = "gds.class",
     DispatchClass = "GDS",

@@ -1,5 +1,4 @@
 #' Generate the problematic sample list.
-#'
 #' generate the problematic sample list from QC steps that have been done, and provide each problematic sample with a reason for removal (high missing rate, gender mismatch, inbreeding outlier, cryptic relationship or population outlier).
 #' @param seqfile SeqSQCclass input file with sample QC results. 
 #' @export

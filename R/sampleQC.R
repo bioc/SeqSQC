@@ -1,5 +1,4 @@
 #' The wrap-up function for sample QC of sequencing/GWAS data.
-#'
 #' A wrap-up function for sample QC. It reads in the variant genotypes in vcf/PLINK format, merges study cohort with benchmark data, and performs sample QC for the merged dataset.
 #' 
 #' @param vfile vcf or PLINK input file (ped/map/bed/bim/fam with same basename). Vfile could be a vector of character strings, see details.

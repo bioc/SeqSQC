@@ -1,5 +1,4 @@
 #' Plot the inbreeding coefficients.
-#'
 #' Plot inbreeding coefficients calculated from autosomal variants for each population.
 #' @param seqfile SeqSQCclass input file with inbreeding result.
 #' @param interactive whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format.

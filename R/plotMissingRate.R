@@ -1,5 +1,4 @@
 #' Plot the sample missing rate. 
-#'
 #' Plot sample missing rates calculated for each population.
 #' @param seqfile SeqSQCclass input file with calculated missing rates.
 #' @param interactive whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format.  

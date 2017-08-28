@@ -1,5 +1,4 @@
 #' Sample inbreeding check with SeqSQCclass input file.
-#'
 #' Function to calculate population-specific inbreeding coefficients, and to predict inbreeding outliers that are five standard deviation beyond the mean. 
 #' @param seqfile SeqSQCclass input file, which includes the merged gds file for study cohort and benchmark.
 #' @param remove.samples a vector of sample names for removal from inbreeding coefficient calculation. Could be problematic samples identified from previous QC steps, or user-defined samples.

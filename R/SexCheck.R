@@ -1,5 +1,4 @@
 #' Sample gender check with SeqSQCclass input file.
-#'
 #' Function to calculate the X chromosome inbreeding coefficient and to predict sample gender.
 #' @param seqfile SeqSQCclass input file, which includes the merged gds file for study cohort and benchmark.
 #' @param remove.samples a vector of sample names for removal from sex check. Could be problematic samples identified from previous QC steps, or user-defined samples.
@@ -65,9 +64,9 @@ SexCheck <- function(seqfile, remove.samples=NULL, missing.rate = 0.1, ss.cutoff
 
     ## use maf filter for variants when sample size >= 300.
     if (length(sample.sex) >= ss.cutoff){
-        sexinb <- snpgdsIndInb(gfile, autosome.only=F, sample.id=sample.sex, snp.id=snp.x.final, maf=maf, missing.rate=missing.rate, ...)
+        sexinb <- snpgdsIndInb(gfile, autosome.only=FALSE, sample.id=sample.sex, snp.id=snp.x.final, maf=maf, missing.rate=missing.rate, ...)
     }else{
-        sexinb <- snpgdsIndInb(gfile, autosome.only=F, sample.id=sample.sex, snp.id=snp.x.final, maf=NaN, missing.rate=missing.rate, ...)
+        sexinb <- snpgdsIndInb(gfile, autosome.only=FALSE, sample.id=sample.sex, snp.id=snp.x.final, maf=NaN, missing.rate=missing.rate, ...)
     }
     
     ## extract gender info

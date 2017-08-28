@@ -1,5 +1,4 @@
 #' Open the gds file with SeqSQC functions. 
-#'
 #' Function to open the gds file inside the SeqSQCclass file.
 #' @param seqfile SeqSQCclass input file, which has been merged with benchmark data.
 #' @param readonly whether to open the gds file in read-only mode. If "FALSE", it is allowed to write data to the file. The default is TRUE.

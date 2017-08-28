@@ -1,5 +1,4 @@
 #' Plot the IBD coefficients for all sample pairs.
-#'
 #' Plot IBD coefficients (k0 and k1) calculated from autosomal variants for all samples.
 #' @param seqfile SeqSQCclass input file with IBD results.
 #' @param interactive whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user performs sample QC using an rmarkdown script and output plots to html format. 

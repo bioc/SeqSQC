@@ -5,9 +5,9 @@ Authors@R: person("Qian", "Liu", email = "qliu7@buffalo.edu", role = c("aut", "c
 Description: The SeqSQC is designed to identify problematic samples in NGS data,
     including samples with gender mismatch, contamination, cryptic relatedness, and
     population outlier.
-biocViews: Experiment Data, Homo sapiens Data, Sequencing Data, Project1000genomes
+biocViews: Experiment Data, Homo_sapiens_Data, Sequencing Data, Project1000genomes
 Depends:
-    R (>= 3.3.0)
+    R (>= 3.4)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -26,7 +26,8 @@ Imports:
 	reshape2,
 	rmarkdown,
 	S4Vectors,
-	SNPRelate
+	SNPRelate,
+	stats
 Suggests:
 	BiocStyle,
 	knitr
