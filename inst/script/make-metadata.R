@@ -22,7 +22,7 @@ meta <- data.frame(
     RDataPath = "SeqSQC",
     Location_Prefix = "http://s3.amazonaws.com/experimenthub/",
     RDataClass = "gds.class",
-    DispatchClass = "GDSResource",
+    DispatchClass = "GDS",
     ResourceName = "benchmark_1000genomes.gds"
 )
 
