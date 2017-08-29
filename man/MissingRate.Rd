@@ -2,8 +2,7 @@
 % Please edit documentation in R/MissingRate.R
 \name{MissingRate}
 \alias{MissingRate}
-\title{Sample missing rate check with SeqSQCclass input file.
-Function to calculate sample missing rate and to identify sample outlier with high missing rate (> 0.1).}
+\title{Sample missing rate check with SeqSQCclass input file.}
 \usage{
 MissingRate(seqfile, remove.samples = NULL)
 }
@@ -16,7 +15,6 @@ MissingRate(seqfile, remove.samples = NULL)
 a data frame with sample name, sample missing rate, and an indicator of whether the sample has a missing rate greater than 0.1.
 }
 \description{
-Sample missing rate check with SeqSQCclass input file.
 Function to calculate sample missing rate and to identify sample outlier with high missing rate (> 0.1).
 }
 \details{

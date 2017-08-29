@@ -2,8 +2,7 @@
 % Please edit documentation in R/IBDCheck.R
 \name{IBDCheck}
 \alias{IBDCheck}
-\title{Sample relationship check with SeqSQCclass input file. 
-Function to calculate the IBD coefficients for all sample pairs and to predict related sample pairs in study cohort.}
+\title{Sample relationship check with SeqSQCclass input file.}
 \usage{
 IBDCheck(seqfile, remove.samples = NULL, LDprune = TRUE,
   kin.filter = TRUE, missing.rate = 0.1, ss.cutoff = 300, maf = 0.01,
@@ -32,7 +31,6 @@ IBDCheck(seqfile, remove.samples = NULL, LDprune = TRUE,
 a data frame with sample names, the descent coefficients of k0, k1 and kinship, self-reported relationship and predicted relationship for each pair of samples.
 }
 \description{
-Sample relationship check with SeqSQCclass input file. 
 Function to calculate the IBD coefficients for all sample pairs and to predict related sample pairs in study cohort.
 }
 \details{

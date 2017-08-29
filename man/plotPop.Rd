@@ -2,8 +2,7 @@
 % Please edit documentation in R/plotPop.R
 \name{plotPop}
 \alias{plotPop}
-\title{Plot the PC axes for samples.
-Plot principle components for all sample.}
+\title{Plot the PC axes for samples.}
 \usage{
 plotPop(seqfile, pc1 = "EV1", pc2 = "EV2", interactive = FALSE,
   pairedScatter = FALSE)
@@ -19,8 +18,10 @@ plotPop(seqfile, pc1 = "EV1", pc2 = "EV2", interactive = FALSE,
 
 \item{pairedScatter}{whether to plot the paired scatterplot for the first 4 PC axes.}
 }
+\value{
+the ggplot or interactive plot (if output is in html format) for principle components.
+}
 \description{
-Plot the PC axes for samples.
 Plot principle components for all sample.
 }
 \examples{

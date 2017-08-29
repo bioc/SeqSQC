@@ -1,9 +1,11 @@
 #' Plot the inbreeding coefficients.
+#'
 #' Plot inbreeding coefficients calculated from autosomal variants for each population.
 #' @param seqfile SeqSQCclass input file with inbreeding result.
 #' @param interactive whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format.
 #' @param sdcoef how many standard deviation we need for identification of inbreeding outliers. The default is 5.
 #' @export
+#' @return @return the ggplot or interactive plot (if output is in html format) for inbreeding coefficients.
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")

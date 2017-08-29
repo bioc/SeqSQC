@@ -2,8 +2,7 @@
 % Please edit documentation in R/SeqOpen.R
 \name{SeqOpen}
 \alias{SeqOpen}
-\title{Open the gds file with SeqSQC functions. 
-Function to open the gds file inside the SeqSQCclass file.}
+\title{Open the gds file with SeqSQC functions.}
 \usage{
 SeqOpen(seqfile, readonly = TRUE, allow.duplicate = FALSE)
 }
@@ -14,8 +13,10 @@ SeqOpen(seqfile, readonly = TRUE, allow.duplicate = FALSE)
 
 \item{allow.duplicate}{whether to allow to open a GDS file with read-only mode when it has been opened in the same R session. The default is FALSE.}
 }
+\value{
+a gds file with the filepath in the input SeqSQCclass object.
+}
 \description{
-Open the gds file with SeqSQC functions. 
 Function to open the gds file inside the SeqSQCclass file.
 }
 \examples{

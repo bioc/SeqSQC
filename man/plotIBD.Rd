@@ -2,8 +2,7 @@
 % Please edit documentation in R/plotIBD.R
 \name{plotIBD}
 \alias{plotIBD}
-\title{Plot the IBD coefficients for all sample pairs.
-Plot IBD coefficients (k0 and k1) calculated from autosomal variants for all samples.}
+\title{Plot the IBD coefficients for all sample pairs.}
 \usage{
 plotIBD(seqfile, interactive = FALSE)
 }
@@ -12,8 +11,10 @@ plotIBD(seqfile, interactive = FALSE)
 
 \item{interactive}{whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user performs sample QC using an rmarkdown script and output plots to html format.}
 }
+\value{
+the ggplot or interactive plot (if output is in html format) for IBD coefficients.
+}
 \description{
-Plot the IBD coefficients for all sample pairs.
 Plot IBD coefficients (k0 and k1) calculated from autosomal variants for all samples.
 }
 \examples{

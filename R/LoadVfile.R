@@ -1,4 +1,5 @@
 #' Data preprocessing for VCF or plink input from NGS or GWAS data.
+#'
 #' Function to read VCF or plink files, merge with benchmark data, and output as SeqSQCclass file.
 #' @param vfile vcf or PLINK input file (ped/map/bed/bim/fam with same basename). Vfile could be a vector of character strings, see details.
 #' @param output a character string for name of merged data in SeqSQCclass. 
@@ -12,6 +13,7 @@
 #' @param format.file the data format. The default is \code{vcf}.
 #' @param ... Arguments to be passed to other methods.
 #' @export
+#' @return a SeqSQCclass object with the filepath to the gds file which stores the genotype, the summary of samples and variants, and the QCresults including the sample annotation information.  
 #' @details
 #' For \code{vfile} with more than one file names, \code{LoadVfile} will merge all dataset together if they all contain the same samples. It is useful to combine genetic/genomic data together if VCF data is divided by chromosomes. \cr
 #' \code{sample.annot} file contains 3 columns with column names. col 1 is \code{sample} with sample ids; col 2 is \code{population} with values of "AFR/EUR/ASN/EAS/SAS"; col 3 is \code{gender} with values of "male/female".
@@ -24,9 +26,11 @@
 #' @importFrom utils read.table
 #' @examples
 #' \dontrun{
-#' LoadVfile(vfile = system.file("extdata", "example_sub.vcf", package="SeqSQC"), output = "seqfile",
+#' seqfile <- LoadVfile(vfile = system.file("extdata", "example_sub.vcf", package="SeqSQC"),
+#' output = "seqfile",
 #' capture.region = system.file("extdata", "CCDS.Hs37.3.reduced.bed", package="SeqSQC"),
 #' sample.annot = system.file("extdata", "sampleAnnotation.txt", package="SeqSQC"))
+#' save(seqfile, file="seqfile.RData")
 #' }
 
 LoadVfile <- function(vfile, output, capture.region=NULL, sample.annot=NULL, LDprune=TRUE, vfile.restrict=FALSE, slide.max.bp=5e+05, ld.threshold=0.3, format.data="NGS", format.file="vcf", ...){
@@ -63,7 +67,7 @@ LoadVfile <- function(vfile, output, capture.region=NULL, sample.annot=NULL, LDp
     ## 2. read in the annotation for the study samples.
     if(!"sample.annot" %in% ls.gdsn(studycohort)){
         message("Load study cohort annotation file ...")
-        study.annot <- read.table(file=sample.annot, as.is=TRUE, header=T, stringsAsFactors=FALSE)
+        study.annot <- read.table(file=sample.annot, as.is=TRUE, header=TRUE, stringsAsFactors=FALSE)
         names(study.annot) <- c("sample", "population", "gender")
         study.annot$relation <- NA
         study.annot$group <- "study"

@@ -1,7 +1,9 @@
 #' Generate the problematic sample list.
+#'
 #' generate the problematic sample list from QC steps that have been done, and provide each problematic sample with a reason for removal (high missing rate, gender mismatch, inbreeding outlier, cryptic relationship or population outlier).
 #' @param seqfile SeqSQCclass input file with sample QC results. 
 #' @export
+#' @return a data frame with 2 columns: \code{sample} for problematic sample name, and \code{remove.reason} for the reason of removing the sample. 
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' problemList(seqfile)

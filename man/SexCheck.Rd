@@ -2,8 +2,7 @@
 % Please edit documentation in R/SexCheck.R
 \name{SexCheck}
 \alias{SexCheck}
-\title{Sample gender check with SeqSQCclass input file.
-Function to calculate the X chromosome inbreeding coefficient and to predict sample gender.}
+\title{Sample gender check with SeqSQCclass input file.}
 \usage{
 SexCheck(seqfile, remove.samples = NULL, missing.rate = 0.1,
   ss.cutoff = 300, maf = 0.01, ...)
@@ -25,7 +24,6 @@ SexCheck(seqfile, remove.samples = NULL, missing.rate = 0.1,
 a data frame with sample name, reported gender, x chromosome inbreeding coefficient, and predicted gender.
 }
 \description{
-Sample gender check with SeqSQCclass input file.
 Function to calculate the X chromosome inbreeding coefficient and to predict sample gender.
 }
 \details{

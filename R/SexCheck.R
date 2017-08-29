@@ -1,4 +1,5 @@
 #' Sample gender check with SeqSQCclass input file.
+#'
 #' Function to calculate the X chromosome inbreeding coefficient and to predict sample gender.
 #' @param seqfile SeqSQCclass input file, which includes the merged gds file for study cohort and benchmark.
 #' @param remove.samples a vector of sample names for removal from sex check. Could be problematic samples identified from previous QC steps, or user-defined samples.

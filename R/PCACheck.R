@@ -1,4 +1,5 @@
 #' Population outlier check with SeqSQCclass input file.
+#'
 #' Function to perform principle component analysis for all samples and to infer sample ancestry.
 #' @param seqfile SeqSQCclass input file, which includes the merged gds file for study cohort and benchmark.
 #' @param remove.samples a vector of sample names for removal from PCA calculation. Could be problematic samples identified from previous QC steps, or user-defined samples.

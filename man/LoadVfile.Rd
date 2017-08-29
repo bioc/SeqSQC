@@ -2,8 +2,7 @@
 % Please edit documentation in R/LoadVfile.R
 \name{LoadVfile}
 \alias{LoadVfile}
-\title{Data preprocessing for VCF or plink input from NGS or GWAS data.
-Function to read VCF or plink files, merge with benchmark data, and output as SeqSQCclass file.}
+\title{Data preprocessing for VCF or plink input from NGS or GWAS data.}
 \usage{
 LoadVfile(vfile, output, capture.region = NULL, sample.annot = NULL,
   LDprune = TRUE, vfile.restrict = FALSE, slide.max.bp = 5e+05,
@@ -32,8 +31,10 @@ LoadVfile(vfile, output, capture.region = NULL, sample.annot = NULL,
 
 \item{...}{Arguments to be passed to other methods.}
 }
+\value{
+a SeqSQCclass object with the filepath to the gds file which stores the genotype, the summary of samples and variants, and the QCresults including the sample annotation information.
+}
 \description{
-Data preprocessing for VCF or plink input from NGS or GWAS data.
 Function to read VCF or plink files, merge with benchmark data, and output as SeqSQCclass file.
 }
 \details{
@@ -42,8 +43,10 @@ For \code{vfile} with more than one file names, \code{LoadVfile} will merge all 
 }
 \examples{
 \dontrun{
-LoadVfile(vfile = system.file("extdata", "example_sub.vcf", package="SeqSQC"), output = "seqfile",
+seqfile <- LoadVfile(vfile = system.file("extdata", "example_sub.vcf", package="SeqSQC"),
+output = "seqfile",
 capture.region = system.file("extdata", "CCDS.Hs37.3.reduced.bed", package="SeqSQC"),
 sample.annot = system.file("extdata", "sampleAnnotation.txt", package="SeqSQC"))
+save(seqfile, file="seqfile.RData")
 }
 }

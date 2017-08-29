@@ -1,8 +1,10 @@
 #' Plot the X chromosome inbreeding coefficients.
+#' 
 #' Plot the inbreeding coefficients calculated from variants on chromosome X for each populaton.
 #' @param seqfile SeqSQCclass input file with sexcheck results.
 #' @param interactive whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format. 
 #' @export
+#' @return the ggplot or interactive plot (if output is in html format) for sex inbreeding coefficients.
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")

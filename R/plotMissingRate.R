@@ -1,4 +1,5 @@
-#' Plot the sample missing rate. 
+#' Plot the sample missing rate.
+#' 
 #' Plot sample missing rates calculated for each population.
 #' @param seqfile SeqSQCclass input file with calculated missing rates.
 #' @param interactive whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format.  
@@ -6,6 +7,7 @@
 #' @import ggplot2
 #' @import rbokeh
 #' @export
+#' @return the ggplot or interactive plot (if output is in html format) for sample missing rates.
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")

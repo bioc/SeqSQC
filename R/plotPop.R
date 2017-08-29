@@ -1,4 +1,5 @@
 #' Plot the PC axes for samples.
+#' 
 #' Plot principle components for all sample.
 #' @param seqfile SeqSQCclass input file with PCA results.
 #' @param pc1 the eigenvector on x axis. The default is "EV1" for eigenvector 1.
@@ -6,6 +7,7 @@
 #' @param pairedScatter whether to plot the paired scatterplot for the first 4 PC axes.
 #' @param interactive whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format.  
 #' @export
+#' @return the ggplot or interactive plot (if output is in html format) for principle components.
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")

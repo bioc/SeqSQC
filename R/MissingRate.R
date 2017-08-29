@@ -1,4 +1,5 @@
 #' Sample missing rate check with SeqSQCclass input file.
+#'
 #' Function to calculate sample missing rate and to identify sample outlier with high missing rate (> 0.1).
 #' @param seqfile SeqSQCclass input file, which includes the merged gds file for study cohort and benchmark.
 #' @param remove.samples a vector of sample names for removal from missing rate check. Could be problematic samples identified from other QC steps, or user-defined samples.

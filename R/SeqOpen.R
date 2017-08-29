@@ -1,9 +1,11 @@
 #' Open the gds file with SeqSQC functions. 
+#'
 #' Function to open the gds file inside the SeqSQCclass file.
 #' @param seqfile SeqSQCclass input file, which has been merged with benchmark data.
 #' @param readonly whether to open the gds file in read-only mode. If "FALSE", it is allowed to write data to the file. The default is TRUE.
 #' @param allow.duplicate whether to allow to open a GDS file with read-only mode when it has been opened in the same R session. The default is FALSE.
 #' @export
+#' @return a gds file with the filepath in the input SeqSQCclass object. 
 #' @examples
 #' library(gdsfmt)
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
