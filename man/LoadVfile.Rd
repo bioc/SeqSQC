@@ -45,7 +45,7 @@ For \code{vfile} with more than one file names, \code{LoadVfile} will merge all 
 \dontrun{
 seqfile <- LoadVfile(vfile = system.file("extdata", "example_sub.vcf", package="SeqSQC"),
 output = "seqfile",
-capture.region = system.file("extdata", "CCDS.Hs37.3.reduced.bed", package="SeqSQC"),
+capture.region = system.file("extdata", "CCDS.Hs37.3.reduced_chr1.bed", package="SeqSQC"),
 sample.annot = system.file("extdata", "sampleAnnotation.txt", package="SeqSQC"))
 save(seqfile, file="seqfile.RData")
 }

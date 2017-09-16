@@ -27,7 +27,7 @@
 #' \dontrun{
 #' seqfile <- sampleQC(vfile = system.file("extdata", "example_sub.vcf", package="SeqSQC"),
 #' output = "testWrapUp",
-#' capture.region = system.file("extdata", "CCDS.Hs37.3.reduced.bed", package="SeqSQC"),
+#' capture.region = system.file("extdata", "CCDS.Hs37.3.reduced_sub.bed", package="SeqSQC"),
 #' sample.annot = system.file("extdata", "sampleAnnotation.txt", package="SeqSQC"),
 #' QCreport = TRUE, interactive = TRUE)
 #' save(seqfile, "seqfile.RData")

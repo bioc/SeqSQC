@@ -23,16 +23,22 @@ Here we use an exemplar NGS dataset as a study cohort to demonstrate the executi
 
 The code chunk below assumes that you have a vcf file called `infile` with samples from a single population, a sample annotation file called `sample.annot` with sample name, population (e.g., AFR, EUR, EAS (East Asian), SAS (South Asian), or ASN (Asian)) and gender info (male/female), and a bed file called `cr` which  contains capture regions. User need to specify the name for output files, incuding the gds file containing genotypes, and the `SeqSQCclass`(discussed in section below) file with QC results.
 
-```{r wrapup1, eval=FALSE}
-infile <- system.file("extdata", "example.vcf", package="SeqSQC")
+```{r setup, eval=FALSE}
+source("https://bioconductor.org/biocLite.R")
+biocLite("SeqSQC")
+library(SeqSQC)
+```
+
+```{r wrapup1, eval=TRUE} 
+infile <- system.file("extdata", "example_sub.vcf", package="SeqSQC")
 sample.annot <- system.file("extdata", "sampleAnnotation.txt", package="SeqSQC")
-cr <- system.file("extdata", "CCDS.Hs37.3.reduced.bed", package="SeqSQC")
+cr <- system.file("extdata", "CCDS.Hs37.3.reduced_chr1.bed", package="SeqSQC")
 outfile <- "testWrapUp"
 ```
 
 The wrap-up function `sampleQC` transforms the vcf file into `SeqSQCclass` file, evaluates all sample QC steps, outputs the QC results into your working directory, and generates a sample QC report in html format. We recommend saving the output `SeqSQCclass` object into an RData.
 
-```{r wrapup2, eval=FALSE}
+```{r wrapup2, eval=TRUE}
 seqfile <- sampleQC(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE)
 save(seqfile, file="seqfile.RData")
 ```

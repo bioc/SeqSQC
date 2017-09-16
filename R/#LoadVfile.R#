@@ -94,6 +94,7 @@ LoadVfile <- function(vfile, output, capture.region=NULL, sample.annot=NULL, LDp
     ## 3. read in benchmark gds file for 87 samples from 1000 genomes project.
     message("Load 1kg data to temp directory...")
     ## gds.1kg <- system.file("extdata", "benchmark_1000genomes.gds", package="SeqSQC")
+    gds.1kg <- 
     tmp.1kg <- tempfile(tmpdir=tmpdir)
     file.copy(gds.1kg, tmp.1kg)
     genofile <- openfn.gds(tmp.1kg, readonly = FALSE)
