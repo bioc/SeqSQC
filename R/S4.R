@@ -1,3 +1,13 @@
+#' A data format to store genotype phenotype and sample QC results from SeqSQC.
+#'
+#' A SeqSQCclass object is a list of two objects. The first object \code{gdsfile} is the filepath of the GDS (discussed in section below) file which stores the genotype information from the original VCF file. The second object \code{QCresult} is a list of sample information and QC results, which include the dimension (# of samples and variants), sample annotation, and QC results for sample missing rate, sex check, inbreeding outlier check, IBD check, and population outlier check.
+#'
+#' @slot gdsfile A character string for the filepath of the GDS file. 
+#' @slot QCresult A list with sample information and sample QC results. 
+#' @name SeqSQCclass
+#' @rdname SeqSQCclass
+#' @export
+
 ## create class definitions
 setClass("SeqSQCclass",
          ## contains = "gds.class",
@@ -11,7 +21,24 @@ SeqSQCclass <- function(gdsfn, QCresult=List()){
     new("SeqSQCclass", gdsfile = gdsfn, QCresult = QCresult)
 }
 
-## set methods
+## Accessors
+setGeneric("gdsfile", function(x) standardGeneric("gdsfile"))
+setMethod("gdsfile", "SeqSQCclass",
+          function(x){
+              gp <- x@gdsfile
+              return(gp)
+          }
+          )
+
+setGeneric("QCresult", function(x) standardGeneric("QCresult"))
+setMethod("QCresult", "SeqSQCclass",
+          function(x){
+              res <- x@QCresult
+              return(res)
+          }
+          )
+
+## set show methods
 setMethod("show", "SeqSQCclass",
           function(object){
               res <- object@QCresult
@@ -53,6 +80,27 @@ setValidity("SeqSQCclass",
             }
             )
 
+
+## load the benchmark data from ExperimentHub when installing the package
+## write a fun <-  function() ExperimentHub::ExperimentHub()[["EH550"]]
+## devtools::create("bigd")
+## NAMESPACE: export("ExperimentHub")
+ 
+## .onload <- function(libpath, pkgname){
+##     message("libpath: ", libpath, " pkgname: ", pkgname)
+##     ## hubdir <- file.path(libpath, pkgname, ".ExperimentHub")
+##     ## supressMessages({
+##     ## ExperimentHub::ExperimentHub(cache = hubdir)[["EH550"]]
+##     ExperimentHub::ExperimentHub()[["EH550"]]
+##     ## })
+## }
+## #' @ export
+
+## myanalysis <- function(){
+##     hubdir <- system.file(package="bigd", ".ExperimentHub")
+##     mydata <- ExperimentHub::ExperimentHub(cache=hubdir)[["EH550"]]
+##     message("benchmark data:", mydata$filename)
+## }
 
 ## todo: update QC steps, finished and return a results, not gds file. 
 ## todo: update sampleQC.R, gfile = "" (character); close the gds file when QC. Open inside QC.

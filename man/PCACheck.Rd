@@ -35,9 +35,12 @@ Using LD-pruned autosomal variants (by default), we calculate the eigenvectors a
 }
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
+gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
 seqfile <- PCACheck(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=0.1)
-res.pca <- seqfile@QCresult$PCA
+res.pca <- QCresult(seqfile)$PCA
 tail(res.pca)
+}
+\author{
+Qian Liu \email{qliu7@buffalo.edu}
 }
 \keyword{PCA}

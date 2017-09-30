@@ -58,3 +58,6 @@ QCreport = TRUE, interactive = TRUE)
 save(seqfile, "seqfile.RData")
 }
 }
+\author{
+Qian Liu \email{qliu7@buffalo.edu}
+}

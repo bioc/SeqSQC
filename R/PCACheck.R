@@ -17,10 +17,11 @@
 #' @export
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-#' seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
+#' gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
 #' seqfile <- PCACheck(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=0.1)
-#' res.pca <- seqfile@QCresult$PCA
+#' res.pca <- QCresult(seqfile)$PCA
 #' tail(res.pca)
+#' @author Qian Liu \email{qliu7@@buffalo.edu}
 
 PCACheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, missing.rate = 0.1, ss.cutoff = 300, maf = 0.01, hwe = 1e-6, ...){
     
@@ -125,7 +126,7 @@ PCACheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, missing.rat
     ## return(gfile)
 
     ## return the SeqSQCclass file with updated gds file and QC result.
-    seqfile@QCresult$PCA <- res.pca
-    outfile <- SeqSQCclass(gdsfn = seqfile@gdsfile, QCresult = seqfile@QCresult)
+    QCresult(seqfile)$PCA <- res.pca
+    outfile <- SeqSQCclass(gdsfn = gdsfile(seqfile), QCresult = QCresult(seqfile))
     return(outfile)
 }

@@ -7,9 +7,10 @@
 #' @return the ggplot or interactive plot (if output is in html format) for IBD coefficients.
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-#' seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
+#' gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
 #' p <- plotIBD(seqfile, interactive=FALSE)
 #' p
+#' @author Qian Liu \email{qliu7@@buffalo.edu}
 
 plotIBD <- function(seqfile, interactive=FALSE){
 
@@ -17,10 +18,10 @@ plotIBD <- function(seqfile, interactive=FALSE){
     if (!inherits(seqfile, "SeqSQCclass")){
         return("object should inherit from 'SeqSQCclass'.")
     }
-    if(!"IBD" %in% names(seqfile@QCresult)) stop("no IBD result.")
+    if(!"IBD" %in% names(QCresult(seqfile))) stop("no IBD result.")
 
-    sampleanno <- seqfile@QCresult$sample.annot
-    res.ibd <- seqfile@QCresult$IBD
+    sampleanno <- QCresult(seqfile)$sample.annot
+    res.ibd <- QCresult(seqfile)$IBD
     studyid <- sampleanno[sampleanno[,5] == "study", 1]
     
     centers <- data.frame(k0=c(0, 0, 0.25, 0.5

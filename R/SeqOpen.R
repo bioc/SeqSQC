@@ -9,15 +9,16 @@
 #' @examples
 #' library(gdsfmt)
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-#' seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
+#' gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
 #' dat <- SeqOpen(seqfile)
 #' dat
 #' closefn.gds(dat)
+#' @author Qian Liu \email{qliu7@@buffalo.edu}
 
 SeqOpen <- function(seqfile, readonly=TRUE, allow.duplicate=FALSE)
 {
     ## check
-    fn <- seqfile@gdsfile
+    fn <- gdsfile(seqfile)
     stopifnot(is.character(fn), length(seqfile)==1L)
     stopifnot(is.logical(readonly), length(readonly)==1L)
     stopifnot(is.logical(allow.duplicate), length(allow.duplicate)==1L)

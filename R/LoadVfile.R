@@ -23,6 +23,7 @@
 #' @import IRanges
 #' @import S4Vectors
 #' @import methods
+#' @import ExperimentHub
 #' @importFrom utils read.table
 #' @examples
 #' \dontrun{
@@ -32,6 +33,7 @@
 #' sample.annot = system.file("extdata", "sampleAnnotation.txt", package="SeqSQC"))
 #' save(seqfile, file="seqfile.RData")
 #' }
+#' @author Qian Liu \email{qliu7@@buffalo.edu}
 
 LoadVfile <- function(vfile, output, capture.region=NULL, sample.annot=NULL, LDprune=TRUE, vfile.restrict=FALSE, slide.max.bp=5e+05, ld.threshold=0.3, format.data="NGS", format.file="vcf", ...){
 
@@ -94,6 +96,7 @@ LoadVfile <- function(vfile, output, capture.region=NULL, sample.annot=NULL, LDp
     ## 3. read in benchmark gds file for 87 samples from 1000 genomes project.
     message("Load 1kg data to temp directory...")
     ## gds.1kg <- system.file("extdata", "benchmark_1000genomes.gds", package="SeqSQC")
+    gds.1kg <- fileName(ExperimentHub())[["EH550"]]
     tmp.1kg <- tempfile(tmpdir=tmpdir)
     file.copy(gds.1kg, tmp.1kg)
     genofile <- openfn.gds(tmp.1kg, readonly = FALSE)

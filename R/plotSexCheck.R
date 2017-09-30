@@ -7,9 +7,10 @@
 #' @return the ggplot or interactive plot (if output is in html format) for sex inbreeding coefficients.
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-#' seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
+#' gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
 #' p <- plotSexCheck(seqfile, interactive=FALSE)
 #' p
+#' @author Qian Liu \email{qliu7@@buffalo.edu}
 
 plotSexCheck <- function(seqfile, interactive=FALSE){
 
@@ -17,10 +18,10 @@ plotSexCheck <- function(seqfile, interactive=FALSE){
     if (!inherits(seqfile, "SeqSQCclass")){
         return("object should inherit from 'SeqSQCclass'.")
     }
-    if(!"SexCheck" %in% names(seqfile@QCresult)) stop("no sexcheck result.")
+    if(!"SexCheck" %in% names(QCresult(seqfile))) stop("no sexcheck result.")
 
-    sampleanno <- seqfile@QCresult$sample.annot
-    res.sex <- seqfile@QCresult$SexCheck
+    sampleanno <- QCresult(seqfile)$sample.annot
+    res.sex <- QCresult(seqfile)$SexCheck
 
     type <- sampleanno[match(res.sex$sample, sampleanno[,1]), 5]
     type[type=="fam"] <- "pop"

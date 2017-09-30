@@ -26,7 +26,10 @@ Plot principle components for all sample.
 }
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
+gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
 p <- plotPop(seqfile, interactive=FALSE)
 p
+}
+\author{
+Qian Liu \email{qliu7@buffalo.edu}
 }

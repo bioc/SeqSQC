@@ -19,3 +19,6 @@ Will incure the rendering of the rmarkdown file for generating the sample QC rep
 \description{
 Function to render the pre-compiled rmarkdown file to generate the sample QC report.
 }
+\author{
+Qian Liu \email{qliu7@buffalo.edu}
+}

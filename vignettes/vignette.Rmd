@@ -27,6 +27,7 @@ The code chunk below assumes that you have a vcf file called `infile` with sampl
 source("https://bioconductor.org/biocLite.R")
 biocLite("SeqSQC")
 library(SeqSQC)
+
 ```
 
 ```{r wrapup1, eval=TRUE} 
@@ -38,7 +39,7 @@ outfile <- "testWrapUp"
 
 The wrap-up function `sampleQC` transforms the vcf file into `SeqSQCclass` file, evaluates all sample QC steps, outputs the QC results into your working directory, and generates a sample QC report in html format. We recommend saving the output `SeqSQCclass` object into an RData.
 
-```{r wrapup2, eval=TRUE}
+```{r wrapup2, eval=FALSE}
 seqfile <- sampleQC(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE)
 save(seqfile, file="seqfile.RData")
 ```

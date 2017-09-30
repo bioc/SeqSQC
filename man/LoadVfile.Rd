@@ -50,3 +50,6 @@ sample.annot = system.file("extdata", "sampleAnnotation.txt", package="SeqSQC"))
 save(seqfile, file="seqfile.RData")
 }
 }
+\author{
+Qian Liu \email{qliu7@buffalo.edu}
+}

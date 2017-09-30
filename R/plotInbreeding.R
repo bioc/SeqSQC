@@ -8,9 +8,10 @@
 #' @return @return the ggplot or interactive plot (if output is in html format) for inbreeding coefficients.
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-#' seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
+#' gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
 #' p <- plotInbreeding(seqfile, interactive=FALSE)
 #' p
+#' @author Qian Liu \email{qliu7@@buffalo.edu}
 
 plotInbreeding <- function(seqfile, interactive=FALSE, sdcoef=5){
 
@@ -18,10 +19,10 @@ plotInbreeding <- function(seqfile, interactive=FALSE, sdcoef=5){
     if (!inherits(seqfile, "SeqSQCclass")){
         return("object should inherit from 'SeqSQCclass'.")
     }
-    if(!"Inbreeding" %in% names(seqfile@QCresult)) stop("No inbreeding result.")
+    if(!"Inbreeding" %in% names(QCresult(seqfile))) stop("No inbreeding result.")
 
-    sampleanno <- seqfile@QCresult$sample.annot
-    res.inb <- seqfile@QCresult$Inbreeding
+    sampleanno <- QCresult(seqfile)$sample.annot
+    res.inb <- QCresult(seqfile)$Inbreeding
 
     ## define "res.inb$type" as "study/benchmark".
     type <- sampleanno[match(res.inb$sample, sampleanno[,1]), 5]

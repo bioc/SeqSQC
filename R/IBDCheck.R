@@ -20,10 +20,11 @@
 #' @export
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-#' seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
+#' gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
 #' seqfile <- IBDCheck(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=0.1)
-#' res.ibd <- seqfile@QCresult$IBD
+#' res.ibd <- QCresult(seqfile)$IBD
 #' tail(res.ibd)
+#' @author Qian Liu \email{qliu7@@buffalo.edu}
 
 
 IBDCheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, kin.filter = TRUE, missing.rate = 0.1, ss.cutoff = 300, maf = 0.01, hwe = 1e-6, ...){
@@ -170,8 +171,8 @@ IBDCheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, kin.filter 
     closefn.gds(gfile)
     
     ## return the SeqSQCclass file with updated QC results.
-    seqfile@QCresult$IBD <- res.ibd
-    outfile <- SeqSQCclass(gdsfn = seqfile@gdsfile, QCresult = seqfile@QCresult)
+    QCresult(seqfile)$IBD <- res.ibd
+    outfile <- SeqSQCclass(gdsfn = gdsfile(seqfile), QCresult = QCresult(seqfile))
     return(outfile)
 
 

@@ -19,7 +19,10 @@ Plot the inbreeding coefficients calculated from variants on chromosome X for ea
 }
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
+gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
 p <- plotSexCheck(seqfile, interactive=FALSE)
 p
+}
+\author{
+Qian Liu \email{qliu7@buffalo.edu}
 }

@@ -9,10 +9,11 @@
 #' @export
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-#' seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
+#' gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
 #' seqfile <- MissingRate(seqfile, remove.samples=NULL)
-#' res.mr <- seqfile@QCresult$MissingRate
+#' res.mr <- QCresult(seqfile)$MissingRate
 #' tail(res.mr)
+#' @author Qian Liu \email{qliu7@@buffalo.edu}
 
 MissingRate <- function(seqfile, remove.samples=NULL){
 
@@ -50,8 +51,8 @@ MissingRate <- function(seqfile, remove.samples=NULL){
     closefn.gds(gfile)
 
     ## return the SeqSQCclass file with updated QC results.
-    seqfile@QCresult$MissingRate <- res.mr
-    outfile <- SeqSQCclass(gdsfn = seqfile@gdsfile, QCresult = seqfile@QCresult)
+    QCresult(seqfile)$MissingRate <- res.mr
+    outfile <- SeqSQCclass(gdsfn = gdsfile(seqfile), QCresult = QCresult(seqfile))
     return(outfile)
 }
 

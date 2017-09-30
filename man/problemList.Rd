@@ -19,3 +19,6 @@ generate the problematic sample list from QC steps that have been done, and prov
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 problemList(seqfile)
 }
+\author{
+Qian Liu \email{qliu7@buffalo.edu}
+}

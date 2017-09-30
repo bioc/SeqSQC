@@ -10,9 +10,10 @@
 #' @return the ggplot or interactive plot (if output is in html format) for sample missing rates.
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-#' seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
+#' gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
 #' p <- plotMissingRate(seqfile, interactive=FALSE)
 #' p
+#' @author Qian Liu \email{qliu7@@buffalo.edu}
 
 
 plotMissingRate <- function(seqfile, interactive=FALSE){
@@ -21,10 +22,10 @@ plotMissingRate <- function(seqfile, interactive=FALSE){
     if (!inherits(seqfile, "SeqSQCclass")){
         return("object should inherit from 'SeqSQCclass'.")
     }
-    if(!"MissingRate" %in% names(seqfile@QCresult)) stop("no missing rate result.")
+    if(!"MissingRate" %in% names(QCresult(seqfile))) stop("no missing rate result.")
 
-    sampleanno <- seqfile@QCresult$sample.annot
-    res.mr <- seqfile@QCresult$MissingRate
+    sampleanno <- QCresult(seqfile)$sample.annot
+    res.mr <- QCresult(seqfile)$MissingRate
 
     type <- sampleanno[match(res.mr$sample, sampleanno[,1]), 5]
     type[type=="fam"] <- "pop"

@@ -19,7 +19,10 @@ Plot IBD coefficients (k0 and k1) calculated from autosomal variants for all sam
 }
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
+gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
 p <- plotIBD(seqfile, interactive=FALSE)
 p
+}
+\author{
+Qian Liu \email{qliu7@buffalo.edu}
 }

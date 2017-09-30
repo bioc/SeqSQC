@@ -32,15 +32,16 @@
 #' QCreport = TRUE, interactive = TRUE)
 #' save(seqfile, "seqfile.RData")
 #' }
+#' @author Qian Liu \email{qliu7@@buffalo.edu}
 
 sampleQC <- function(vfile, output, capture.region = NULL, sample.annot = NULL, LDprune = TRUE, vfile.restrict = FALSE, slide.max.bp = 5e+05, ld.threshold = 0.3, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE, ...){
 
     seqfile <- LoadVfile(vfile = vfile, output = output, capture.region = capture.region, sample.annot = sample.annot, ...)
 
-    fn <- seqfile@gdsfile
+    fn <- gdsfile(seqfile)
     print(paste("gds file generated:", fn))
 
-    sampleanno <- seqfile@QCresult$sample.annot
+    sampleanno <- QCresult(seqfile)$sample.annot
     samples <- sampleanno$sample
     studyid <- sampleanno[sampleanno[,5] == "study", 1]
     
@@ -48,7 +49,7 @@ sampleQC <- function(vfile, output, capture.region = NULL, sample.annot = NULL, 
     ## sample missing rate
     
     seqfile <- MissingRate(seqfile)
-    res.mr <- seqfile@QCresult$MissingRate
+    res.mr <- QCresult(seqfile)$MissingRate
     res.study <- res.mr[res.mr$sample %in% studyid, ]
     prob.mr <- res.study[res.study$outlier == "Yes", ]
     remove.mr <- prob.mr[,1]
@@ -61,7 +62,7 @@ sampleQC <- function(vfile, output, capture.region = NULL, sample.annot = NULL, 
     ## Sex Check
     
     seqfile <- SexCheck(seqfile)
-    res.sexcheck <- seqfile@QCresult$SexCheck
+    res.sexcheck <- QCresult(seqfile)$SexCheck
     table(res.sexcheck$sex, res.sexcheck$pred.sex)
     prob.sex <- res.sexcheck[res.sexcheck$sex != res.sexcheck$pred.sex & res.sexcheck$pred.sex != "0", ]
     remove.sex <- prob.sex[,1]
@@ -75,7 +76,7 @@ sampleQC <- function(vfile, output, capture.region = NULL, sample.annot = NULL, 
     ## Inbreeding check
     
     seqfile <- Inbreeding(seqfile, remove.samples=remove.samples)
-    res.inb <- seqfile@QCresult$Inbreeding
+    res.inb <- QCresult(seqfile)$Inbreeding
     prob.inb <- res.inb[res.inb$outlier.5sd == "Yes" & !is.na(res.inb$outlier.5sd), ]
     remove.inb <- prob.inb[,1]
     remove.samples <- unique(c(remove.samples, remove.inb))
@@ -90,7 +91,7 @@ sampleQC <- function(vfile, output, capture.region = NULL, sample.annot = NULL, 
     ## IBD
     
     seqfile <- IBDCheck(seqfile, remove.samples=remove.samples)
-    res.ibd <- seqfile@QCresult$IBD
+    res.ibd <- QCresult(seqfile)$IBD
     prob.ibd <- IBDRemove(seqfile)
     ibd.pairs <- prob.ibd$ibd.pairs
     if(nrow(ibd.pairs) > 0){
@@ -110,7 +111,7 @@ sampleQC <- function(vfile, output, capture.region = NULL, sample.annot = NULL, 
     ## PCA
 
     seqfile <- PCACheck(seqfile, remove.samples=remove.samples)
-    res.pca <- seqfile@QCresult$PCA
+    res.pca <- QCresult(seqfile)$PCA
     res.study <- res.pca[res.pca$sample %in% studyid, ]
     remove.pca <- res.study[res.study$pop != res.study$pred.pop, 1]
 
@@ -127,8 +128,8 @@ sampleQC <- function(vfile, output, capture.region = NULL, sample.annot = NULL, 
     ## rm.list <- data.frame(sample = c(remove.mr, remove.sex, remove.inb, remove.ibd, remove.pca))
 
     if(nrow(prob.list) != 0){
-        seqfile@QCresult$problem.list <- prob.list
-        seqfile@QCresult$remove.list <- rm.list
+        QCresult(seqfile)$problem.list <- prob.list
+        QCresult(seqfile)$remove.list <- rm.list
         write.table(prob.list, file=paste0(dirname(output), "/result.problemSamples.txt"), quote=FALSE, sep="\t", row.names=FALSE)
         write.table(rm.list, file=paste0(dirname(output), "/result.removeSamples.txt"), quote=FALSE, sep="\t", row.names=FALSE, col.names=FALSE)
     }

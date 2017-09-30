@@ -4,12 +4,12 @@ IBDRemoveAll <- function(seqfile){
     if (!inherits(seqfile, "SeqSQCclass")){
         return("object should inherit from 'SeqSQCclass'.")
     }
-    if(!"IBD" %in% names(seqfile@QCresult)) stop("no IBD result.")
+    if(!"IBD" %in% names(QCresult(seqfile))) stop("no IBD result.")
 
-    sampleanno <- seqfile@QCresult$sample.annot
+    sampleanno <- QCresult(seqfile)$sample.annot
     samples <- sampleanno$sample
     studyid <- sampleanno[sampleanno[,5] == "study", 1]
-    res.ibd <- seqfile@QCresult$IBD
+    res.ibd <- QCresult(seqfile)$IBD
     
     
     ## IBD results for all samples (including benchmark samples)
@@ -30,8 +30,8 @@ IBDRemoveAll <- function(seqfile){
             ibd.related <- ibd.related[!ibd.related$id1 %in% remove.multi & !ibd.related$id2 %in% remove.multi, ]
         }
         ## remove the sample in the related pairs with higher missing rate. 
-        if("MissingRate" %in% names(seqfile@QCresult)){
-            mr <- seqfile@QCresult$MissingRate
+        if("MissingRate" %in% names(QCresult(seqfile))){
+            mr <- QCresult(seqfile)$MissingRate
             mr <- mr[match(c(ibd.related$id1, ibd.related$id2), mr$sample), 1:2]
         }else{
             gfile <- SeqOpen(seqfile, readonly=TRUE)

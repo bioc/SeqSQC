@@ -10,9 +10,10 @@
 #' @return the ggplot or interactive plot (if output is in html format) for principle components.
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-#' seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
+#' gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
 #' p <- plotPop(seqfile, interactive=FALSE)
 #' p
+#' @author Qian Liu \email{qliu7@@buffalo.edu}
 
 plotPop <- function(seqfile, pc1="EV1", pc2="EV2", interactive=FALSE, pairedScatter=FALSE){
 
@@ -20,9 +21,9 @@ plotPop <- function(seqfile, pc1="EV1", pc2="EV2", interactive=FALSE, pairedScat
     if (!inherits(seqfile, "SeqSQCclass")){
         return("object should inherit from 'SeqSQCclass'.")
     }
-    if(!"PCA" %in% names(seqfile@QCresult)) stop("no PCA result.")
+    if(!"PCA" %in% names(QCresult(seqfile))) stop("no PCA result.")
 
-    res.pca <- seqfile@QCresult$PCA
+    res.pca <- QCresult(seqfile)$PCA
     res.pca$type <- as.character(res.pca$type)
     res.pca$type[res.pca$type == "pop"] <- "benchmark"
     res.pca$type <- factor(res.pca$type)

@@ -39,9 +39,12 @@ Sample pairs with discordant self-reported and predicted relationship are consid
 }
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
+gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
 seqfile <- IBDCheck(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=0.1)
-res.ibd <- seqfile@QCresult$IBD
+res.ibd <- QCresult(seqfile)$IBD
 tail(res.ibd)
+}
+\author{
+Qian Liu \email{qliu7@buffalo.edu}
 }
 \keyword{IBD}
