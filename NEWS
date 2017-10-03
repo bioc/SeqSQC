@@ -5,7 +5,7 @@ Load benchmark data from ExperimentHub
 o added in the R script, will download only once with first time running of the LoadVfile() or sampleQC().
 
 Bioconductor submission check: 
-o Todo: Add some unit test.
+o Added unit test.
 o Added a NEWS file to keep track of changes
 o Added zzz.R to fix the no visible binding for global functions or variables. 
 o Added the "example_sub.vcf" for 1000 lines of variants to run as example in the package vignette. 

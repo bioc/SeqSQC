@@ -2,8 +2,9 @@
 #' 
 #' A wrap-up function for sample QC. It reads in the variant genotypes in vcf/PLINK format, merges study cohort with benchmark data, and performs sample QC for the merged dataset.
 #' 
-#' @param vfile vcf or PLINK input file (ped/map/bed/bim/fam with same basename). Vfile could be a vector of character strings, see details.
+#' @param vfile vcf or PLINK input file (ped/map/bed/bim/fam with same basename). The default is NULL. Vfile could be a vector of character strings, see details. 
 #' @param output a character string for name of merged data in SeqSQCclass. 
+#' @param sfile a file in \code{SeqSQCclass} generated from \code{LoadVfile}. The default is NULL. 
 #' @param capture.region the BED file of sequencing capture regions. The default is NULL. For exome-sequencing data, the capture region file must be provided.
 #' @param sample.annot sample annotation file with 3 columns including the sample id, sample population and sex info. The default is NULL.
 #' @param LDprune whether to use LD-pruned snp set. The default is TRUE.
@@ -32,12 +33,15 @@
 #' QCreport = TRUE, interactive = TRUE)
 #' save(seqfile, "seqfile.RData")
 #' }
-#' @author Qian Liu \email{qliu7@@buffalo.edu}
+#' @author Qian Liu \email{qliu7@buffalo.edu}
 
-sampleQC <- function(vfile, output, capture.region = NULL, sample.annot = NULL, LDprune = TRUE, vfile.restrict = FALSE, slide.max.bp = 5e+05, ld.threshold = 0.3, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE, ...){
+sampleQC <- function(vfile = NULL, output, sfile = NULL, capture.region = NULL, sample.annot = NULL, LDprune = TRUE, vfile.restrict = FALSE, slide.max.bp = 5e+05, ld.threshold = 0.3, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE, ...){
 
-    seqfile <- LoadVfile(vfile = vfile, output = output, capture.region = capture.region, sample.annot = sample.annot, ...)
-
+    if(!is.null(seqfile)){
+        seqfile <- sfile
+    }else{
+        seqfile <- LoadVfile(vfile = vfile, output = output, capture.region = capture.region, sample.annot = sample.annot, ...)
+    }
     fn <- gdsfile(seqfile)
     print(paste("gds file generated:", fn))
 
@@ -128,8 +132,9 @@ sampleQC <- function(vfile, output, capture.region = NULL, sample.annot = NULL, 
     ## rm.list <- data.frame(sample = c(remove.mr, remove.sex, remove.inb, remove.ibd, remove.pca))
 
     if(nrow(prob.list) != 0){
-        QCresult(seqfile)$problem.list <- prob.list
-        QCresult(seqfile)$remove.list <- rm.list
+        a <- QCresult(seqfile)
+        a$problem.list <- prob.list
+        a$remove.list <- rm.list
         write.table(prob.list, file=paste0(dirname(output), "/result.problemSamples.txt"), quote=FALSE, sep="\t", row.names=FALSE)
         write.table(rm.list, file=paste0(dirname(output), "/result.removeSamples.txt"), quote=FALSE, sep="\t", row.names=FALSE, col.names=FALSE)
     }

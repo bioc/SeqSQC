@@ -86,7 +86,8 @@ SexCheck <- function(seqfile, remove.samples=NULL, missing.rate = 0.1, ss.cutoff
     ## res.sexcheck$remove <- remove
     
     ## return the SeqSQCclass file with updated QC results.
-    QCresult(seqfile)$SexCheck <- res.sexcheck
-    outfile <- SeqSQCclass(gdsfn = gdsfile(seqfile), QCresult = QCresult(seqfile))
+    a <- QCresult(seqfile)
+    a$SexCheck <- res.sexcheck
+    outfile <- SeqSQCclass(gdsfn = gdsfile(seqfile), QCresult = a)
     return(outfile)
 }

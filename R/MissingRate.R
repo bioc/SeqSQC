@@ -51,8 +51,10 @@ MissingRate <- function(seqfile, remove.samples=NULL){
     closefn.gds(gfile)
 
     ## return the SeqSQCclass file with updated QC results.
-    QCresult(seqfile)$MissingRate <- res.mr
-    outfile <- SeqSQCclass(gdsfn = gdsfile(seqfile), QCresult = QCresult(seqfile))
+    a <- QCresult(seqfile)
+    a$MissingRate <- res.mr
+    ## QCresult(seqfile)$MissingRate <-  res.mr
+    outfile <- SeqSQCclass(gdsfn = gdsfile(seqfile), QCresult = a)
     return(outfile)
 }
 

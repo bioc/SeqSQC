@@ -1,7 +1,0 @@
-.onLoad <- function(libname = find.package("SeqSQC"), pkgname = "SeqSQC"){
-
-    if(getRversion() >= "2.15.1")
-        utils::globalVariables(
-                   c("Ind", "Gender", "age_range", "Occ_code", "Partner_status")
-                   invisible()
-        }

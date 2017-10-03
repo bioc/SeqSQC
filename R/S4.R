@@ -6,7 +6,7 @@
 #' @slot QCresult A list with sample information and sample QC results. 
 #' @name SeqSQCclass
 #' @rdname SeqSQCclass
-#' @export
+#' @exportClass SeqSQCclass
 
 ## create class definitions
 setClass("SeqSQCclass",
@@ -22,7 +22,20 @@ SeqSQCclass <- function(gdsfn, QCresult=List()){
 }
 
 ## Accessors
+#' Accessor method gdsfile. 
+#' @name SeqSQCclass-class
+#' @rdname SeqSQCclass-class
+#' @exportMethod gdsfile
 setGeneric("gdsfile", function(x) standardGeneric("gdsfile"))
+
+#' Accessor method QCresult.
+#' @name SeqSQCclass-class
+#' @rdname SeqSQCclass-class
+#' @exportMethod QCresult
+setGeneric("QCresult", function(x) standardGeneric("QCresult"))
+
+#' @rdname SeqSQCclass-method
+#' @aliases gdsfile, SeqSQCclass-method
 setMethod("gdsfile", "SeqSQCclass",
           function(x){
               gp <- x@gdsfile
@@ -30,7 +43,8 @@ setMethod("gdsfile", "SeqSQCclass",
           }
           )
 
-setGeneric("QCresult", function(x) standardGeneric("QCresult"))
+#' @rdname SeqSQCclass-method
+#' @aliases QCresult, SeqSQCclass-method
 setMethod("QCresult", "SeqSQCclass",
           function(x){
               res <- x@QCresult

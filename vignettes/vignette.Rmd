@@ -27,20 +27,31 @@ The code chunk below assumes that you have a vcf file called `infile` with sampl
 source("https://bioconductor.org/biocLite.R")
 biocLite("SeqSQC")
 library(SeqSQC)
-
 ```
 
-```{r wrapup1, eval=TRUE} 
-infile <- system.file("extdata", "example_sub.vcf", package="SeqSQC")
-sample.annot <- system.file("extdata", "sampleAnnotation.txt", package="SeqSQC")
-cr <- system.file("extdata", "CCDS.Hs37.3.reduced_chr1.bed", package="SeqSQC")
-outfile <- "testWrapUp"
+```{r packages, echo=FALSE}
+library(gdsfmt)
+library(ggplot2)
+library(rbokeh)
+library(RColorBrewer)
 ```
 
-The wrap-up function `sampleQC` transforms the vcf file into `SeqSQCclass` file, evaluates all sample QC steps, outputs the QC results into your working directory, and generates a sample QC report in html format. We recommend saving the output `SeqSQCclass` object into an RData.
+The wrap-up function `sampleQC` transforms the vcf file into `SeqSQCclass` file, or take the `SeqSQCclass` file generated from `LoadVfile` directly as input, evaluates all sample QC steps, outputs the QC results into your working directory, and generates a sample QC report in html format. We recommend saving the output `SeqSQCclass` object into an RData.
 
-```{r wrapup2, eval=FALSE}
+This is an example when we have input as vcf file, sample annotation file, and capture region bed file. 
+
+```{r wrapup_vcf, eval=FALSE}
 seqfile <- sampleQC(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE)
+save(seqfile, file="seqfile.RData")
+```
+
+This is an example when we directly use `SeqSQCclass` file as input, and evaluate all sample QC steps. 
+
+```{r wrapup_seqfile, eval=TRUE}
+load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
+seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
+
+seqfile <- sampleQC(sfile = seqfile, output = "testWrapUp", QCreport = TRUE, out.report="report.html", interactive = TRUE)
 save(seqfile, file="seqfile.RData")
 ```
 Detailed descriptions of data structure and functionality usage of SeqSQC are provided as below.
@@ -51,14 +62,12 @@ Detailed descriptions of data structure and functionality usage of SeqSQC are pr
 
 SeqSQC takes VCF file as input.
 
-```{r packages, echo=FALSE}
-library(gdsfmt)
-library(ggplot2)
-library(rbokeh)
-library(RColorBrewer)
-```
-
 ```{r loadData, eval=FALSE}
+infile <- system.file("extdata", "example_sub.vcf", package="SeqSQC")
+sample.annot <- system.file("extdata", "sampleAnnotation.txt", package="SeqSQC")
+cr <- system.file("extdata", "CCDS.Hs37.3.reduced_chr1.bed", package="SeqSQC")
+outfile <- "testWrapUp"
+
 seqfile <- LoadVfile(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot)
 ```
 
@@ -76,14 +85,14 @@ slotNames(seqfile)
 A SeqSQCclass object is a list of two objects. The first object is the filepath of the GDS (discussed in section below) file which stores the genotype information from the original VCF file.
 
 ```{r class}
-seqfile@gdsfile
+gdsfile(seqfile)
 ```
 
 The second object is a list of sample information and QC results, which include the dimension (# of samples and variants), sample annotation, and QC results for sample missing rate, sex check, inbreeding outlier check, IBD check, and population outlier check.
 
 ```{r class2}
-seqfile@QCresult
-head(seqfile@QCresult$sample.annot)
+QCresult(seqfile)
+head(QCresult(seqfile)$sample.annot)
 ```
 
 ## GDS class
@@ -108,7 +117,7 @@ The result from sample missing rate check contains three columns: sample name, s
 seqfile <- MissingRate(seqfile, remove.samples=NULL)
 ```
 ```{r mrresult, eval=TRUE}
-res.mr <- seqfile@QCresult$MissingRate
+res.mr <- QCresult(seqfile)$MissingRate
 tail(res.mr)
 ```
 The function `plotMissingRate` generates the plot for the sample missing rate, where the problematic samples with missing rate greater than 0.1 are highlighted in the plot. The default plot generated is not interactive. Users can generate the interactive plot in each QC step by specifying the `interactive` argument to be TRUE. The interactive plot allows users to visually inspect the QC result by putting the cursor on samples of interest. 
@@ -128,7 +137,7 @@ The result contains sample name, reported gender, X chromosome inbreeding coeffi
 seqfile <- SexCheck(seqfile, remove.samples=NULL)
 ```
 ```{r scresult, eval=TRUE}
-res.sexc <- seqfile@QCresult$SexCheck
+res.sexc <- QCresult(seqfile)$SexCheck
 tail(res.sexc)
 ```
 The function `plotSexCheck` generates the plot  for the inbreeding coefficient on X chromosome where samples are labeled with different color according to their self-reported gender. If there is any sample detected to be gender mismatched by SeqSQC, it will be highlighted with a red circle. 
@@ -148,7 +157,7 @@ The result contains sample name, inbreeding coefficient, and an indicator of whe
 seqfile <- Inbreeding(seqfile, remove.samples=NULL)
 ```
 ```{r inbresult, eval=TRUE}
-res.inb <- seqfile@QCresult$Inbreeding
+res.inb <- QCresult(seqfile)$Inbreeding
 tail(res.inb)
 ```
 The function `plotInbreeding` generates the plot for the inbreeding coefficient. Problematic samples with extreme inbreeding coefficients will be highlighted in the plot. 
@@ -168,7 +177,7 @@ The result contains sample names, the descent coefficients k0, k1 and kinship, s
 seqfile <- IBD(seqfile, remove.samples=NULL)
 ```
 ```{r ibdresult, eval=TRUE}
-res.ibd <- seqfile@QCresult$IBD
+res.ibd <- QCresult(seqfile)$IBD
 head(res.ibd)
 ```
 The function `plotIBD` draws the descent coefficients k0 and k1 for each sample pair. The relationship for each sample pair are labelled by different colors. If there is any problematic sample pair detected to be  cryptically related by SeqSQC, it will be highlighted with a red circle. 
@@ -188,7 +197,7 @@ The result contains sample name, reported population, data resource (benchmark /
 seqfile <- PCA(seqfile, remove.samples=NULL)
 ```
 ```{r pcaresult, eval=TRUE}
-res.pca <- seqfile@QCresult$PCA
+res.pca <- QCresult(seqfile)$PCA
 tail(res.pca)
 ```
 

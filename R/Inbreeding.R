@@ -91,7 +91,8 @@ Inbreeding <- function(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=
     closefn.gds(gfile)
     
     ## return the SeqSQCclass file with updated QC results.
-    QCresult(seqfile)$Inbreeding <- res.inb
-    outfile <- SeqSQCclass(gdsfn = gdsfile(seqfile), QCresult = QCresult(seqfile))
+    a <- QCresult(seqfile)
+    a$Inbreeding <- res.inb
+    outfile <- SeqSQCclass(gdsfn = gdsfile(seqfile), QCresult = a)
     return(outfile)
 }

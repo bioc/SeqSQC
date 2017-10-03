@@ -171,8 +171,9 @@ IBDCheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, kin.filter 
     closefn.gds(gfile)
     
     ## return the SeqSQCclass file with updated QC results.
-    QCresult(seqfile)$IBD <- res.ibd
-    outfile <- SeqSQCclass(gdsfn = gdsfile(seqfile), QCresult = QCresult(seqfile))
+    a <- QCresult(seqfile)
+    a$IBD <- res.ibd
+    outfile <- SeqSQCclass(gdsfn = gdsfile(seqfile), QCresult = a)
     return(outfile)
 
 

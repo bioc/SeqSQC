@@ -126,7 +126,8 @@ PCACheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, missing.rat
     ## return(gfile)
 
     ## return the SeqSQCclass file with updated gds file and QC result.
-    QCresult(seqfile)$PCA <- res.pca
-    outfile <- SeqSQCclass(gdsfn = gdsfile(seqfile), QCresult = QCresult(seqfile))
+    a <- QCresult(seqfile)
+    a$PCA <- res.pca
+    outfile <- SeqSQCclass(gdsfn = gdsfile(seqfile), QCresult = a)
     return(outfile)
 }
