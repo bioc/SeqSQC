@@ -35,7 +35,8 @@ Using LD-pruned variants (by default), we calculate the inbreeding coefficients 
 }
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
+gfile <- system.file("extdata", "example.gds", package="SeqSQC")
+seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
 seqfile <- Inbreeding(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=0.1)
 res.inb <- QCresult(seqfile)$Inbreeding
 tail(res.inb)

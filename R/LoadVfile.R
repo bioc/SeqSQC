@@ -170,6 +170,6 @@ LoadVfile <- function(vfile, output, capture.region=NULL, sample.annot=NULL, LDp
     sampleanno <- read.gdsn(index.gdsn(merge.out, "sample.annot")) 
     closefn.gds(merge.out)
 
-    output <- SeqSQCclass(gdsfn = fn, QCresult = SimpleList(dimension = c(length(samples), length(snps)), sample.annot = sampleanno))
+    output <- SeqSQCclass(gdsfile = fn, QCresult = SimpleList(dimension = c(length(samples), length(snps)), sample.annot = sampleanno))
     return(output)
 }

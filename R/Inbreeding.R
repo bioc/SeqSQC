@@ -16,7 +16,8 @@
 #' @export
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-#' gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
+#' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
+#' seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
 #' seqfile <- Inbreeding(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=0.1)
 #' res.inb <- QCresult(seqfile)$Inbreeding
 #' tail(res.inb)
@@ -93,6 +94,6 @@ Inbreeding <- function(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=
     ## return the SeqSQCclass file with updated QC results.
     a <- QCresult(seqfile)
     a$Inbreeding <- res.inb
-    outfile <- SeqSQCclass(gdsfn = gdsfile(seqfile), QCresult = a)
+    outfile <- SeqSQCclass(gdsfile = gdsfile(seqfile), QCresult = a)
     return(outfile)
 }

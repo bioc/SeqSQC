@@ -31,7 +31,8 @@ Samples are predicted to be female or male if the inbreeding coefficient is belo
 }
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
+gfile <- system.file("extdata", "example.gds", package="SeqSQC")
+seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
 seqfile <- SexCheck(seqfile, remove.samples=NULL, missing.rate=0.1)
 res.sexc <- QCresult(seqfile)$SexCheck
 tail(res.sexc)

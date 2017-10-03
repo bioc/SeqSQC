@@ -10,7 +10,8 @@
 #' @return the ggplot or interactive plot (if output is in html format) for sample missing rates.
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-#' gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
+#' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
+#' seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
 #' p <- plotMissingRate(seqfile, interactive=FALSE)
 #' p
 #' @author Qian Liu \email{qliu7@@buffalo.edu}

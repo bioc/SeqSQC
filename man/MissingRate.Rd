@@ -22,7 +22,8 @@ The value of the outlier column is set to NA for benchmark samples.
 }
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
+gfile <- system.file("extdata", "example.gds", package="SeqSQC")
+seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
 seqfile <- MissingRate(seqfile, remove.samples=NULL)
 res.mr <- QCresult(seqfile)$MissingRate
 tail(res.mr)

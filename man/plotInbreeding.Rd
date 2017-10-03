@@ -21,7 +21,8 @@ Plot inbreeding coefficients calculated from autosomal variants for each populat
 }
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
+gfile <- system.file("extdata", "example.gds", package="SeqSQC")
+seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
 p <- plotInbreeding(seqfile, interactive=FALSE)
 p
 }

@@ -13,7 +13,8 @@
 #' @export
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-#' gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
+#' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
+#' seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
 #' seqfile <- SexCheck(seqfile, remove.samples=NULL, missing.rate=0.1)
 #' res.sexc <- QCresult(seqfile)$SexCheck
 #' tail(res.sexc)
@@ -88,6 +89,6 @@ SexCheck <- function(seqfile, remove.samples=NULL, missing.rate = 0.1, ss.cutoff
     ## return the SeqSQCclass file with updated QC results.
     a <- QCresult(seqfile)
     a$SexCheck <- res.sexcheck
-    outfile <- SeqSQCclass(gdsfn = gdsfile(seqfile), QCresult = a)
+    outfile <- SeqSQCclass(gdsfile = gdsfile(seqfile), QCresult = a)
     return(outfile)
 }

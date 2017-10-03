@@ -6,7 +6,8 @@
 #' @export
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-#' gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
+#' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
+#' seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
 #' seqfile <- IBDCheck(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=0.1)
 #' IBDRemove(seqfile)
 #' @author Qian Liu \email{qliu7@@buffalo.edu}

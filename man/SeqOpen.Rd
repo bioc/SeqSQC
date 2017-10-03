@@ -22,7 +22,8 @@ Function to open the gds file inside the SeqSQCclass file.
 \examples{
 library(gdsfmt)
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-gdsfile(seqfile) <- system.file("extdata", "example.gds", package="SeqSQC")
+gfile <- system.file("extdata", "example.gds", package="SeqSQC")
+seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
 dat <- SeqOpen(seqfile)
 dat
 closefn.gds(dat)

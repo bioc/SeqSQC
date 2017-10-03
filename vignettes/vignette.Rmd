@@ -26,10 +26,10 @@ The code chunk below assumes that you have a vcf file called `infile` with sampl
 ```{r setup, eval=FALSE}
 source("https://bioconductor.org/biocLite.R")
 biocLite("SeqSQC")
-library(SeqSQC)
 ```
 
-```{r packages, echo=FALSE}
+```{r packages}
+library(SeqSQC)
 library(gdsfmt)
 library(ggplot2)
 library(rbokeh)
@@ -40,6 +40,13 @@ The wrap-up function `sampleQC` transforms the vcf file into `SeqSQCclass` file,
 
 This is an example when we have input as vcf file, sample annotation file, and capture region bed file. 
 
+```{r loadData, eval=TRUE}
+infile <- system.file("extdata", "example_sub.vcf", package="SeqSQC")
+sample.annot <- system.file("extdata", "sampleAnnotation.txt", package="SeqSQC")
+cr <- system.file("extdata", "CCDS.Hs37.3.reduced_chr1.bed", package="SeqSQC")
+outfile <- "testWrapUp"
+```
+
 ```{r wrapup_vcf, eval=FALSE}
 seqfile <- sampleQC(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE)
 save(seqfile, file="seqfile.RData")
@@ -49,7 +56,8 @@ This is an example when we directly use `SeqSQCclass` file as input, and evaluat
 
 ```{r wrapup_seqfile, eval=TRUE}
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
+gfile <- system.file("extdata", "example.gds", package="SeqSQC")
+seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
 
 seqfile <- sampleQC(sfile = seqfile, output = "testWrapUp", QCreport = TRUE, out.report="report.html", interactive = TRUE)
 save(seqfile, file="seqfile.RData")
@@ -62,12 +70,7 @@ Detailed descriptions of data structure and functionality usage of SeqSQC are pr
 
 SeqSQC takes VCF file as input.
 
-```{r loadData, eval=FALSE}
-infile <- system.file("extdata", "example_sub.vcf", package="SeqSQC")
-sample.annot <- system.file("extdata", "sampleAnnotation.txt", package="SeqSQC")
-cr <- system.file("extdata", "CCDS.Hs37.3.reduced_chr1.bed", package="SeqSQC")
-outfile <- "testWrapUp"
-
+```{r loadVfile, eval=TRUE}
 seqfile <- LoadVfile(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot)
 ```
 
@@ -77,8 +80,8 @@ We define an object class `SeqSQCclass` to store the genotype data, variant / sa
 
 ```{r show}
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-seqfile@gdsfile <- system.file("extdata", "example.gds", package="SeqSQC")
-seqfile
+gfile <- system.file("extdata", "example.gds", package="SeqSQC")
+seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
 slotNames(seqfile)
 ```
 
