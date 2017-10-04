@@ -5,7 +5,9 @@
 \alias{example.seqfile.Rdata}
 \title{Example SeqSQCclass file used in vignette.}
 \description{
-The SeqSQCclass object is a list of two objects. The first object \code{gdsfile} is the filepath of the "example.gds" file which stores the genotype and meta info of the example data merged with the benchmark data. The second object \code{QCresult} contains the data dimensions (# of samples and variants), sample annotation, and QC results for sample missing rate, sex check, inbreeding outlier check, IBD check, and population outlier check.
+The SeqSQCclass object is a list of two objects.
+The first object \code{gdsfile} is the filepath of the "example.gds" file which stores the genotype and meta info of the example data merged with the benchmark data.
+The second object \code{QCresult} contains the data dimensions (# of samples and variants), sample annotation, and QC results for sample missing rate, sex check, inbreeding outlier check, IBD check, and population outlier check.
 }
 \author{
 Qian Liu \email{qliu7@buffalo.edu}

@@ -18,8 +18,8 @@ setClass("SeqSQCclass",
          )
 
 #' SeqSQCclass object Constructor
-#' @name SeqSQCclass
-#' @rdname SeqSQCclass
+#' @name SeqSQCclass-class
+#' @rdname SeqSQCclass-class
 #' @param gdsfile A character string for the filepath of the GDS file.
 #' @param QCresult A list with sample information and sample QC results.
 #' @export SeqSQCclass
@@ -27,43 +27,73 @@ SeqSQCclass <- function(gdsfile, QCresult=List()){
     new("SeqSQCclass", gdsfile = gdsfile, QCresult = QCresult)
 }
 
-#' @rdname gdsfile
-#' @export
+#' Method gdsfile.
+#' @name SeqSQCclass-class
+#' @rdname SeqSQCclass-class
+#' @exportMethod gdsfile
 setGeneric("gdsfile", function(x) standardGeneric("gdsfile"))
 
-#' @rdname QCresult
-#' @export
+#' Method QCresult.
+#' @name SeqSQCclass-class
+#' @rdname SeqSQCclass-class
+#' @exportMethod QCresult
 setGeneric("QCresult", function(x) standardGeneric("QCresult"))
 
-#' Accessors for the 'gdsfile' slot of a seqSQCclass object.
-#' the gdsfile slot holds the filepath of the gds file, which contains the genotypes and meta info for samples and variants.
-#' @docType methods
-#' @param x a SeqSQCclass object
+#' @rdname SeqSQCclass-class
 #' @name gdsfile
-#' @rdname gdsfile
 #' @aliases gdsfile,SeqSQCclass-method
-#' @exportMethod gdsfile
-setMethod("gdsfile", "SeqSQCclass",
-          function(x){
-              gp <- x@gdsfile
-              return(gp)
-          }
-          )
+#' @param x an SeqSQCClass object.
+#' @examples
+#' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
+#' gdsfile(seqfile)
+#' @return The filepath to the gds file. 
 
-#' Accessors for the 'QCresult' slot of a SeqSQCclass object.
-#' the QCresult slot holds the sample QC results, including a summary of variants and samples, and QC results from missing rate check, sex check, inbreeding outlier check, IBD check and population outlier check.
-#' @docType methods
-#' @param x a SeqSQCclass object
+setMethod("gdsfile", "SeqSQCclass",function(x) x@gdsfile)
+
+#' @rdname SeqSQCclass-class
 #' @name QCresult
-#' @rdname QCresult
 #' @aliases QCresult,SeqSQCclass-method
-#' @exportMethod QCresult
-setMethod("QCresult", "SeqSQCclass",
-          function(x){
-              res <- x@QCresult
-              return(res)
-          }
-          )
+#' @examples
+#' QCresult(seqfile)
+setMethod("QCresult", "SeqSQCclass", function(x) x@QCresult)
+
+## #' @rdname gdsfile
+## #' @export
+## setGeneric("gdsfile", function(x) standardGeneric("gdsfile"))
+
+## #' @rdname QCresult
+## #' @export
+## setGeneric("QCresult", function(x) standardGeneric("QCresult"))
+
+## #' Accessors for the 'gdsfile' slot of a seqSQCclass object.
+## #' the gdsfile slot holds the filepath of the gds file, which contains the genotypes and meta info for samples and variants.
+## #' @docType methods
+## #' @param x a SeqSQCclass object
+## #' @name gdsfile
+## #' @rdname gdsfile
+## #' @aliases gdsfile,SeqSQCclass-method
+## #' @exportMethod gdsfile
+## setMethod("gdsfile", "SeqSQCclass",
+##           function(x){
+##               gp <- x@gdsfile
+##               return(gp)
+##           }
+##           )
+
+## #' Accessors for the 'QCresult' slot of a SeqSQCclass object.
+## #' the QCresult slot holds the sample QC results, including a summary of variants and samples, and QC results from missing rate check, sex check, inbreeding outlier check, IBD check and population outlier check.
+## #' @docType methods
+## #' @param x a SeqSQCclass object
+## #' @name QCresult
+## #' @rdname QCresult
+## #' @aliases QCresult,SeqSQCclass-method
+## #' @exportMethod QCresult
+## setMethod("QCresult", "SeqSQCclass",
+##           function(x){
+##               res <- x@QCresult
+##               return(res)
+##           }
+##           )
 
 ## set show methods
 setMethod("show", "SeqSQCclass",

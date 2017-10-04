@@ -26,13 +26,12 @@
 #' @import ExperimentHub
 #' @importFrom utils read.table
 #' @examples
-#' \dontrun{
-#' seqfile <- LoadVfile(vfile = system.file("extdata", "example_sub.vcf", package="SeqSQC"),
-#' output = "seqfile",
-#' capture.region = system.file("extdata", "CCDS.Hs37.3.reduced_chr1.bed", package="SeqSQC"),
-#' sample.annot = system.file("extdata", "sampleAnnotation.txt", package="SeqSQC"))
+#' infile <- system.file("extdata", "example_sub.vcf", package="SeqSQC")
+#' sample.annot <- system.file("extdata", "sampleAnnotation.txt", package="SeqSQC")
+#' cr <- system.file("extdata", "CCDS.Hs37.3.reduced_chr1.bed", package="SeqSQC")
+#' outfile <- "testWrapUp"
+#' seqfile <- LoadVfile(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot)
 #' save(seqfile, file="seqfile.RData")
-#' }
 #' @author Qian Liu \email{qliu7@@buffalo.edu}
 
 LoadVfile <- function(vfile, output, capture.region=NULL, sample.annot=NULL, LDprune=TRUE, vfile.restrict=FALSE, slide.max.bp=5e+05, ld.threshold=0.3, format.data="NGS", format.file="vcf", ...){

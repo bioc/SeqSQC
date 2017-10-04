@@ -5,7 +5,8 @@
 \alias{example_sub.vcf}
 \title{Example vcf file used in vignette.}
 \description{
-This vcf file contains only a subset (1000 lines of variants) of the original vcf file for the 5 study samples (examples assembled from the 1000 Genomes Project) to be used as a runnable example in the function of \code{LoadVfile} and \code{sampleQC} in the vignette.
+This vcf file contains only a subset (1000 lines of variants) of the original vcf file for the 5 study samples (examples assembled from the 1000 Genomes Project).
+This is to be used as a runnable example in the function of \code{LoadVfile} and \code{sampleQC} in the vignette.
 }
 \author{
 Qian Liu \email{qliu7@buffalo.edu}

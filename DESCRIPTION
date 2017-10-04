@@ -1,14 +1,16 @@
 Package: SeqSQC
 Title: A bioconductor package for sample quality check with next generation sequencing data
-Version: 0.99.4
+Version: 0.99.5
 Authors@R: person("Qian", "Liu", email = "qliu7@buffalo.edu", role = c("aut", "cre"))
 Description: The SeqSQC is designed to identify problematic samples in NGS data,
     including samples with gender mismatch, contamination, cryptic relatedness, and
     population outlier.
 biocViews: Experiment Data, Homo_sapiens_Data, Sequencing Data, Project1000genomes
 Depends:
-    R (>= 3.4),
-    ExperimentHub (>= 1.3.7)
+	R (>= 3.4),
+	ExperimentHub (>= 1.3.7),
+	S4Vectors (>= 0.14.5),
+	SNPRelate (>= 1.10.2),
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -26,8 +28,6 @@ Imports:
 	RColorBrewer,
 	reshape2,
 	rmarkdown,
-	S4Vectors,
-	SNPRelate,
 	stats,
 	utils
 Suggests:

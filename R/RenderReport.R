@@ -8,6 +8,9 @@
 #' @return Will incure the rendering of the rmarkdown file for generating the sample QC report. The report will return to the file denoted in \code{output} in the function. 
 #' @export 
 #' @author Qian Liu \email{qliu7@@buffalo.edu}
+#' @examples
+#' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
+#' RenderReport(seqfile, output="report.html", interactive=FALSE)
 
 RenderReport <- function(input, output, interactive = TRUE){
     report <- system.file("extdata", "sampleQCReport.Rmd", package="SeqSQC")
