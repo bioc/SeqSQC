@@ -8,31 +8,16 @@ Bioconductor submission check:
 o Added unit test.
 o Added a NEWS file to keep track of changes
 o Added zzz.R to fix the no visible binding for global functions or variables. 
-o Added the "example_sub.vcf" for 1000 lines of variants to run as example in the package vignette. 
+o Added the "example_sub.vcf" for 1000 lines of variants to run as example in the package vignette.
 o Added accessor methods for SeqSQCclass data structure to get the slots of "gdsfile" and "QCresult".
 
 Vignettes: 
 o Added bioconductor installation and library load section in the vignette. 
 o Added runnable example vcf file added in "inst/extdata/example_sub.vcf", with 1000 lines of variants. 
 
-COMPARISON with "genotypeeval". 
-The genotypeeval could evaluate sample quality with the VCF files (in batch). By loading some reference “gold” standards such as 1000 Genomes or dbSNP, it evaluates the samples for ti/tv ratio in and out of the coding regions, and the total # of calls (or specific # of homozygous/heterozygous alternative calls), and ancestry estimation, and etc.. 
-However the package of "genotypeeval" is different from "SeqSQC" in these 2 major ways: 
-1. "genotypeeval" takes vcf files as input, and processes directly with the vcf files. Given that size vcf files from NGS (whole-exome / whole-genome) are in Gbs for human genome, it would be not efficient, especially when processing with batch vcf files. SeqSQC take the vcf files as input, merge it with the benchmark data we have assembled from 1000 Genomes Project, and save the merged dataset as "SeqSQCclass" for following analysis. The "SeqSQCclass" uses GDS (Genomic Data Structure) to save and access the genotype and phenotype data in a more efficient way (3~5 times comparing to vcf), and could also incorporate all QC results in the same data for a more convenient processing and management.
-2. Sample quality issues are very general and could come from different reasons, for example, self-identified gender problem, sample contamination, unported sample relatedness, and self-identified ancestry issue.  "genotypeeval" evaluates sample quality mostly from the general aspect of # variants comparing to the reference data to indicate sequencing error (sample quality issue from sequencing end, not sample itself). it makes ancestry estimation for samples and gives the value of proportion to each ancestry, which is not directly understandable to users. However, SeqSQC could identify problematic samples from all possible sources, including inbreeding outlier, population outliers and samples with gender mismatch, cryptic relatedness. The plots of study samples together with benchmark samples from the same population group give an direct and interactive idea of how these samples are identified as problematic. 
-
 MAN: 
-todo: missing package documentation?? 
-o having .Rd files under the folder of SeqSQC/man... 
-todo: missing class documentation??
-todo: missing dataset documentation??
+o added package documentation for dataset, class, methods and constructor.
 
-R CODE: 
-Q: Can your SeqSQCclass extend SummarizeExperiment?
-A: No. The SummarizeExperiment stores count data from RNAseq dataset. The SeqSQC stores and processes genotype data from 
-whole-genome sequencing or whole-exome sequencing, which are extremely high-dimensional and requires large R space for 
-processing. I used GDS (Genomic Data Structure) within the SeqSQCclass to achieve efficient genotype data storage and 
-access. 
 
 
 
