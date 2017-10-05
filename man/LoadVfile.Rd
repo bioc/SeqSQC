@@ -47,7 +47,7 @@ sample.annot <- system.file("extdata", "sampleAnnotation.txt", package="SeqSQC")
 cr <- system.file("extdata", "CCDS.Hs37.3.reduced_chr1.bed", package="SeqSQC")
 outfile <- "testWrapUp"
 seqfile <- LoadVfile(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot)
-save(seqfile, file="seqfile.RData")
+## save(seqfile, file="seqfile.RData")
 }
 \author{
 Qian Liu \email{qliu7@buffalo.edu}

@@ -28,12 +28,8 @@ source("https://bioconductor.org/biocLite.R")
 biocLite("SeqSQC")
 ```
 
-```{r packages}
+```{r load packages}
 library(SeqSQC)
-library(gdsfmt)
-library(ggplot2)
-library(rbokeh)
-library(RColorBrewer)
 ```
 
 The wrap-up function `sampleQC` transforms the vcf file into `SeqSQCclass` file, or take the `SeqSQCclass` file generated from `LoadVfile` directly as input, evaluates all sample QC steps, outputs the QC results into your working directory, and generates a sample QC report in html format. We recommend saving the output `SeqSQCclass` object into an RData.

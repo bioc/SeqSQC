@@ -31,7 +31,7 @@
 #' cr <- system.file("extdata", "CCDS.Hs37.3.reduced_chr1.bed", package="SeqSQC")
 #' outfile <- "testWrapUp"
 #' seqfile <- LoadVfile(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot)
-#' save(seqfile, file="seqfile.RData")
+#' ## save(seqfile, file="seqfile.RData")
 #' @author Qian Liu \email{qliu7@@buffalo.edu}
 
 LoadVfile <- function(vfile, output, capture.region=NULL, sample.annot=NULL, LDprune=TRUE, vfile.restrict=FALSE, slide.max.bp=5e+05, ld.threshold=0.3, format.data="NGS", format.file="vcf", ...){

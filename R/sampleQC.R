@@ -31,15 +31,14 @@
 #' cr <- system.file("extdata", "CCDS.Hs37.3.reduced_chr1.bed", package="SeqSQC")
 #' outfile <- "testWrapUp"
 #' seqfile <- sampleQC(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE)
-#' save(seqfile, file="seqfile.RData")
-#' }
+#' ## save(seqfile, file="seqfile.RData")
 #'
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
 #' seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
-#' seqfile <- sampleQC(sfile = seqfile, output = "testWrapUp", QCreport = TRUE, out.report="report.html", interactive = TRUE)
-#' save(seqfile, file="seqfile.RData")
-
+#' seqfile <- sampleQC(sfile = seqfile, output = "testWrapUp", QCreport = FALSE, out.report="report.html", interactive = TRUE)
+#' ## save(seqfile, file="seqfile.RData")
+#' }
 #' @author Qian Liu \email{qliu7@buffalo.edu}
 
 sampleQC <- function(vfile = NULL, output, sfile = NULL, capture.region = NULL, sample.annot = NULL, LDprune = TRUE, vfile.restrict = FALSE, slide.max.bp = 5e+05, ld.threshold = 0.3, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE, ...){
