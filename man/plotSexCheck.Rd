@@ -7,7 +7,7 @@
 plotSexCheck(seqfile, interactive = FALSE)
 }
 \arguments{
-\item{seqfile}{SeqSQCclass input file with sexcheck results.}
+\item{seqfile}{SeqSQC object with sexcheck results.}
 
 \item{interactive}{whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format.}
 }
@@ -20,7 +20,7 @@ Plot the inbreeding coefficients calculated from variants on chromosome X for ea
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 p <- plotSexCheck(seqfile, interactive=FALSE)
 p
 }

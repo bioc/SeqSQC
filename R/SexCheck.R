@@ -1,7 +1,7 @@
-#' Sample gender check with SeqSQCclass input file.
+#' Sample gender check with SeqSQC object input file.
 #'
 #' Function to calculate the X chromosome inbreeding coefficient and to predict sample gender.
-#' @param seqfile SeqSQCclass input file, which includes the merged gds file for study cohort and benchmark.
+#' @param seqfile SeqSQC object, which includes the merged gds file for study cohort and benchmark.
 #' @param remove.samples a vector of sample names for removal from sex check. Could be problematic samples identified from previous QC steps, or user-defined samples.
 #' @param missing.rate to use the SNPs with "<= \code{missing.rate}" only; if NaN, no threshold. By default, we use \code{missing.rate = 0.1} to filter out variants with missing rate greater than 10\%.
 #' @param ss.cutoff the minimum sample size (300 by default) to apply the MAF filter. This sample size is the sum of study samples and the benchmark samples of the same population as the study cohort.
@@ -14,7 +14,7 @@
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-#' seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+#' seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 #' seqfile <- SexCheck(seqfile, remove.samples=NULL, missing.rate=0.1)
 #' res.sexc <- QCresult(seqfile)$SexCheck
 #' tail(res.sexc)
@@ -23,8 +23,8 @@
 SexCheck <- function(seqfile, remove.samples=NULL, missing.rate = 0.1, ss.cutoff = 300, maf = 0.01, ...){
 
     ## check
-    if (!inherits(seqfile, "SeqSQCclass")){
-        return("object should inherit from 'SeqSQCclass'.")
+    if (!inherits(seqfile, "SeqSQC")){
+        return("object should inherit from 'SeqSQC'.")
     }
 
     message("calculating sex inbreeding ...")
@@ -86,9 +86,9 @@ SexCheck <- function(seqfile, remove.samples=NULL, missing.rate = 0.1, ss.cutoff
     ## remove <- ifelse(res.sexcheck$sex != res.sexcheck$pred.sex & type == "study", "Yes", "No")
     ## res.sexcheck$remove <- remove
     
-    ## return the SeqSQCclass file with updated QC results.
+    ## return the SeqSQC file with updated QC results.
     a <- QCresult(seqfile)
     a$SexCheck <- res.sexcheck
-    outfile <- SeqSQCclass(gdsfile = gdsfile(seqfile), QCresult = a)
+    outfile <- SeqSQC(gdsfile = gdsfile(seqfile), QCresult = a)
     return(outfile)
 }

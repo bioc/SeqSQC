@@ -1,7 +1,7 @@
-#' Sample inbreeding check with SeqSQCclass input file.
+#' Sample inbreeding check with SeqSQC object input file.
 #'
 #' Function to calculate population-specific inbreeding coefficients, and to predict inbreeding outliers that are five standard deviation beyond the mean. 
-#' @param seqfile SeqSQCclass input file, which includes the merged gds file for study cohort and benchmark.
+#' @param seqfile SeqSQC object, which includes the merged gds file for study cohort and benchmark.
 #' @param remove.samples a vector of sample names for removal from inbreeding coefficient calculation. Could be problematic samples identified from previous QC steps, or user-defined samples.
 #' @param LDprune whether to use LD-pruned snp set. The default is TRUE.
 #' 
@@ -17,7 +17,7 @@
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-#' seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+#' seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 #' seqfile <- Inbreeding(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=0.1)
 #' res.inb <- QCresult(seqfile)$Inbreeding
 #' tail(res.inb)
@@ -28,8 +28,8 @@
 Inbreeding <- function(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=0.1, ss.cutoff = 300, maf = 0.01, hwe = 1e-6, ...){
 
     ## check
-    if (!inherits(seqfile, "SeqSQCclass")){
-        return("object should inherit from 'SeqSQCclass'.")
+    if (!inherits(seqfile, "SeqSQC")){
+        return("object should inherit from 'SeqSQC'.")
     }
     message("calculating inbreeding coefficients ...")
     
@@ -91,9 +91,9 @@ Inbreeding <- function(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=
     res.inb[skip.idx, "outlier.5sd"] <- NA
     closefn.gds(gfile)
     
-    ## return the SeqSQCclass file with updated QC results.
+    ## return the SeqSQC file with updated QC results.
     a <- QCresult(seqfile)
     a$Inbreeding <- res.inb
-    outfile <- SeqSQCclass(gdsfile = gdsfile(seqfile), QCresult = a)
+    outfile <- SeqSQC(gdsfile = gdsfile(seqfile), QCresult = a)
     return(outfile)
 }

@@ -1,8 +1,8 @@
-#' Sample relationship check with SeqSQCclass input file. 
+#' Sample relationship check with SeqSQC object input file. 
 #'
 #' Function to calculate the IBD coefficients for all sample pairs and to predict related sample pairs in study cohort.
 #'
-#' @param seqfile SeqSQCclass input file, which includes the merged gds file for study cohort and benchmark.
+#' @param seqfile SeqSQC object, which includes the merged gds file for study cohort and benchmark.
 #' @param remove.samples a vector of sample names for removal from IBD calculation. Could be problematic samples identified from previous QC steps, or user-defined samples.
 #' @param LDprune whether to use LD-pruned snp set. The default is TRUE.
 #' @param kin.filter whether to use "kinship coefficient >= 0.08" as the additional criteria for related samples. The default is TRUE.
@@ -22,7 +22,7 @@
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-#' seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+#' seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 #' seqfile <- IBDCheck(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=0.1)
 #' res.ibd <- QCresult(seqfile)$IBD
 #' tail(res.ibd)
@@ -32,8 +32,8 @@
 IBDCheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, kin.filter = TRUE, missing.rate = 0.1, ss.cutoff = 300, maf = 0.01, hwe = 1e-6, ...){
 
     ## check
-    if (!inherits(seqfile, "SeqSQCclass")){
-        return("object should inherit from 'SeqSQCclass'.")
+    if (!inherits(seqfile, "SeqSQC")){
+        return("object should inherit from 'SeqSQC'.")
     }
 
     message("calculating pairwise IBD ...")
@@ -172,10 +172,10 @@ IBDCheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, kin.filter 
     ## }
     closefn.gds(gfile)
     
-    ## return the SeqSQCclass file with updated QC results.
+    ## return the SeqSQC object with updated QC results.
     a <- QCresult(seqfile)
     a$IBD <- res.ibd
-    outfile <- SeqSQCclass(gdsfile = gdsfile(seqfile), QCresult = a)
+    outfile <- SeqSQC(gdsfile = gdsfile(seqfile), QCresult = a)
     return(outfile)
 
 

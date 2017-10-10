@@ -7,7 +7,7 @@
 plotMissingRate(seqfile, interactive = FALSE)
 }
 \arguments{
-\item{seqfile}{SeqSQCclass input file with calculated missing rates.}
+\item{seqfile}{SeqSQC object with calculated missing rates.}
 
 \item{interactive}{whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format.}
 }
@@ -20,7 +20,7 @@ Plot sample missing rates calculated for each population.
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 p <- plotMissingRate(seqfile, interactive=FALSE)
 p
 }

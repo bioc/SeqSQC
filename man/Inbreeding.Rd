@@ -2,13 +2,13 @@
 % Please edit documentation in R/Inbreeding.R
 \name{Inbreeding}
 \alias{Inbreeding}
-\title{Sample inbreeding check with SeqSQCclass input file.}
+\title{Sample inbreeding check with SeqSQC object input file.}
 \usage{
 Inbreeding(seqfile, remove.samples = NULL, LDprune = TRUE,
   missing.rate = 0.1, ss.cutoff = 300, maf = 0.01, hwe = 1e-06, ...)
 }
 \arguments{
-\item{seqfile}{SeqSQCclass input file, which includes the merged gds file for study cohort and benchmark.}
+\item{seqfile}{SeqSQC object, which includes the merged gds file for study cohort and benchmark.}
 
 \item{remove.samples}{a vector of sample names for removal from inbreeding coefficient calculation. Could be problematic samples identified from previous QC steps, or user-defined samples.}
 
@@ -36,7 +36,7 @@ Using LD-pruned variants (by default), we calculate the inbreeding coefficients 
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 seqfile <- Inbreeding(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=0.1)
 res.inb <- QCresult(seqfile)$Inbreeding
 tail(res.inb)

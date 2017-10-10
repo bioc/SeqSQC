@@ -2,13 +2,13 @@
 % Please edit documentation in R/PCACheck.R
 \name{PCACheck}
 \alias{PCACheck}
-\title{Population outlier check with SeqSQCclass input file.}
+\title{Population outlier check with SeqSQC object input file.}
 \usage{
 PCACheck(seqfile, remove.samples = NULL, LDprune = TRUE,
   missing.rate = 0.1, ss.cutoff = 300, maf = 0.01, hwe = 1e-06, ...)
 }
 \arguments{
-\item{seqfile}{SeqSQCclass input file, which includes the merged gds file for study cohort and benchmark.}
+\item{seqfile}{SeqSQC object, which includes the merged gds file for study cohort and benchmark.}
 
 \item{remove.samples}{a vector of sample names for removal from PCA calculation. Could be problematic samples identified from previous QC steps, or user-defined samples.}
 
@@ -36,7 +36,7 @@ Using LD-pruned autosomal variants (by default), we calculate the eigenvectors a
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 seqfile <- PCACheck(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=0.1)
 res.pca <- QCresult(seqfile)$PCA
 tail(res.pca)

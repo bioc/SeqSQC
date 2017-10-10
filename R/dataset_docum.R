@@ -21,9 +21,9 @@ NULL
 #' @keywords datasets
 NULL
 
-#' Example SeqSQCclass file used in vignette.
+#' Example SeqSQC file used in vignette.
 #'
-#' The SeqSQCclass object is a list of two objects.
+#' The SeqSQC object is a list of two objects.
 #' The first object \code{gdsfile} is the filepath of the "example.gds" file which stores the genotype and meta info of the example data merged with the benchmark data.
 #' The second object \code{QCresult} contains the data dimensions (# of samples and variants), sample annotation, and QC results for sample missing rate, sex check, inbreeding outlier check, IBD check, and population outlier check.
 #' @name example.seqfile.Rdata

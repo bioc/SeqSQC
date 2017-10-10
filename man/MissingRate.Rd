@@ -2,12 +2,12 @@
 % Please edit documentation in R/MissingRate.R
 \name{MissingRate}
 \alias{MissingRate}
-\title{Sample missing rate check with SeqSQCclass input file.}
+\title{Sample missing rate check with SeqSQC object input file.}
 \usage{
 MissingRate(seqfile, remove.samples = NULL)
 }
 \arguments{
-\item{seqfile}{SeqSQCclass input file, which includes the merged gds file for study cohort and benchmark.}
+\item{seqfile}{SeqSQC object, which includes the merged gds file for study cohort and benchmark.}
 
 \item{remove.samples}{a vector of sample names for removal from missing rate check. Could be problematic samples identified from other QC steps, or user-defined samples.}
 }
@@ -23,7 +23,7 @@ The value of the outlier column is set to NA for benchmark samples.
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 seqfile <- MissingRate(seqfile, remove.samples=NULL)
 res.mr <- QCresult(seqfile)$MissingRate
 tail(res.mr)

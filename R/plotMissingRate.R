@@ -1,7 +1,7 @@
 #' Plot the sample missing rate.
 #' 
 #' Plot sample missing rates calculated for each population.
-#' @param seqfile SeqSQCclass input file with calculated missing rates.
+#' @param seqfile SeqSQC object with calculated missing rates.
 #' @param interactive whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format.  
 #' @import GGally
 #' @import ggplot2
@@ -11,7 +11,7 @@
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-#' seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+#' seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 #' p <- plotMissingRate(seqfile, interactive=FALSE)
 #' p
 #' @author Qian Liu \email{qliu7@@buffalo.edu}
@@ -20,8 +20,8 @@
 plotMissingRate <- function(seqfile, interactive=FALSE){
 
     ## check
-    if (!inherits(seqfile, "SeqSQCclass")){
-        return("object should inherit from 'SeqSQCclass'.")
+    if (!inherits(seqfile, "SeqSQC")){
+        return("object should inherit from 'SeqSQC'.")
     }
     if(!"MissingRate" %in% names(QCresult(seqfile))) stop("no missing rate result.")
 

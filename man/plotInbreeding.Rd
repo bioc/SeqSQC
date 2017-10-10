@@ -7,7 +7,7 @@
 plotInbreeding(seqfile, interactive = FALSE, sdcoef = 5)
 }
 \arguments{
-\item{seqfile}{SeqSQCclass input file with inbreeding result.}
+\item{seqfile}{SeqSQC object with inbreeding result.}
 
 \item{interactive}{whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format.}
 
@@ -22,7 +22,7 @@ Plot inbreeding coefficients calculated from autosomal variants for each populat
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 p <- plotInbreeding(seqfile, interactive=FALSE)
 p
 }

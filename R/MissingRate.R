@@ -1,7 +1,7 @@
-#' Sample missing rate check with SeqSQCclass input file.
+#' Sample missing rate check with SeqSQC object input file.
 #'
 #' Function to calculate sample missing rate and to identify sample outlier with high missing rate (> 0.1).
-#' @param seqfile SeqSQCclass input file, which includes the merged gds file for study cohort and benchmark.
+#' @param seqfile SeqSQC object, which includes the merged gds file for study cohort and benchmark.
 #' @param remove.samples a vector of sample names for removal from missing rate check. Could be problematic samples identified from other QC steps, or user-defined samples.
 #' @keywords MissingRate
 #' @return a data frame with sample name, sample missing rate, and an indicator of whether the sample has a missing rate greater than 0.1.
@@ -10,7 +10,7 @@
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-#' seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+#' seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 #' seqfile <- MissingRate(seqfile, remove.samples=NULL)
 #' res.mr <- QCresult(seqfile)$MissingRate
 #' tail(res.mr)
@@ -19,8 +19,8 @@
 MissingRate <- function(seqfile, remove.samples=NULL){
 
     ## check
-    if (!inherits(seqfile, "SeqSQCclass")){
-        return("object should inherit from 'SeqSQCclass'.")
+    if (!inherits(seqfile, "SeqSQC")){
+        return("object should inherit from 'SeqSQC'.")
     }
 
     message("calculating sample missing rates...")
@@ -51,11 +51,11 @@ MissingRate <- function(seqfile, remove.samples=NULL){
 
     closefn.gds(gfile)
 
-    ## return the SeqSQCclass file with updated QC results.
+    ## return the SeqSQC file with updated QC results.
     a <- QCresult(seqfile)
     a$MissingRate <- res.mr
     ## QCresult(seqfile)$MissingRate <-  res.mr
-    outfile <- SeqSQCclass(gdsfile = gdsfile(seqfile), QCresult = a)
+    outfile <- SeqSQC(gdsfile = gdsfile(seqfile), QCresult = a)
     return(outfile)
 }
 

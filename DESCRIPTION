@@ -9,7 +9,6 @@ biocViews: Experiment Data, Homo_sapiens_Data, Sequencing Data, Project1000genom
 Depends:
 	R (>= 3.4),
 	ExperimentHub (>= 1.3.7),
-	S4Vectors (>= 0.14.5),
 	SNPRelate (>= 1.10.2)
 License: GPL-3
 Encoding: UTF-8
@@ -28,6 +27,7 @@ Imports:
 	RColorBrewer,
 	reshape2,
 	rmarkdown,
+	S4Vectors,
 	stats,
 	utils
 Suggests:

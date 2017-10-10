@@ -21,7 +21,7 @@ The QC process in SeqSQC included five different steps: missing rate check, sex 
 
 Here we use an exemplar NGS dataset as a study cohort to demonstrate the execution of the wrap-up function `sampleQC`. The example dataset, with four EUR (European) samples and one AFR (African) sample, is assembled from the 1000 Genomes Project.  We labeled the one AFR sample as EUR to mimic a population outlier. Samples from the 1000 Genome Project are whole-genome sequencing dataset. To mimic whole exome sequencing (WES) data, we kept in the vcf file only the variants in capture regions of Agilent SureSelect Human Exon v5, one of the most popular WES capture platforms to date. 
 
-The code chunk below assumes that you have a vcf file called `infile` with samples from a single population, a sample annotation file called `sample.annot` with sample name, population (e.g., AFR, EUR, EAS (East Asian), SAS (South Asian), or ASN (Asian)) and gender info (male/female), and a bed file called `cr` which  contains capture regions. User need to specify the name for output files, incuding the gds file containing genotypes, and the `SeqSQCclass`(discussed in section below) file with QC results.
+The code chunk below assumes that you have a vcf file called `infile` with samples from a single population, a sample annotation file called `sample.annot` with sample name, population (e.g., AFR, EUR, EAS (East Asian), SAS (South Asian), or ASN (Asian)) and gender info (male/female), and a bed file called `cr` which  contains capture regions. User need to specify the name for output files, incuding the gds file containing genotypes, and the `SeqSQC`(discussed in section below) object with QC results.
 
 ```{r setup, eval=FALSE}
 source("https://bioconductor.org/biocLite.R")
@@ -32,7 +32,7 @@ biocLite("SeqSQC")
 library(SeqSQC)
 ```
 
-The wrap-up function `sampleQC` transforms the vcf file into `SeqSQCclass` file, or take the `SeqSQCclass` file generated from `LoadVfile` directly as input, evaluates all sample QC steps, outputs the QC results into your working directory, and generates a sample QC report in html format. We recommend saving the output `SeqSQCclass` object into an RData.
+The wrap-up function `sampleQC` transforms the vcf file into `SeqSQC` object, or take the `SeqSQC` object generated from `LoadVfile` directly as input, evaluates all sample QC steps, outputs the QC results into your working directory, and generates a sample QC report in html format. We recommend saving the output `SeqSQC` object into an RData.
 
 This is an example when we have input as vcf file, sample annotation file, and capture region bed file. 
 
@@ -48,12 +48,12 @@ seqfile <- sampleQC(vfile = infile, output = outfile, capture.region = cr, sampl
 save(seqfile, file="seqfile.RData")
 ```
 
-This is an example when we directly use `SeqSQCclass` file as input, and evaluate all sample QC steps. 
+This is an example when we directly use `SeqSQC` object as input, and evaluate all sample QC steps. 
 
 ```{r wrapup_seqfile, eval=TRUE}
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 
 seqfile <- sampleQC(sfile = seqfile, output = "testWrapUp", QCreport = TRUE, out.report="report.html", interactive = TRUE)
 save(seqfile, file="seqfile.RData")
@@ -70,18 +70,18 @@ SeqSQC takes VCF file as input.
 seqfile <- LoadVfile(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot)
 ```
 
-## SeqSQCclass
+## SeqSQC class
 
-We define an object class `SeqSQCclass` to store the genotype data, variant / sample annotation data, and the sample QC results.
+We define an object class `SeqSQC` to store the genotype data, variant / sample annotation data, and the sample QC results.
 
 ```{r show}
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 slotNames(seqfile)
 ```
 
-A SeqSQCclass object is a list of two objects. The first object is the filepath of the GDS (discussed in section below) file which stores the genotype information from the original VCF file.
+A SeqSQC object is a list of two objects. The first object is the filepath of the GDS (discussed in section below) file which stores the genotype information from the original VCF file.
 
 ```{r class}
 gdsfile(seqfile)
@@ -96,7 +96,7 @@ head(QCresult(seqfile)$sample.annot)
 
 ## GDS class
 
-The genotype information and variant annotation from the input VCF file will be stored in Genomic Data Structure (GDS) format (`r Biocpkg("gdsfmt")`). Compared to VCF format, the GDS format could increase the storage efficiency by 5 fold and data access speed by 2-3 fold. We only include the bi-allelic single nucleotide variants (SNVs) from the VCF input for sample QC analysis. Other information from the VCF file, including the chromosome, position, snp rs id, reference allele, alternative allele, quality score and filter can also be passed into the gds file. The functions `SeqOpen` and `closefn.gds` can be used to open and close the gds file in `SeqSQCclass` object. It is recommended to close the gds file once it has been opened.
+The genotype information and variant annotation from the input VCF file will be stored in Genomic Data Structure (GDS) format (`r Biocpkg("gdsfmt")`). Compared to VCF format, the GDS format could increase the storage efficiency by 5 fold and data access speed by 2-3 fold. We only include the bi-allelic single nucleotide variants (SNVs) from the VCF input for sample QC analysis. Other information from the VCF file, including the chromosome, position, snp rs id, reference allele, alternative allele, quality score and filter can also be passed into the gds file. The functions `SeqOpen` and `closefn.gds` can be used to open and close the gds file in `SeqSQC` object. It is recommended to close the gds file once it has been opened.
 
 ```{r gds}
 dat <- SeqOpen(seqfile)

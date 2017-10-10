@@ -7,7 +7,7 @@
 RenderReport(input, output, interactive = TRUE)
 }
 \arguments{
-\item{input}{SeqSQCclass object with QC results.}
+\item{input}{SeqSQC object with QC results.}
 
 \item{output}{a character string to define the file name for the QC report.}
 

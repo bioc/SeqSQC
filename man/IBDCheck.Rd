@@ -2,14 +2,14 @@
 % Please edit documentation in R/IBDCheck.R
 \name{IBDCheck}
 \alias{IBDCheck}
-\title{Sample relationship check with SeqSQCclass input file.}
+\title{Sample relationship check with SeqSQC object input file.}
 \usage{
 IBDCheck(seqfile, remove.samples = NULL, LDprune = TRUE,
   kin.filter = TRUE, missing.rate = 0.1, ss.cutoff = 300, maf = 0.01,
   hwe = 1e-06, ...)
 }
 \arguments{
-\item{seqfile}{SeqSQCclass input file, which includes the merged gds file for study cohort and benchmark.}
+\item{seqfile}{SeqSQC object, which includes the merged gds file for study cohort and benchmark.}
 
 \item{remove.samples}{a vector of sample names for removal from IBD calculation. Could be problematic samples identified from previous QC steps, or user-defined samples.}
 
@@ -40,7 +40,7 @@ Sample pairs with discordant self-reported and predicted relationship are consid
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 seqfile <- IBDCheck(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=0.1)
 res.ibd <- QCresult(seqfile)$IBD
 tail(res.ibd)

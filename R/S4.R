@@ -1,105 +1,67 @@
 #' A data format to store genotype phenotype and sample QC results from SeqSQC.
 #'
-#' A SeqSQCclass object is a list of two objects. The first object \code{gdsfile} is the filepath of the GDS (discussed in section below) file which stores the genotype information from the original VCF file. The second object \code{QCresult} is a list of sample information and QC results, which include the dimension (# of samples and variants), sample annotation, and QC results for sample missing rate, sex check, inbreeding outlier check, IBD check, and population outlier check.
+#' A SeqSQC object is a list of two objects. The first object \code{gdsfile} is the filepath of the GDS (discussed in section below) file which stores the genotype information from the original VCF file. The second object \code{QCresult} is a list of sample information and QC results, which include the dimension (# of samples and variants), sample annotation, and QC results for sample missing rate, sex check, inbreeding outlier check, IBD check, and population outlier check.
 #'
 #' @slot gdsfile A character string for the filepath of the GDS file. 
 #' @slot QCresult A list with sample information and sample QC results. 
-#' @name SeqSQCclass-class
-#' @rdname SeqSQCclass-class
-#' @aliases SeqSQCclass-class
-#' @exportClass SeqSQCclass
+#' @name SeqSQC-class
+#' @rdname SeqSQC-class
+#' @aliases SeqSQC-class
+#' @exportClass SeqSQC
 
 ## create class definitions
-setClass("SeqSQCclass",
+setClass("SeqSQC",
          ## contains = "gds.class",
          slots = c(
              gdsfile = "character",
              QCresult = "SimpleList")
          )
 
-#' SeqSQCclass object Constructor
-#' @name SeqSQCclass-class
-#' @rdname SeqSQCclass-class
+#' SeqSQC object Constructor
+#' @name SeqSQC-class
+#' @rdname SeqSQC-class
 #' @param gdsfile A character string for the filepath of the GDS file.
 #' @param QCresult A list with sample information and sample QC results.
-#' @export SeqSQCclass
-SeqSQCclass <- function(gdsfile, QCresult=List()){
-    new("SeqSQCclass", gdsfile = gdsfile, QCresult = QCresult)
+#' @export SeqSQC
+SeqSQC <- function(gdsfile, QCresult=List()){
+    new("SeqSQC", gdsfile = gdsfile, QCresult = QCresult)
 }
 
 #' Method gdsfile.
-#' @name SeqSQCclass-class
-#' @rdname SeqSQCclass-class
+#' @name SeqSQC-class
+#' @rdname SeqSQC-class
 #' @exportMethod gdsfile
 setGeneric("gdsfile", function(x) standardGeneric("gdsfile"))
 
 #' Method QCresult.
-#' @name SeqSQCclass-class
-#' @rdname SeqSQCclass-class
+#' @name SeqSQC-class
+#' @rdname SeqSQC-class
 #' @exportMethod QCresult
 setGeneric("QCresult", function(x) standardGeneric("QCresult"))
 
-#' @rdname SeqSQCclass-class
+#' @rdname SeqSQC-class
 #' @name gdsfile
-#' @aliases gdsfile,SeqSQCclass-method
+#' @aliases gdsfile,SeqSQC-method
 #' @param x an SeqSQCClass object.
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gdsfile(seqfile)
 #' @return The filepath to the gds file. 
 
-setMethod("gdsfile", "SeqSQCclass",function(x) x@gdsfile)
+setMethod("gdsfile", "SeqSQC",function(x) x@gdsfile)
 
-#' @rdname SeqSQCclass-class
+#' @rdname SeqSQC-class
 #' @name QCresult
-#' @aliases QCresult,SeqSQCclass-method
+#' @aliases QCresult,SeqSQC-method
 #' @examples
 #' QCresult(seqfile)
-setMethod("QCresult", "SeqSQCclass", function(x) x@QCresult)
-
-## #' @rdname gdsfile
-## #' @export
-## setGeneric("gdsfile", function(x) standardGeneric("gdsfile"))
-
-## #' @rdname QCresult
-## #' @export
-## setGeneric("QCresult", function(x) standardGeneric("QCresult"))
-
-## #' Accessors for the 'gdsfile' slot of a seqSQCclass object.
-## #' the gdsfile slot holds the filepath of the gds file, which contains the genotypes and meta info for samples and variants.
-## #' @docType methods
-## #' @param x a SeqSQCclass object
-## #' @name gdsfile
-## #' @rdname gdsfile
-## #' @aliases gdsfile,SeqSQCclass-method
-## #' @exportMethod gdsfile
-## setMethod("gdsfile", "SeqSQCclass",
-##           function(x){
-##               gp <- x@gdsfile
-##               return(gp)
-##           }
-##           )
-
-## #' Accessors for the 'QCresult' slot of a SeqSQCclass object.
-## #' the QCresult slot holds the sample QC results, including a summary of variants and samples, and QC results from missing rate check, sex check, inbreeding outlier check, IBD check and population outlier check.
-## #' @docType methods
-## #' @param x a SeqSQCclass object
-## #' @name QCresult
-## #' @rdname QCresult
-## #' @aliases QCresult,SeqSQCclass-method
-## #' @exportMethod QCresult
-## setMethod("QCresult", "SeqSQCclass",
-##           function(x){
-##               res <- x@QCresult
-##               return(res)
-##           }
-##           )
+setMethod("QCresult", "SeqSQC", function(x) x@QCresult)
 
 ## set show methods
-setMethod("show", "SeqSQCclass",
+setMethod("show", "SeqSQC",
           function(object){
               res <- object@QCresult
-              cat("SeqSQCclass\n")
+              cat("SeqSQC\n")
               cat("gds file:", object@gdsfile, "\n")
               cat("summary: 87 benchmark samples,", res$dimension[1]-87, "study samples,", res$dimension[2], "variants\n")
               cat("QC result:", paste(names(res), collapse=", "), "\n")
@@ -107,7 +69,7 @@ setMethod("show", "SeqSQCclass",
           )
 
 ## test the validity of objects
-setValidity("SeqSQCclass",
+setValidity("SeqSQC",
             function(object)
             {
                 dat <- openfn.gds(object@gdsfile)
@@ -158,27 +120,4 @@ setValidity("SeqSQCclass",
 ##     mydata <- ExperimentHub::ExperimentHub(cache=hubdir)[["EH550"]]
 ##     message("benchmark data:", mydata$filename)
 ## }
-
-## todo: update QC steps, finished and return a results, not gds file. 
-## todo: update sampleQC.R, gfile = "" (character); close the gds file when QC. Open inside QC.
-## todo: 
-
-## set methods
-## setGeneric("plotMissingRate", function(x) standardGeneric("plotMissingRate"))
-## setMethod("plotMissingRate", "sampleQCGDSClass", function() )
-
-## Defining a coercion method
-## setAs("SeqSQCclass", "list",
-##         function(from)
-##         {
-##             nodes <- ls.gdsn(index.gdsn(from, "results"))
-##             res <- list()
-##             for (i in 1:length(nodes)){
-##                 res[[i]] <- read.gdsn(index.gdsn(from, paste0("results/", nodes[i])))
-##             }
-##             names(res) <- nodes
-##             res
-##         }
-##       )
-## results <- as(dat, "list") # testing the gds object "dat" (which is opened in R console)
 

@@ -3,8 +3,8 @@
 #' A wrap-up function for sample QC. It reads in the variant genotypes in vcf/PLINK format, merges study cohort with benchmark data, and performs sample QC for the merged dataset.
 #' 
 #' @param vfile vcf or PLINK input file (ped/map/bed/bim/fam with same basename). The default is NULL. Vfile could be a vector of character strings, see details. 
-#' @param output a character string for name of merged data in SeqSQCclass. 
-#' @param sfile a file in \code{SeqSQCclass} generated from \code{LoadVfile}. The default is NULL. 
+#' @param output a character string for name of merged data in SeqSQC object. 
+#' @param sfile a file in \code{SeqSQC} object generated from \code{LoadVfile}. The default is NULL. 
 #' @param capture.region the BED file of sequencing capture regions. The default is NULL. For exome-sequencing data, the capture region file must be provided.
 #' @param sample.annot sample annotation file with 3 columns including the sample id, sample population and sex info. The default is NULL.
 #' @param LDprune whether to use LD-pruned snp set. The default is TRUE.
@@ -18,7 +18,7 @@
 #' @param interactive whether to generate interactive plots in the sample QC report if \code{QCreport = TRUE}.
 #' @param ... Arguments to be passed to other methods.
 #' @export
-#' @return a SeqSQCclass object with the filepath to the gds file which stores the genotype, the summary of samples and variants, and the QCresults including the sample annotation information and all QC results.  
+#' @return a SeqSQC object with the filepath to the gds file which stores the genotype, the summary of samples and variants, and the QCresults including the sample annotation information and all QC results.  
 
 #' @details
 #' For \code{vfile} with more than one file names, \code{sampleQC} will merge all dataset together if they all contain the same samples. It is useful to combine genetic/genomic data together if VCF data is divided by chromosomes. \cr
@@ -35,7 +35,7 @@
 #'
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-#' seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+#' seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 #' seqfile <- sampleQC(sfile = seqfile, output = "testWrapUp", QCreport = FALSE, out.report="report.html", interactive = TRUE)
 #' ## save(seqfile, file="seqfile.RData")
 #' }
@@ -150,7 +150,7 @@ sampleQC <- function(vfile = NULL, output, sfile = NULL, capture.region = NULL, 
     }
     
     ###########################
-    ## save the seqfile in SeqSQCclass
+    ## save the seqfile in SeqSQC
     ###########################
     return(seqfile)
 }

@@ -7,7 +7,7 @@
 plotIBD(seqfile, interactive = FALSE)
 }
 \arguments{
-\item{seqfile}{SeqSQCclass input file with IBD results.}
+\item{seqfile}{SeqSQC object with IBD results.}
 
 \item{interactive}{whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user performs sample QC using an rmarkdown script and output plots to html format.}
 }
@@ -20,7 +20,7 @@ Plot IBD coefficients (k0 and k1) calculated from autosomal variants for all sam
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 p <- plotIBD(seqfile, interactive=FALSE)
 p
 }

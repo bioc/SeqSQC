@@ -2,13 +2,13 @@
 % Please edit documentation in R/SexCheck.R
 \name{SexCheck}
 \alias{SexCheck}
-\title{Sample gender check with SeqSQCclass input file.}
+\title{Sample gender check with SeqSQC object input file.}
 \usage{
 SexCheck(seqfile, remove.samples = NULL, missing.rate = 0.1,
   ss.cutoff = 300, maf = 0.01, ...)
 }
 \arguments{
-\item{seqfile}{SeqSQCclass input file, which includes the merged gds file for study cohort and benchmark.}
+\item{seqfile}{SeqSQC object, which includes the merged gds file for study cohort and benchmark.}
 
 \item{remove.samples}{a vector of sample names for removal from sex check. Could be problematic samples identified from previous QC steps, or user-defined samples.}
 
@@ -32,7 +32,7 @@ Samples are predicted to be female or male if the inbreeding coefficient is belo
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 seqfile <- SexCheck(seqfile, remove.samples=NULL, missing.rate=0.1)
 res.sexc <- QCresult(seqfile)$SexCheck
 tail(res.sexc)

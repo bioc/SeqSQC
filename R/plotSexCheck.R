@@ -1,14 +1,14 @@
 #' Plot the X chromosome inbreeding coefficients.
 #' 
 #' Plot the inbreeding coefficients calculated from variants on chromosome X for each populaton.
-#' @param seqfile SeqSQCclass input file with sexcheck results.
+#' @param seqfile SeqSQC object with sexcheck results.
 #' @param interactive whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format. 
 #' @export
 #' @return the ggplot or interactive plot (if output is in html format) for sex inbreeding coefficients.
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-#' seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+#' seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 #' p <- plotSexCheck(seqfile, interactive=FALSE)
 #' p
 #' @author Qian Liu \email{qliu7@@buffalo.edu}
@@ -16,8 +16,8 @@
 plotSexCheck <- function(seqfile, interactive=FALSE){
 
     ## check
-    if (!inherits(seqfile, "SeqSQCclass")){
-        return("object should inherit from 'SeqSQCclass'.")
+    if (!inherits(seqfile, "SeqSQC")){
+        return("object should inherit from 'SeqSQC'.")
     }
     if(!"SexCheck" %in% names(QCresult(seqfile))) stop("no sexcheck result.")
 

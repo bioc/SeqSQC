@@ -13,9 +13,9 @@ sampleQC(vfile = NULL, output, sfile = NULL, capture.region = NULL,
 \arguments{
 \item{vfile}{vcf or PLINK input file (ped/map/bed/bim/fam with same basename). The default is NULL. Vfile could be a vector of character strings, see details.}
 
-\item{output}{a character string for name of merged data in SeqSQCclass.}
+\item{output}{a character string for name of merged data in SeqSQC object.}
 
-\item{sfile}{a file in \code{SeqSQCclass} generated from \code{LoadVfile}. The default is NULL.}
+\item{sfile}{a file in \code{SeqSQC} object generated from \code{LoadVfile}. The default is NULL.}
 
 \item{capture.region}{the BED file of sequencing capture regions. The default is NULL. For exome-sequencing data, the capture region file must be provided.}
 
@@ -42,7 +42,7 @@ sampleQC(vfile = NULL, output, sfile = NULL, capture.region = NULL,
 \item{...}{Arguments to be passed to other methods.}
 }
 \value{
-a SeqSQCclass object with the filepath to the gds file which stores the genotype, the summary of samples and variants, and the QCresults including the sample annotation information and all QC results.
+a SeqSQC object with the filepath to the gds file which stores the genotype, the summary of samples and variants, and the QCresults including the sample annotation information and all QC results.
 }
 \description{
 A wrap-up function for sample QC. It reads in the variant genotypes in vcf/PLINK format, merges study cohort with benchmark data, and performs sample QC for the merged dataset.
@@ -62,7 +62,7 @@ seqfile <- sampleQC(vfile = infile, output = outfile, capture.region = cr, sampl
 
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 seqfile <- sampleQC(sfile = seqfile, output = "testWrapUp", QCreport = FALSE, out.report="report.html", interactive = TRUE)
 ## save(seqfile, file="seqfile.RData")
 }

@@ -1,7 +1,7 @@
 #' Plot the PC axes for samples.
 #' 
 #' Plot principle components for all sample.
-#' @param seqfile SeqSQCclass input file with PCA results.
+#' @param seqfile SeqSQC object with PCA results.
 #' @param pc1 the eigenvector on x axis. The default is "EV1" for eigenvector 1.
 #' @param pc2 the eigenvector on y axis. The default is "EV2" for eigenvector 2. 
 #' @param pairedScatter whether to plot the paired scatterplot for the first 4 PC axes.
@@ -11,7 +11,7 @@
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-#' seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+#' seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 #' p <- plotPop(seqfile, interactive=FALSE)
 #' p
 #' @author Qian Liu \email{qliu7@@buffalo.edu}
@@ -19,8 +19,8 @@
 plotPop <- function(seqfile, pc1="EV1", pc2="EV2", interactive=FALSE, pairedScatter=FALSE){
 
     ## check
-    if (!inherits(seqfile, "SeqSQCclass")){
-        return("object should inherit from 'SeqSQCclass'.")
+    if (!inherits(seqfile, "SeqSQC")){
+        return("object should inherit from 'SeqSQC'.")
     }
     if(!"PCA" %in% names(QCresult(seqfile))) stop("no PCA result.")
 

@@ -1,8 +1,8 @@
 IBDRemoveAll <- function(seqfile){
 
     ## check
-    if (!inherits(seqfile, "SeqSQCclass")){
-        return("object should inherit from 'SeqSQCclass'.")
+    if (!inherits(seqfile, "SeqSQC")){
+        return("object should inherit from 'SeqSQC'.")
     }
     if(!"IBD" %in% names(QCresult(seqfile))) stop("no IBD result.")
 

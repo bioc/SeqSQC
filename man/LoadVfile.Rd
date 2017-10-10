@@ -11,7 +11,7 @@ LoadVfile(vfile, output, capture.region = NULL, sample.annot = NULL,
 \arguments{
 \item{vfile}{vcf or PLINK input file (ped/map/bed/bim/fam with same basename). Vfile could be a vector of character strings, see details.}
 
-\item{output}{a character string for name of merged data in SeqSQCclass.}
+\item{output}{a character string for name of merged data in SeqSQC object.}
 
 \item{capture.region}{the BED file of sequencing capture regions. The default is NULL. For exome-sequencing data, the capture region file must be provided.}
 
@@ -32,10 +32,10 @@ LoadVfile(vfile, output, capture.region = NULL, sample.annot = NULL,
 \item{...}{Arguments to be passed to other methods.}
 }
 \value{
-a SeqSQCclass object with the filepath to the gds file which stores the genotype, the summary of samples and variants, and the QCresults including the sample annotation information.
+a SeqSQC object with the filepath to the gds file which stores the genotype, the summary of samples and variants, and the QCresults including the sample annotation information.
 }
 \description{
-Function to read VCF or plink files, merge with benchmark data, and output as SeqSQCclass file.
+Function to read VCF or plink files, merge with benchmark data, and output as SeqSQC object.
 }
 \details{
 For \code{vfile} with more than one file names, \code{LoadVfile} will merge all dataset together if they all contain the same samples. It is useful to combine genetic/genomic data together if VCF data is divided by chromosomes. \cr

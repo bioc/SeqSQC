@@ -7,7 +7,7 @@
 problemList(seqfile)
 }
 \arguments{
-\item{seqfile}{SeqSQCclass input file with sample QC results.}
+\item{seqfile}{SeqSQC object with sample QC results.}
 }
 \value{
 a data frame with 2 columns: \code{sample} for problematic sample name, and \code{remove.reason} for the reason of removing the sample.

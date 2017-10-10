@@ -1,14 +1,14 @@
 #' Plot the IBD coefficients for all sample pairs.
 #' 
 #' Plot IBD coefficients (k0 and k1) calculated from autosomal variants for all samples.
-#' @param seqfile SeqSQCclass input file with IBD results.
+#' @param seqfile SeqSQC object with IBD results.
 #' @param interactive whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user performs sample QC using an rmarkdown script and output plots to html format. 
 #' @export
 #' @return the ggplot or interactive plot (if output is in html format) for IBD coefficients.
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-#' seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+#' seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 #' p <- plotIBD(seqfile, interactive=FALSE)
 #' p
 #' @author Qian Liu \email{qliu7@@buffalo.edu}
@@ -16,8 +16,8 @@
 plotIBD <- function(seqfile, interactive=FALSE){
 
     ## check
-    if (!inherits(seqfile, "SeqSQCclass")){
-        return("object should inherit from 'SeqSQCclass'.")
+    if (!inherits(seqfile, "SeqSQC")){
+        return("object should inherit from 'SeqSQC'.")
     }
     if(!"IBD" %in% names(QCresult(seqfile))) stop("no IBD result.")
 

@@ -1,7 +1,7 @@
 #' Plot the inbreeding coefficients.
 #'
 #' Plot inbreeding coefficients calculated from autosomal variants for each population.
-#' @param seqfile SeqSQCclass input file with inbreeding result.
+#' @param seqfile SeqSQC object with inbreeding result.
 #' @param interactive whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format.
 #' @param sdcoef how many standard deviation we need for identification of inbreeding outliers. The default is 5.
 #' @export
@@ -9,7 +9,7 @@
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-#' seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+#' seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 #' p <- plotInbreeding(seqfile, interactive=FALSE)
 #' p
 #' @author Qian Liu \email{qliu7@@buffalo.edu}
@@ -17,8 +17,8 @@
 plotInbreeding <- function(seqfile, interactive=FALSE, sdcoef=5){
 
     ## check
-    if (!inherits(seqfile, "SeqSQCclass")){
-        return("object should inherit from 'SeqSQCclass'.")
+    if (!inherits(seqfile, "SeqSQC")){
+        return("object should inherit from 'SeqSQC'.")
     }
     if(!"Inbreeding" %in% names(QCresult(seqfile))) stop("No inbreeding result.")
 

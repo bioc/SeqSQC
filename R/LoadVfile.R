@@ -1,8 +1,8 @@
 #' Data preprocessing for VCF or plink input from NGS or GWAS data.
 #'
-#' Function to read VCF or plink files, merge with benchmark data, and output as SeqSQCclass file.
+#' Function to read VCF or plink files, merge with benchmark data, and output as SeqSQC object.
 #' @param vfile vcf or PLINK input file (ped/map/bed/bim/fam with same basename). Vfile could be a vector of character strings, see details.
-#' @param output a character string for name of merged data in SeqSQCclass. 
+#' @param output a character string for name of merged data in SeqSQC object. 
 #' @param capture.region the BED file of sequencing capture regions. The default is NULL. For exome-sequencing data, the capture region file must be provided.
 #' @param sample.annot sample annotation file with 3 columns including the sample id, sample population and sex info. The default is NULL.
 #' @param LDprune whether to use LD-pruned snp set. The default is TRUE.
@@ -13,7 +13,7 @@
 #' @param format.file the data format. The default is \code{vcf}.
 #' @param ... Arguments to be passed to other methods.
 #' @export
-#' @return a SeqSQCclass object with the filepath to the gds file which stores the genotype, the summary of samples and variants, and the QCresults including the sample annotation information.  
+#' @return a SeqSQC object with the filepath to the gds file which stores the genotype, the summary of samples and variants, and the QCresults including the sample annotation information.  
 #' @details
 #' For \code{vfile} with more than one file names, \code{LoadVfile} will merge all dataset together if they all contain the same samples. It is useful to combine genetic/genomic data together if VCF data is divided by chromosomes. \cr
 #' \code{sample.annot} file contains 3 columns with column names. col 1 is \code{sample} with sample ids; col 2 is \code{population} with values of "AFR/EUR/ASN/EAS/SAS"; col 3 is \code{gender} with values of "male/female".
@@ -169,6 +169,6 @@ LoadVfile <- function(vfile, output, capture.region=NULL, sample.annot=NULL, LDp
     sampleanno <- read.gdsn(index.gdsn(merge.out, "sample.annot")) 
     closefn.gds(merge.out)
 
-    output <- SeqSQCclass(gdsfile = fn, QCresult = SimpleList(dimension = c(length(samples), length(snps)), sample.annot = sampleanno))
+    output <- SeqSQC(gdsfile = fn, QCresult = SimpleList(dimension = c(length(samples), length(snps)), sample.annot = sampleanno))
     return(output)
 }

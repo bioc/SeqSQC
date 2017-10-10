@@ -8,7 +8,7 @@ plotPop(seqfile, pc1 = "EV1", pc2 = "EV2", interactive = FALSE,
   pairedScatter = FALSE)
 }
 \arguments{
-\item{seqfile}{SeqSQCclass input file with PCA results.}
+\item{seqfile}{SeqSQC object with PCA results.}
 
 \item{pc1}{the eigenvector on x axis. The default is "EV1" for eigenvector 1.}
 
@@ -27,7 +27,7 @@ Plot principle components for all sample.
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-seqfile <- SeqSQCclass(gdsfile = gfile, QCresult = QCresult(seqfile))
+seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 p <- plotPop(seqfile, interactive=FALSE)
 p
 }
