@@ -1,6 +1,10 @@
+CHANGE IN VERSION 0.99.10
+----------------------------
+-- updated the man for `sampleQC` and `LoadVfile`. 
+
 CHANGE IN VERSION 0.99.9
 ----------------------------
-- Updated the `output` argument in function of `sampleQC` and `LoadVfile`, by using the default value of \code{sampleqc} in working directory. In vignette and the example code of these 2 functions, temporary directory is used for the directory to save the QC results.   
+- Updated the `output` argument in function of `sampleQC` and `LoadVfile`, by using the default value of `sampleqc` in working directory. In vignette and the example code of these 2 functions, temporary directory is used for the directory to save the QC results.   
 
 
 CHANGE IN VERSION 0.99.8
