@@ -1,3 +1,11 @@
+CHANGE IN VERSION 0.99.8
+----------------------------
+- vignette, using a tempdir() for vignette output.
+- Vignette: Additional explanation added for the option to do a wrapper all-inclusive QC or specific QC steps.
+- documentation for argument "output" in "LoadVfile" and "sampleQC", to indicate that the `dirname(output)` would be used as the directory to save the other QC results in `.txt` and plots in `.pdf`. The default value is added as `file.path(tempdir(), "sampleqc")`.
+- sampleQC.R: Arguments of `plotting=TRUE, results=TRUE` added and documented, giving the option for users to whether or not output the QC results and plots. The problem list will always in output for the simplest sample QC result and summary.
+- the package documentation updated, by adding a `@seealso` for links of main functions of SeqSQC. 
+
 CHANGE IN VERSION 0.99.7
 ----------------------------
 

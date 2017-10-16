@@ -3,7 +3,7 @@
 #' A wrap-up function for sample QC. It reads in the variant genotypes in vcf/PLINK format, merges study cohort with benchmark data, and performs sample QC for the merged dataset.
 #' 
 #' @param vfile vcf or PLINK input file (ped/map/bed/bim/fam with same basename). The default is NULL. Vfile could be a vector of character strings, see details. Could also take file in \code{SeqSQC} object generated from \code{LoadVfile}. 
-#' @param output a character string for name of merged data in SeqSQC object.
+#' @param output a character string for name of merged data of SeqSQC object. The \code{dirname(output)} would be used as the directory to save the QC result and plots. The default is \code{file.path(tempdir(), "sampleqc")}.
 #' @param capture.region the BED file of sequencing capture regions. The default is NULL. For exome-sequencing data, the capture region file must be provided.
 #' @param sample.annot sample annotation file with 3 columns including the sample id, sample population and sex info. The default is NULL.
 #' @param LDprune whether to use LD-pruned snp set. The default is TRUE.
@@ -15,6 +15,8 @@
 #' @param QCreport Whether to generate the sample QC report in html format.
 #' @param out.report the file name for the sample QC report. The default is \code{report.html}.
 #' @param interactive whether to generate interactive plots in the sample QC report if \code{QCreport = TRUE}.
+#' @param results whether to write out the results for each QC steps in .txt files. The default is TRUE.
+#' @param plotting whether to output the plots for each QC steps in .pdf files. the default is TRUE. 
 #' @param ... Arguments to be passed to other methods.
 #' @export
 #' @return a SeqSQC object with the filepath to the gds file which stores the genotype, the summary of samples and variants, and the QCresults including the sample annotation information and all QC results.  
@@ -40,7 +42,7 @@
 #' }
 #' @author Qian Liu \email{qliu7@buffalo.edu}
 
-sampleQC <- function(vfile = NULL, output, capture.region = NULL, sample.annot = NULL, LDprune = TRUE, vfile.restrict = FALSE, slide.max.bp = 5e+05, ld.threshold = 0.3, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE, ...){
+sampleQC <- function(vfile = NULL, output=file.path(tempdir(), "sampleqc"), capture.region = NULL, sample.annot = NULL, LDprune = TRUE, vfile.restrict = FALSE, slide.max.bp = 5e+05, ld.threshold = 0.3, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE, results=TRUE, plotting=TRUE, ...){
 
     ## check input
     if(inherits(vfile, "SeqSQC")){
@@ -67,10 +69,14 @@ sampleQC <- function(vfile = NULL, output, capture.region = NULL, sample.annot =
     prob.mr <- res.study[res.study$outlier == "Yes", ]
     remove.mr <- prob.mr[,1]
     remove.samples <- unique(remove.mr)
-    write.table(res.mr, file=paste0(dirname(output), "/result.missingrate.txt"), quote=FALSE, sep="\t", row.names=FALSE)
-    p <- plotQC(seqfile, "MissingRate")
-    ggsave(filename = paste0(dirname(output), "/plot.missingrate.pdf"), p)
-
+    if(results){
+        write.table(res.mr, file=paste0(dirname(output), "/result.missingrate.txt"), quote=FALSE, sep="\t", row.names=FALSE)
+    }
+    if(plotting){
+        p <- plotQC(seqfile, "MissingRate")
+        ggsave(filename = paste0(dirname(output), "/plot.missingrate.pdf"), p)
+    }
+    
     ##############
     ## Sex Check
 
@@ -89,10 +95,13 @@ sampleQC <- function(vfile = NULL, output, capture.region = NULL, sample.annot =
         prob.sex <- res.sexcheck[res.sexcheck$sex != res.sexcheck$pred.sex & res.sexcheck$pred.sex != "0", ]
         remove.sex <- prob.sex[,1]
         remove.samples <- unique(c(remove.samples, remove.sex))
-        write.table(res.sexcheck, file=paste0(dirname(output), "/result.sexcheck.txt"), quote=FALSE, sep="\t", row.names=FALSE)
-        
-        p <- plotQC(seqfile, "SexCheck")
-        ggsave(filename = paste0(dirname(output), "/plot.sexcheck.pdf"), p)
+        if(results){
+            write.table(res.sexcheck, file=paste0(dirname(output), "/result.sexcheck.txt"), quote=FALSE, sep="\t", row.names=FALSE)
+        }
+        if(plotting){
+            p <- plotQC(seqfile, "SexCheck")
+            ggsave(filename = paste0(dirname(output), "/plot.sexcheck.pdf"), p)
+        }
     }
     
     ####################
@@ -103,12 +112,14 @@ sampleQC <- function(vfile = NULL, output, capture.region = NULL, sample.annot =
     prob.inb <- res.inb[res.inb$outlier.5sd == "Yes" & !is.na(res.inb$outlier.5sd), ]
     remove.inb <- prob.inb[,1]
     remove.samples <- unique(c(remove.samples, remove.inb))
+    if(results){
     write.table(res.inb, file=paste0(dirname(output), "/result.inbreeding.txt"), quote=FALSE, sep="\t", row.names=FALSE)
-        
+    }   
     ## plot Inbreeding.
-    p <- plotQC(seqfile, "Inbreeding")
-    ggsave(filename = paste0(dirname(output), "/plot.inbreeding.pdf"), p)
-
+    if(plotting){
+        p <- plotQC(seqfile, "Inbreeding")
+        ggsave(filename = paste0(dirname(output), "/plot.inbreeding.pdf"), p)
+    }
     
     ########
     ## IBD
@@ -124,12 +135,15 @@ sampleQC <- function(vfile = NULL, output, capture.region = NULL, sample.annot =
     }
     remove.ibd <- prob.ibd$ibd.remove
     remove.samples <- unique(c(remove.samples, remove.ibd))
-    write.table(res.ibd, file=paste0(dirname(output), "/result.ibd.txt"), quote=FALSE, sep="\t", row.names=FALSE)
-        
+    if(results){
+        write.table(res.ibd, file=paste0(dirname(output), "/result.ibd.txt"), quote=FALSE, sep="\t", row.names=FALSE)
+    }
     ## plot IBD.
-    p <- plotQC(seqfile, "IBD")
-    ggsave(filename = paste0(dirname(output), "/plot.ibd.pdf"), p)
-
+    if(plotting){
+        p <- plotQC(seqfile, "IBD")
+        ggsave(filename = paste0(dirname(output), "/plot.ibd.pdf"), p)
+    }
+    
     ########
     ## PCA
 
@@ -138,10 +152,14 @@ sampleQC <- function(vfile = NULL, output, capture.region = NULL, sample.annot =
     res.study <- res.pca[res.pca$sample %in% studyid, ]
     remove.pca <- res.study[res.study$pop != res.study$pred.pop, 1]
 
+    if(results){
     write.table(res.pca, file=paste0(dirname(output), "/result.pca.txt"), quote=FALSE, sep="\t", row.names=FALSE)   
+    }
     ## plot PCA.
-    p <- plotQC(seqfile, "PCA")
-    ggsave(filename = paste0(dirname(output), "/plot.pca.pdf"), p)
+    if(plotting){
+        p <- plotQC(seqfile, "PCA")
+        ggsave(filename = paste0(dirname(output), "/plot.pca.pdf"), p)
+    }
     
     ################################
     ## summary of removed samples.

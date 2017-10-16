@@ -1,8 +1,8 @@
 #' Data preprocessing for VCF or plink input from NGS or GWAS data.
-#'
+#' 
 #' Function to read VCF or plink files, merge with benchmark data, and output as SeqSQC object.
 #' @param vfile vcf or PLINK input file (ped/map/bed/bim/fam with same basename). Vfile could be a vector of character strings, see details.
-#' @param output a character string for name of merged data in SeqSQC object. 
+#' @param output a character string for name of merged data of SeqSQC object. The \code{dirname(output)} would be used as the directory to save the QC results and plots. The default is \code{file.path(tempdir(), "sampleqc")}.
 #' @param capture.region the BED file of sequencing capture regions. The default is NULL. For exome-sequencing data, the capture region file must be provided.
 #' @param sample.annot sample annotation file with 3 columns including the sample id, sample population and sex info. The default is NULL.
 #' @param LDprune whether to use LD-pruned snp set. The default is TRUE.
@@ -34,7 +34,7 @@
 #' ## save(seqfile, file="seqfile.RData")
 #' @author Qian Liu \email{qliu7@@buffalo.edu}
 
-LoadVfile <- function(vfile, output, capture.region=NULL, sample.annot=NULL, LDprune=TRUE, vfile.restrict=FALSE, slide.max.bp=5e+05, ld.threshold=0.3, format.data="NGS", format.file="vcf", ...){
+LoadVfile <- function(vfile, output=file.path(tempdir(), "sampleqc"), capture.region=NULL, sample.annot=NULL, LDprune=TRUE, vfile.restrict=FALSE, slide.max.bp=5e+05, ld.threshold=0.3, format.data="NGS", format.file="vcf", ...){
 
     tmpdir <- tempdir()
     study.gds <- tempfile(tmpdir=tmpdir)

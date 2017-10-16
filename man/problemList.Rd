@@ -10,7 +10,7 @@ problemList(seqfile)
 \item{seqfile}{SeqSQC object with sample QC results.}
 }
 \value{
-a data frame with 2 columns: \code{sample} for problematic sample name, and \code{remove.reason} for the reason of removing the sample.
+a list of 2 datasets: 1) a data frame with 2 columns: \code{sample} for problematic sample name, and \code{remove.reason} for the reason of removing the sample. 2) a data frame with 1 column \code{sample} for problematic samples to be removed.
 }
 \description{
 generate the problematic sample list from QC steps that have been done, and provide each problematic sample with a reason for removal (high missing rate, gender mismatch, inbreeding outlier, cryptic relationship or population outlier).

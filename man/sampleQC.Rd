@@ -4,15 +4,17 @@
 \alias{sampleQC}
 \title{The wrap-up function for sample QC of sequencing/GWAS data.}
 \usage{
-sampleQC(vfile = NULL, output, capture.region = NULL, sample.annot = NULL,
-  LDprune = TRUE, vfile.restrict = FALSE, slide.max.bp = 5e+05,
-  ld.threshold = 0.3, format.data = "NGS", format.file = "vcf",
-  QCreport = TRUE, out.report = "report.html", interactive = TRUE, ...)
+sampleQC(vfile = NULL, output = file.path(tempdir(), "sampleqc"),
+  capture.region = NULL, sample.annot = NULL, LDprune = TRUE,
+  vfile.restrict = FALSE, slide.max.bp = 5e+05, ld.threshold = 0.3,
+  format.data = "NGS", format.file = "vcf", QCreport = TRUE,
+  out.report = "report.html", interactive = TRUE, results = TRUE,
+  plotting = TRUE, ...)
 }
 \arguments{
 \item{vfile}{vcf or PLINK input file (ped/map/bed/bim/fam with same basename). The default is NULL. Vfile could be a vector of character strings, see details. Could also take file in \code{SeqSQC} object generated from \code{LoadVfile}.}
 
-\item{output}{a character string for name of merged data in SeqSQC object.}
+\item{output}{a character string for name of merged data of SeqSQC object. The \code{dirname(output)} would be used as the directory to save the QC result and plots. The default is \code{file.path(tempdir(), "sampleqc")}.}
 
 \item{capture.region}{the BED file of sequencing capture regions. The default is NULL. For exome-sequencing data, the capture region file must be provided.}
 
@@ -35,6 +37,10 @@ sampleQC(vfile = NULL, output, capture.region = NULL, sample.annot = NULL,
 \item{out.report}{the file name for the sample QC report. The default is \code{report.html}.}
 
 \item{interactive}{whether to generate interactive plots in the sample QC report if \code{QCreport = TRUE}.}
+
+\item{results}{whether to write out the results for each QC steps in .txt files. The default is TRUE.}
+
+\item{plotting}{whether to output the plots for each QC steps in .pdf files. the default is TRUE.}
 
 \item{...}{Arguments to be passed to other methods.}
 }

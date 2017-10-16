@@ -32,7 +32,7 @@ biocLite("SeqSQC")
 library(SeqSQC)
 ```
 
-The wrap-up function `sampleQC` transforms the vcf file into `SeqSQC` object, or take the `SeqSQC` object generated from `LoadVfile` directly as input, evaluates all sample QC steps, outputs the QC results into your working directory, and generates a sample QC report in html format. We recommend saving the output `SeqSQC` object into an RData.
+The wrap-up function `sampleQC` transforms the vcf file into `SeqSQC` object, or take the `SeqSQC` object generated from `LoadVfile` directly as input, evaluates all sample QC steps (as a convenient all inclusive method), outputs the QC results into your designated directory, and generates a sample QC report in html format. We recommend saving the output `SeqSQC` object into an RData.
 
 This is an example when we have input as vcf file, sample annotation file, and capture region bed file. Note that our example vcf file only include variants in chromosome 1, and the capture region only include the 
 
@@ -40,7 +40,8 @@ This is an example when we have input as vcf file, sample annotation file, and c
 infile <- system.file("extdata", "example_sub.vcf", package="SeqSQC")
 sample.annot <- system.file("extdata", "sampleAnnotation.txt", package="SeqSQC")
 cr <- system.file("extdata", "CCDS.Hs37.3.reduced_chr1.bed", package="SeqSQC")
-outfile <- "testWrapUp"
+outdir <- tempdir()
+outfile <- file.path(outdir, "testWrapUp")
 ```
 
 ```{r wrapup_vcf, eval=FALSE}
@@ -58,7 +59,7 @@ seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 seqfile <- sampleQC(vfile = seqfile, output = "testWrapUp", QCreport = FALSE)
 save(seqfile, file="seqfile.Rdata")
 ```
-Detailed descriptions of data structure and functionality usage of SeqSQC are provided as below.
+Detailed descriptions of data structure and functionality usage of SeqSQC are provided as below. Users are recommended to use these specific QC functions for each QC step if they want to skip any of them by using `sampleQC()`.
 
 # Data preparation
 

@@ -4,14 +4,15 @@
 \alias{LoadVfile}
 \title{Data preprocessing for VCF or plink input from NGS or GWAS data.}
 \usage{
-LoadVfile(vfile, output, capture.region = NULL, sample.annot = NULL,
-  LDprune = TRUE, vfile.restrict = FALSE, slide.max.bp = 5e+05,
-  ld.threshold = 0.3, format.data = "NGS", format.file = "vcf", ...)
+LoadVfile(vfile, output = file.path(tempdir(), "sampleqc"),
+  capture.region = NULL, sample.annot = NULL, LDprune = TRUE,
+  vfile.restrict = FALSE, slide.max.bp = 5e+05, ld.threshold = 0.3,
+  format.data = "NGS", format.file = "vcf", ...)
 }
 \arguments{
 \item{vfile}{vcf or PLINK input file (ped/map/bed/bim/fam with same basename). Vfile could be a vector of character strings, see details.}
 
-\item{output}{a character string for name of merged data in SeqSQC object.}
+\item{output}{a character string for name of merged data of SeqSQC object. The \code{dirname(output)} would be used as the directory to save the QC results and plots. The default is \code{file.path(tempdir(), "sampleqc")}.}
 
 \item{capture.region}{the BED file of sequencing capture regions. The default is NULL. For exome-sequencing data, the capture region file must be provided.}
 
