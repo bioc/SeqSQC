@@ -3,7 +3,7 @@
 #' A wrap-up function for sample QC. It reads in the variant genotypes in vcf/PLINK format, merges study cohort with benchmark data, and performs sample QC for the merged dataset.
 #' 
 #' @param vfile vcf or PLINK input file (ped/map/bed/bim/fam with same basename). The default is NULL. Vfile could be a vector of character strings, see details. Could also take file in \code{SeqSQC} object generated from \code{LoadVfile}. 
-#' @param output a character string for name of merged data of SeqSQC object. The \code{dirname(output)} would be used as the directory to save the QC result and plots. The default is \code{file.path(tempdir(), "sampleqc")}.
+#' @param output a character string for name of merged data of SeqSQC object. The \code{dirname(output)} would be used as the directory to save the QC result and plots. The default is \code{sampleqc} in the working directory.
 #' @param capture.region the BED file of sequencing capture regions. The default is NULL. For exome-sequencing data, the capture region file must be provided.
 #' @param sample.annot sample annotation file with 3 columns including the sample id, sample population and sex info. The default is NULL.
 #' @param LDprune whether to use LD-pruned snp set. The default is TRUE.
@@ -30,19 +30,18 @@
 #' infile <- system.file("extdata", "example_sub.vcf", package="SeqSQC")
 #' sample.annot <- system.file("extdata", "sampleAnnotation.txt", package="SeqSQC")
 #' cr <- system.file("extdata", "CCDS.Hs37.3.reduced_chr1.bed", package="SeqSQC")
-#' outfile <- "testWrapUp"
+#' outfile <- file.path(tempdir(), "testWrapUp")
 #' seqfile <- sampleQC(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE)
 #' ## save(seqfile, file="seqfile.RData")
 #'
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
 #' seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
-#' seqfile <- sampleQC(sfile = seqfile, output = "testWrapUp", QCreport = FALSE, out.report="report.html", interactive = TRUE)
-#' ## save(seqfile, file="seqfile.RData")
+#' seqfile <- sampleQC(sfile = seqfile, output = outfile, QCreport = FALSE, out.report="report.html", interactive = TRUE)
 #' }
 #' @author Qian Liu \email{qliu7@buffalo.edu}
 
-sampleQC <- function(vfile = NULL, output=file.path(tempdir(), "sampleqc"), capture.region = NULL, sample.annot = NULL, LDprune = TRUE, vfile.restrict = FALSE, slide.max.bp = 5e+05, ld.threshold = 0.3, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE, results=TRUE, plotting=TRUE, ...){
+sampleQC <- function(vfile = NULL, output="sampleqc", capture.region = NULL, sample.annot = NULL, LDprune = TRUE, vfile.restrict = FALSE, slide.max.bp = 5e+05, ld.threshold = 0.3, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE, results=TRUE, plotting=TRUE, ...){
 
     ## check input
     if(inherits(vfile, "SeqSQC")){
