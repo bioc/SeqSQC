@@ -1,56 +1,17 @@
-#' Plot the IBD coefficients for all sample pairs.
-#' 
-#' Plot IBD coefficients (k0 and k1) calculated from autosomal variants for all samples.
-#' @param seqfile SeqSQC object with IBD results.
-#' @param interactive whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user performs sample QC using an rmarkdown script and output plots to html format. 
-#' @export
-#' @return the ggplot or interactive plot (if output is in html format) for IBD coefficients.
-#' @examples
-#' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
-#' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
-#' seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
-#' p <- plotIBD(seqfile, interactive=FALSE)
-#' p
-#' @author Qian Liu \email{qliu7@@buffalo.edu}
+plotIBD <- function(res.qc, interactive = FALSE){
 
-plotIBD <- function(seqfile, interactive=FALSE){
+    centers <- data.frame(k0=c(0, 0, 0.25, 0.5, 1),
+                          k1=c(0, 1, 0.5, 0.5, 0),
+                          label=factor(c("DU", "PO", "FS", "HF", "UN"))
+                          )
+    prob.ind <- as.character(res.qc$relation) == "UN" & as.character(res.qc$pred.label) == "Related"
+    prob.ibd <- res.qc[prob.ind, ]
 
-    ## check
-    if (!inherits(seqfile, "SeqSQC")){
-        return("object should inherit from 'SeqSQC'.")
-    }
-    if(!"IBD" %in% names(QCresult(seqfile))) stop("no IBD result.")
-
-    sampleanno <- QCresult(seqfile)$sample.annot
-    res.ibd <- QCresult(seqfile)$IBD
-    studyid <- sampleanno[sampleanno[,5] == "study", 1]
-    
-    centers <- data.frame(k0=c(0, 0, 0.25, 0.5
-                             ## , 0.75
-                             , 1),
-                          k1=c(0, 1, 0.5, 0.5
-                               ## , 0.25
-                             , 0),
-                          label=c("DU", "PO", "FS", "HF"
-                                  ## , "FC"
-                                , "UN"))
-    centers$label <- factor(centers$label, levels=centers$label)
-    res.ibd$label <- as.character(res.ibd$label)
-    res.ibd$relation <- factor(res.ibd$label, levels=as.character(centers$label))
-
-    ind.study <- res.ibd$id1 %in% studyid | res.ibd$id2 %in% studyid
-    res.ibd$label[ind.study] <- "study"
-    res.ibd$label[!ind.study] <- "benchmark"
-    names(res.ibd)[6] <- "type"
-
-    prob.ind <- as.character(res.ibd$relation) == "UN" & as.character(res.ibd$pred.label) == "Related"
-    prob.ibd <- res.ibd[prob.ind, ]
-    
     if(interactive){
-        p <- figure() %>% ly_points(k0, k1, data=res.ibd, hover=list(relation, pred.label, id1, id2), color=relation) %>% ly_points(k0, k1, data=centers, hover=list(label), color="grey", glyph=label, legend=FALSE)
+        p <- figure() %>% ly_points(k0, k1, data=res.qc, hover=list(relation, pred.label, id1, id2), color=relation) %>% ly_points(k0, k1, data=centers, hover=list(label), color="grey", glyph=label, legend=FALSE)
         return(p)
     }else{
-        p <- ggplot(data=res.ibd, aes(x=k0, y=k1))
+        p <- ggplot(data=res.qc, aes(x=k0, y=k1))
         p <- p + geom_point(aes(shape=type, colour=relation))
         p <- p + scale_colour_discrete(drop = FALSE)
         p <- p + geom_point(aes(colour=label), shape=3, data=centers)
@@ -62,4 +23,6 @@ plotIBD <- function(seqfile, interactive=FALSE){
         return(p)
     }
 }
+
+
 

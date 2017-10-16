@@ -63,12 +63,22 @@ problemList <- function(seqfile){
         remove.pca <- NULL
     }
     
-    prob.list <- data.frame(sample=c(remove.mr, remove.sex, remove.inb, ibd.pairs, remove.pca), remove=c(remove.mr, remove.sex, remove.inb, remove.ibd, remove.pca), remove.reason=c(rep("high missing rate", length(remove.mr)), rep("gender mismatch", length(remove.sex)), rep("inbreeding outlier", length(remove.inb)), rep("cryptic relationship", length(ibd.pairs)), rep("population outlier", length(remove.pca))), stringsAsFactors=FALSE)
-    
+    prob.list <- data.frame(
+        sample=c(remove.mr, remove.sex, remove.inb, ibd.pairs, remove.pca),
+        ## remove=c(remove.mr, remove.sex, remove.inb, remove.ibd, remove.pca),
+        remove.reason=c(
+            rep("high missing rate", length(remove.mr)),
+            rep("gender mismatch", length(remove.sex)),
+            rep("inbreeding outlier", length(remove.inb)),
+            rep("cryptic relationship", length(ibd.pairs)),
+            rep("population outlier", length(remove.pca))),
+        stringsAsFactors=FALSE
+    )
+    remove.list <- data.frame(sample = c(remove.mr, remove.sex, remove.inb, remove.ibd, remove.pca))
     if(nrow(prob.list) != 0){
         a <- QCresult(seqfile)
-        a$problem.list <- prob.list
+        a$problem.list <- list(prob.list = prob.list, remove.list = remove.list)
     }
-    return(prob.list)
+    return(a$problem.list)
 }
 

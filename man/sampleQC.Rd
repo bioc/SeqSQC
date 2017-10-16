@@ -4,18 +4,15 @@
 \alias{sampleQC}
 \title{The wrap-up function for sample QC of sequencing/GWAS data.}
 \usage{
-sampleQC(vfile = NULL, output, sfile = NULL, capture.region = NULL,
-  sample.annot = NULL, LDprune = TRUE, vfile.restrict = FALSE,
-  slide.max.bp = 5e+05, ld.threshold = 0.3, format.data = "NGS",
-  format.file = "vcf", QCreport = TRUE, out.report = "report.html",
-  interactive = TRUE, ...)
+sampleQC(vfile = NULL, output, capture.region = NULL, sample.annot = NULL,
+  LDprune = TRUE, vfile.restrict = FALSE, slide.max.bp = 5e+05,
+  ld.threshold = 0.3, format.data = "NGS", format.file = "vcf",
+  QCreport = TRUE, out.report = "report.html", interactive = TRUE, ...)
 }
 \arguments{
-\item{vfile}{vcf or PLINK input file (ped/map/bed/bim/fam with same basename). The default is NULL. Vfile could be a vector of character strings, see details.}
+\item{vfile}{vcf or PLINK input file (ped/map/bed/bim/fam with same basename). The default is NULL. Vfile could be a vector of character strings, see details. Could also take file in \code{SeqSQC} object generated from \code{LoadVfile}.}
 
 \item{output}{a character string for name of merged data in SeqSQC object.}
-
-\item{sfile}{a file in \code{SeqSQC} object generated from \code{LoadVfile}. The default is NULL.}
 
 \item{capture.region}{the BED file of sequencing capture regions. The default is NULL. For exome-sequencing data, the capture region file must be provided.}
 

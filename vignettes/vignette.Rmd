@@ -34,7 +34,7 @@ library(SeqSQC)
 
 The wrap-up function `sampleQC` transforms the vcf file into `SeqSQC` object, or take the `SeqSQC` object generated from `LoadVfile` directly as input, evaluates all sample QC steps, outputs the QC results into your working directory, and generates a sample QC report in html format. We recommend saving the output `SeqSQC` object into an RData.
 
-This is an example when we have input as vcf file, sample annotation file, and capture region bed file. 
+This is an example when we have input as vcf file, sample annotation file, and capture region bed file. Note that our example vcf file only include variants in chromosome 1, and the capture region only include the 
 
 ```{r loadData, eval=TRUE}
 infile <- system.file("extdata", "example_sub.vcf", package="SeqSQC")
@@ -44,19 +44,19 @@ outfile <- "testWrapUp"
 ```
 
 ```{r wrapup_vcf, eval=FALSE}
-seqfile <- sampleQC(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE)
+seqfile <- sampleQC(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot, format.data = "NGS", format.file = "vcf", QCreport = FALSE)
 save(seqfile, file="seqfile.RData")
 ```
 
 This is an example when we directly use `SeqSQC` object as input, and evaluate all sample QC steps. 
 
-```{r wrapup_seqfile, eval=TRUE}
+```{r wrapup_seqfile, eval=FALSE}
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 gfile <- system.file("extdata", "example.gds", package="SeqSQC")
 seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 
-seqfile <- sampleQC(sfile = seqfile, output = "testWrapUp", QCreport = TRUE, out.report="report.html", interactive = TRUE)
-save(seqfile, file="seqfile.RData")
+seqfile <- sampleQC(vfile = seqfile, output = "testWrapUp", QCreport = FALSE)
+save(seqfile, file="seqfile.Rdata")
 ```
 Detailed descriptions of data structure and functionality usage of SeqSQC are provided as below.
 
@@ -66,7 +66,7 @@ Detailed descriptions of data structure and functionality usage of SeqSQC are pr
 
 SeqSQC takes VCF file as input.
 
-```{r loadVfile, eval=TRUE}
+```{r loadVfile, eval=TRUE, message=FALSE}
 seqfile <- LoadVfile(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot)
 ```
 
@@ -108,7 +108,7 @@ closefn.gds(dat)
 
 ## Sample missing rate check
 
-Samples with missing rate > 0.1 are considered problematic. The function `MissingRate` and `plotMissingRate` calculate and plot the sample missing rate respectively.
+Samples with missing rate > 0.1 are considered problematic. The function `MissingRate` and `plotQC(QCstep = "MissingRate")` calculate and plot the sample missing rate respectively.
 
 The result from sample missing rate check contains three columns: sample name, sample missing rate, and an indicator of whether the sample has a missing rate greater than 0.1. The value of the `outlier` column is set to NA for benchmark samples. When running the QC process through the wrap-up function `sampleQC`, problematic samples identified in each QC step are automatically remove before getting to the next step. However when a QC step is executed separately, users need to specify the list of problematic samples to be removed using the `remove.samples` option.
 
@@ -119,16 +119,16 @@ seqfile <- MissingRate(seqfile, remove.samples=NULL)
 res.mr <- QCresult(seqfile)$MissingRate
 tail(res.mr)
 ```
-The function `plotMissingRate` generates the plot for the sample missing rate, where the problematic samples with missing rate greater than 0.1 are highlighted in the plot. The default plot generated is not interactive. Users can generate the interactive plot in each QC step by specifying the `interactive` argument to be TRUE. The interactive plot allows users to visually inspect the QC result by putting the cursor on samples of interest. 
+The function `plotQC(QCstep = "MissingRate")` generates the plot for the sample missing rate, where the problematic samples with missing rate greater than 0.1 are highlighted in the plot. The default plot generated is not interactive. Users can generate the interactive plot in each QC step by specifying the `interactive` argument to be TRUE. The interactive plot allows users to visually inspect the QC result by putting the cursor on samples of interest. 
 
 ```{r plot.mr}
-plotMissingRate(seqfile)
+plotQC(seqfile, QCstep = "MissingRate")
 ```
 In this plot, all five samples in the study cohort have missing rate of zero.
 
 ## Sex check
 
-After filtering out the pseudo-autosomal region in X chromosome, we calculate the sample inbreeding coefficient with variants on X chromosome for all samples in the study cohort and for benchmark samples of the same population as the study cohort.  The function `SexCheck` predicts the sample gender and `plotSexCheck` draws the plot for X chromosome inbreeding coefficients.    
+After filtering out the pseudo-autosomal region in X chromosome, we calculate the sample inbreeding coefficient with variants on X chromosome for all samples in the study cohort and for benchmark samples of the same population as the study cohort.  The function `SexCheck` predicts the sample gender and `plotQC(QCstep = "SexCheck")` draws the plot for X chromosome inbreeding coefficients.    
 
 The result contains sample name, reported gender, X chromosome inbreeding coefficient, and predicted gender. Samples are predicted to be female or male if the inbreeding coefficient is below 0.2, or greater than 0.8. The samples with discordant reported gender and predicted gender are considered as problematic. When the inbreeding coefficient is within the range of [0.2, 0.8], "0" will be shown in the column of `pred.sex` to indicate ambiguous gender, which won't be considered as problematic. 
 
@@ -139,16 +139,16 @@ seqfile <- SexCheck(seqfile, remove.samples=NULL)
 res.sexc <- QCresult(seqfile)$SexCheck
 tail(res.sexc)
 ```
-The function `plotSexCheck` generates the plot  for the inbreeding coefficient on X chromosome where samples are labeled with different color according to their self-reported gender. If there is any sample detected to be gender mismatched by SeqSQC, it will be highlighted with a red circle. 
+The function `plotQC(QCstep = "SexCheck")` generates the plot  for the inbreeding coefficient on X chromosome where samples are labeled with different color according to their self-reported gender. If there is any sample detected to be gender mismatched by SeqSQC, it will be highlighted with a red circle. 
 
 ```{r plot.sexc}
-plotSexCheck(seqfile)
+plotQC(seqfile, QCstep = "SexCheck")
 ```
 In this plot, none of the five samples in the study cohort have dis-concordant self-reported and predicted genders.
 
 ## Inbreeding check
 
-Using LD-pruned autosomal variants, we calculate the inbreeding coefficient for each sample in the study cohort and for benchmark samples of the same population as the study cohort. Samples with inbreeding coefficients that are five standard deviations beyond the mean are considered problematic. The function `Inbreeding` and `plotInbreeding` calculates and plots the inbreeding coefficients respectively.
+Using LD-pruned autosomal variants, we calculate the inbreeding coefficient for each sample in the study cohort and for benchmark samples of the same population as the study cohort. Samples with inbreeding coefficients that are five standard deviations beyond the mean are considered problematic. The function `Inbreeding` and `plotQC(QCstep = "Inbreeding")` calculates and plots the inbreeding coefficients respectively.
 
 The result contains sample name, inbreeding coefficient, and an indicator of whether the inbreeding coefficient is five standard deviation beyond the mean. For Benchmark samples the indicator column is set to be "NA".
 
@@ -159,16 +159,16 @@ seqfile <- Inbreeding(seqfile, remove.samples=NULL)
 res.inb <- QCresult(seqfile)$Inbreeding
 tail(res.inb)
 ```
-The function `plotInbreeding` generates the plot for the inbreeding coefficient. Problematic samples with extreme inbreeding coefficients will be highlighted in the plot. 
+The function `plotQC(QCstep = "Inbreeding")` generates the plot for the inbreeding coefficient. Problematic samples with extreme inbreeding coefficients will be highlighted in the plot. 
 
 ```{r plot.inb}
-plotInbreeding(seqfile)
+plotQC(seqfile, QCstep = "Inbreeding")
 ```
 In this plot, none of the five samples in the study cohort have extreme inbreeding coefficients. 
 
 ## IBD check
 
-Using LD-pruned autosomal variants, we calculate the IBD coefficients for all sample pairs. we then predict related sample pairs in study cohort by using the support vector machine (SVM) method with linear kernel and the known relatedness embedded in benchmark data as training set. All predicted related pairs are also required to have coefficient of kinship ≥ 0.08. The sample with higher missing rate in each related pair is selected for removal from further analysis. The function `IBD` calculates the IBD coefficients for each sample pair and predicts the relatedness for samples in the study cohort. The function `plotIBD` draws the descent coefficients, K0 and K1, for each pair.
+Using LD-pruned autosomal variants, we calculate the IBD coefficients for all sample pairs. we then predict related sample pairs in study cohort by using the support vector machine (SVM) method with linear kernel and the known relatedness embedded in benchmark data as training set. All predicted related pairs are also required to have coefficient of kinship ≥ 0.08. The sample with higher missing rate in each related pair is selected for removal from further analysis. The function `IBD` calculates the IBD coefficients for each sample pair and predicts the relatedness for samples in the study cohort. The function `plotQC(QCstep = "IBD")` draws the descent coefficients, K0 and K1, for each pair.
 
 The result contains sample names, the descent coefficients k0, k1 and kinship, self-reported relationship and predicted relationship for each pair of samples. Sample pairs with discordant self-reported and predicted relationship are considered as problematic.
 
@@ -179,10 +179,10 @@ seqfile <- IBD(seqfile, remove.samples=NULL)
 res.ibd <- QCresult(seqfile)$IBD
 head(res.ibd)
 ```
-The function `plotIBD` draws the descent coefficients k0 and k1 for each sample pair. The relationship for each sample pair are labelled by different colors. If there is any problematic sample pair detected to be  cryptically related by SeqSQC, it will be highlighted with a red circle. 
+The function `plotQC(QCstep = "IBD")` draws the descent coefficients k0 and k1 for each sample pair. The relationship for each sample pair are labelled by different colors. If there is any problematic sample pair detected to be  cryptically related by SeqSQC, it will be highlighted with a red circle. 
 
 ```{r plot.ibd}
-plotIBD(seqfile)
+plotQC(seqfile, QCstep = "IBD")
 ```
 In this plot, none of the five samples in the study cohort have cryptic relationship with each other.  
 
@@ -200,16 +200,16 @@ res.pca <- QCresult(seqfile)$PCA
 tail(res.pca)
 ```
 
-The function `plotPop` generates the plot of first two principle components for each sample. Samples with different population are labelled by different colors. If there is any population outlier detected by SeqSQC, it will be highlighted with a red circle. 
+The function `plotQC(QCstep = "PCA")` generates the plot of first two principle components for each sample. Samples with different population are labelled by different colors. If there is any population outlier detected by SeqSQC, it will be highlighted with a red circle. 
 
 ```{r plot.pca}
-plotPop(seqfile)
+plotQC(seqfile, QCstep = "PCA")
 ```
 
 In the following interactive plot, the intended population outlier `HG02585` was grouped closer to the AFR benchmark samples, and far from the other four EUR samples. Users could easily pick it out and remove it from downstream analysis. 
 
-```{r plot.pca.inter, eval=TRUE}
-plotPop(seqfile, interactive=TRUE)
+```{r plot.pca.inter, eval=TRUE, warning=FALSE}
+plotQC(seqfile, QCstep = "PCA", interactive=TRUE)
 ```
 
 # Summary of QC results
@@ -220,6 +220,7 @@ The SeqSQC function `ProblemList` generates a data frame including all problemat
 
 ```{r problist}
 problemList(seqfile)
+save(seqfile, file="seqfile.Rdata")
 ```
 
 ## reporting of results

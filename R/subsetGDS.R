@@ -1,6 +1,10 @@
 
 subsetGDS <- function(gds, output.gds=NULL, sample.idx=NULL, snp.idx=NULL){
 
+    if (!inherits(gds, "gds.class")){
+        return("object should inherit from 'gds.class'.")
+    }
+
     ## when both "sample.idx" and "snp.idx" is defined, we remove snps first, and then remove samples, and then remove corresponding homozygous ref sites. 
 
     filepath <- gds$filename

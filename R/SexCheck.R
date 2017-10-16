@@ -30,31 +30,29 @@ SexCheck <- function(seqfile, remove.samples=NULL, missing.rate = 0.1, ss.cutoff
     message("calculating sex inbreeding ...")
     
     gfile <- SeqOpen(seqfile, readonly=TRUE)
-    samples <- read.gdsn(index.gdsn(gfile, "sample.id"))
-    sampleanno <- read.gdsn(index.gdsn(gfile, "sample.annot"))
 
-    snp.chr <- read.gdsn(index.gdsn(gfile, "snp.chromosome"))
-    snp.pos <- read.gdsn(index.gdsn(gfile, "snp.position"))
-    snps <- read.gdsn(index.gdsn(gfile, "snp.id"))
+    nds <- c("sample.id", "sample.annot", "snp.chromosome", "snp.position", "snp.id") 
+    allnds <- lapply(nds, function(x) read.gdsn(index.gdsn(gfile, x)))
+    names(allnds) <- c("samples", "sampleanno", "snp.chr", "snp.pos", "snps")
 
-    ## sample filters. (remove prespecified "remove.samples", and only keep samples within the study population)
-    study.pop <- unique(sampleanno[sampleanno$group == "study", "population"])
+     ## sample filters. (remove prespecified "remove.samples", and only keep samples within the study population)
+    study.pop <- unique(allnds$sampleanno[allnds$sampleanno$group == "study", "population"])
     if(length(study.pop) > 1) stop("Study samples should be single population, please prepare input file accordingly.")
 
     if(study.pop == "ASN") study.pop <- c("EAS", "SAS", "ASN")
     
     if(!is.null(remove.samples)){
-        flag <- sampleanno$population %in% study.pop & !samples %in% remove.samples
+        flag <- allnds$sampleanno$population %in% study.pop & !allnds$samples %in% remove.samples
     }else{
-        flag <- sampleanno$population %in% study.pop
+        flag <- allnds$sampleanno$population %in% study.pop
     }
-    sample.sex <- samples[flag]
+    sample.sex <- allnds$samples[flag]
         
     ## SNP filters. (only keep X variants, and remove X variants in pseudo-autosomal region.)
-    flag <- snp.chr == "X"
-    snp.x <- snps[flag]
-    snp.chr.x <- snp.chr[flag]
-    snp.pos.x <- snp.pos[flag]
+    flag <- allnds$snp.chr == "X"
+    snp.x <- allnds$snps[flag]
+    snp.chr.x <- allnds$snp.chr[flag]
+    snp.pos.x <- allnds$snp.pos[flag]
 
     ## remove pseudo-autosomal region in X chromosome.
     grx <- GRanges(snp.chr.x, IRanges(snp.pos.x, snp.pos.x))
@@ -73,18 +71,13 @@ SexCheck <- function(seqfile, remove.samples=NULL, missing.rate = 0.1, ss.cutoff
     }
     
     ## extract gender info
-    sex <- sampleanno[match(sample.sex, sampleanno[,1]), 3]
+    sex <- allnds$sampleanno[match(sample.sex, allnds$sampleanno[,1]), 3]
     res.sexcheck <- data.frame(sample=sample.sex, sex=sex, sexinb=sexinb$inbreeding, stringsAsFactors=FALSE)
     
     ## gender prediction.
     pred <- ifelse(res.sexcheck$sexinb > 0.8, "male", ifelse(res.sexcheck$sexinb < 0.2, "female", 0))
     res.sexcheck$pred.sex <- pred
     closefn.gds(gfile)
-    
-    ## ## remove problem samples.
-    ## type <- sampleanno[match(res.sexcheck$sample, sampleanno[,1]), 5]
-    ## remove <- ifelse(res.sexcheck$sex != res.sexcheck$pred.sex & type == "study", "Yes", "No")
-    ## res.sexcheck$remove <- remove
     
     ## return the SeqSQC file with updated QC results.
     a <- QCresult(seqfile)

@@ -28,7 +28,7 @@ We have a total of `r nrow(anno.study)` study samples from the population of `r 
 Here is the list of all QC steps we have done. 
 
 ```{r, echo=FALSE}
-(qcresults <- names(seqfile@QCresult)[names(seqfile@QCresult) %in% c("MissingRate", "SexCheck", "Inbreeding", "IBD", "PCA")])
+(qcresults <- names(QCresult(seqfile))[names(QCresult(seqfile)) %in% c("MissingRate", "SexCheck", "Inbreeding", "IBD", "PCA")])
 ```
 
 ## 2.1 sample missing rate check
@@ -37,12 +37,11 @@ Samples with high missing rate (>0.1) are marked as "Yes" in the column of `outl
 
 ```{r, echo=FALSE}
 if("MissingRate" %in% qcresults){
-    res.mr <- seqfile@QCresult$MissingRate
-    ## tail(res.mr)
-    ## table(res.mr$outlier)
-    plotMissingRate(seqfile, interactive = interactive)    
+    res.mr <- QCresult(seqfile)$MissingRate
+    plotQC(seqfile, QCstep = "MissingRate", interactive = interactive)    
 }else{
     print("MissingRate check is not done yet!")
+    res.mr <- NULL
 }
 ```
 There are `r sum(res.mr$outlier %in% "Yes")` problematic samples due to high missing rate.
@@ -53,14 +52,15 @@ Samples are predicted to be female or male if the inbreeding coefficient is belo
 
 ```{r, echo=FALSE}
 if("SexCheck" %in% qcresults){
-    res.sex <- seqfile@QCresult$SexCheck
+    res.sex <- QCresult(seqfile)$SexCheck
     tail(res.sex)
     table(res.sex$sex, res.sex$pred.sex)
     ## sample with gender mismatch
     (prob.sex <- res.sex[res.sex$sex == "female" & res.sex$pred.sex == "male" | res.sex$sex == "male" & res.sex$pred.sex == "female", ])
-    plotSexCheck(seqfile, interactive = interactive)
+    plotQC(seqfile, QCstep = "SexCheck", interactive = interactive)
 }else{
     print("Sex check is not done yet!")
+    prob.sex <- NULL
 }
 ```
 There are `r nrow(prob.sex)` problematic samples due to gender mismatch.   
@@ -73,14 +73,15 @@ The estimate of inbreeding coefficient could be negative due to random sampling 
 
 ```{r, echo=FALSE}
 if("Inbreeding" %in% qcresults){
-    res.inb <- seqfile@QCresult$Inbreeding
+    res.inb <- QCresult(seqfile)$Inbreeding
     tail(res.inb)
     table(res.inb$outlier.5sd)
     ## sample with inbreeding outlier
     (prob.inb <- res.inb[res.inb$outlier.5sd == "Yes" & !is.na(res.inb$outlier.5sd), ])
-    plotInbreeding(seqfile, interactive = interactive)
+    plotQC(seqfile, QCstep = "Inbreeding", interactive = interactive)
 }else{
     print("Inbreeding outlier check is not done yet!")
+    prob.inb <- NULL
 }
 ```
 There are `r nrow(prob.inb)` problematic samples that are inbreeding outliers.   
@@ -93,14 +94,15 @@ Sample pairs with discordant self-reported and predicted relationship are consid
 
 ```{r, echo=FALSE}
 if("IBD" %in% qcresults){
-    res.ibd <- seqfile@QCresult$IBD
+    res.ibd <- QCresult(seqfile)$IBD
     head(res.ibd)
     table(res.ibd$label, res.ibd$pred.label)
     ## sample with cryptic relatedness
     (prob.ibd <- IBDRemove(seqfile))
-    plotIBD(seqfile, interactive = interactive)
+    plotQC(seqfile, QCstep = "IBD", interactive = interactive)
 }else{
     print("IBD check is not done yet!")
+    prob.ibd <- NULL
 }
 ```
 There are `r nrow(prob.ibd$ibd.pairs)` problematic sample pairs with cryptic relationship.
@@ -113,14 +115,15 @@ Samples with discordant predicted and self-reported population groups are consid
 
 ```{r, echo=FALSE}
 if("PCA" %in% qcresults){
-    res.pca <- seqfile@QCresult$PCA
+    res.pca <- QCresult(seqfile)$PCA
     tail(res.pca)
     studyid <- sampleanno[ind.study, 1]
     res.study <- res.pca[res.pca$sample %in% studyid, ]
     (prob.pca <- res.study[res.study$pop != res.study$pred.pop, ])
-    plotPop(seqfile, interactive = interactive)
+    plotQC(seqfile, QCstep = "PCA", interactive = interactive)
 }else{
     print("Population outlier check is not done yet!")
+    prob.pca <- NULL
 }
 ```
 There are `r nrow(prob.pca)` problematic samples that are detected to be population outliers.   
@@ -130,8 +133,9 @@ There are `r nrow(prob.pca)` problematic samples that are detected to be populat
 Here is the summary list of problematic samples. Problematic samples are identified by SeqSQC due to different reasons of high missing rate, gender mismatch, inbreeding outlier, cryptic relationship or population outlier.
 
 ```{r, echo=FALSE}
-if ("problem.list" %in% names(seqfile@QCresult)){
-    (probs <- seqfile@QCresult$problem.list)
+if ("problem.list" %in% names(QCresult(seqfile))){
+    (probs <- QCresult(seqfile)$problem.list)
+    (prob.remove <- QCresult(seqfile)$remove.list)
 }else{
     (probs <- problemList(seqfile))
 }

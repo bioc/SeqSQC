@@ -34,37 +34,42 @@ PCACheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, missing.rat
     message("calculating sample principle components ...")
     
     gfile <- SeqOpen(seqfile, readonly=TRUE)
-    samples <- read.gdsn(index.gdsn(gfile, "sample.id"))
-    snp.id <- read.gdsn(index.gdsn(gfile, "snp.id"))
-    sampleanno <- read.gdsn(index.gdsn(gfile, "sample.annot"))
+
+    nds <- c("sample.id", "sample.annot", "snp.id") 
+    allnds <- lapply(nds, function(x) read.gdsn(index.gdsn(gfile, x)))
+    names(allnds) <- c("samples", "sampleanno", "snp.id")
+    
+    ## samples <- read.gdsn(index.gdsn(gfile, "sample.id"))
+    ## snp.id <- read.gdsn(index.gdsn(gfile, "snp.id"))
+    ## sampleanno <- read.gdsn(index.gdsn(gfile, "sample.annot"))
 
     ## remove samples for family related samples from 1kg, and other problematic samples from previous QC steps.
-    study.pop <- unique(sampleanno[sampleanno$group == "study", "population"])
+    study.pop <- unique(allnds$sampleanno[allnds$sampleanno$group == "study", "population"])
     if(length(study.pop) > 1) stop("Study samples should be single population, please prepare input file accordingly.")
     if(study.pop == "ASN") study.pop <- c("EAS", "SAS", "ASN")
     
-    sample.relate <- sampleanno[sampleanno[,5]=="fam", 1]
+    sample.relate <- allnds$sampleanno[allnds$sampleanno[,5]=="fam", 1]
     
     if(!is.null(remove.samples)){
-        flag <- (sampleanno$group != "study" | sampleanno$population %in% study.pop) & !samples %in% c(sample.relate, remove.samples)
+        flag <- (allnds$sampleanno$group != "study" | allnds$sampleanno$population %in% study.pop) & ! allnds$samples %in% c(sample.relate, remove.samples)
     }else{
-        flag <- (sampleanno$group != "study" | sampleanno$population %in% study.pop) & !samples %in% sample.relate
+        flag <- (allnds$sampleanno$group != "study" | allnds$sampleanno$population %in% study.pop) & ! allnds$samples %in% sample.relate
     }
-    sample.pca <- samples[flag]
+    sample.pca <- allnds$samples[flag]
     
     ## add hwe filter for variants when sample size >= 300.
     if (length(sample.pca) >= ss.cutoff){
         snp.hwe <- snpgdsHWE(gfile, sample.id=sample.pca)
         hwe.idx <- snp.hwe > hwe & !is.na(snp.hwe)
     }else{
-        hwe.idx <- rep(TRUE, length(snp.id))
+        hwe.idx <- rep(TRUE, length(allnds$snp.id))
     }
     
     ## use LDpruned SNPs if LDprune == TRUE.
     if(LDprune){
         ld <- read.gdsn(index.gdsn(gfile, "snp.annot/LDprune"))
     }else{
-        ld <- rep(TRUE, length(snp.id))
+        ld <- rep(TRUE, length(allnds$snp.id))
     }
     
     ## SNP filters in together. (HWE+LDprune)
@@ -72,30 +77,32 @@ PCACheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, missing.rat
     
     ## use maf filter if sample size >= 300. 
     if (length(sample.pca) >= ss.cutoff){
-        pca <- snpgdsPCA(gfile, sample.id=sample.pca, snp.id=snp.id[snp.idx], missing.rate=missing.rate, maf=maf, ...)
+        pca <- snpgdsPCA(gfile, sample.id=sample.pca, snp.id=allnds$snp.id[snp.idx], missing.rate=missing.rate, maf=maf, ...)
     }else{
-        pca <- snpgdsPCA(gfile, sample.id=sample.pca, snp.id=snp.id[snp.idx], missing.rate=missing.rate, maf=NaN, ...)
+        pca <- snpgdsPCA(gfile, sample.id=sample.pca, snp.id=allnds$snp.id[snp.idx], missing.rate=missing.rate, maf=NaN, ...)
     }   
     
     ## Make a data.frame and save result.
-    res.pca <- data.frame(sample = pca$sample.id,
-                          pop = factor(sampleanno[,2])[match(pca$sample.id, sampleanno[,1])],
-                          type = factor(sampleanno[,5])[match(pca$sample.id, sampleanno[,1])],
-                          eval = pca$eigenval,
-                          ## pca$eigenvect,
-                          EV1 = pca$eigenvect[,1],    # the first eigenvector
-                          EV2 = pca$eigenvect[,2],    # the second eigenvector
-                          EV3 = pca$eigenvect[,3],
-                          EV4 = pca$eigenvect[,4],
-                          EV5 = pca$eigenvect[,5],
-                          EV6 = pca$eigenvect[,6],
-                          EV7 = pca$eigenvect[,7],
-                          EV8 = pca$eigenvect[,8],
-                          EV9 = pca$eigenvect[,9],
-                          EV10 = pca$eigenvect[,10], 
-                          stringsAsFactors = FALSE)
+    res.pca <- data.frame(
+        sample = pca$sample.id,
+        pop = factor(allnds$sampleanno[,2])[match(pca$sample.id, allnds$sampleanno[,1])],
+        type = factor(allnds$sampleanno[,5])[match(pca$sample.id, allnds$sampleanno[,1])],
+        eval = pca$eigenval,
+        ## pca$eigenvect,
+        EV1 = pca$eigenvect[,1],    # the first eigenvector
+        EV2 = pca$eigenvect[,2],    # the second eigenvector
+        EV3 = pca$eigenvect[,3],
+        EV4 = pca$eigenvect[,4],
+        EV5 = pca$eigenvect[,5],
+        EV6 = pca$eigenvect[,6],
+        EV7 = pca$eigenvect[,7],
+        EV8 = pca$eigenvect[,8],
+        EV9 = pca$eigenvect[,9],
+        EV10 = pca$eigenvect[,10], 
+        stringsAsFactors = FALSE
+    )
     ## Fst estimation
-    ## pop.code <- factor(sampleanno[,2][match(pca$sample.id, sampleanno[,1])])
+    ## pop.code <- factor(allnds$sampleanno[,2][match(pca$sample.id, allnds$sampleanno[,1])])
     ## a <- snpgdsFst(gfile, sample.id=sample.pca, population=pop.code, method="W&C84")
     
     ## ++++++++++++
@@ -104,10 +111,6 @@ PCACheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, missing.rat
     
     ## use "svm" for classification, use the first 4 EigenVectors for prediction.
     ind.pop <- res.pca$type=="pop"
-    ## if(EV == 10){
-    ##     model <- svm(pop ~ EV1 + EV2 + EV3 + EV4 + EV5 + EV6 + EV7 + EV8 + EV9 + EV10, data=res.pca[ind.pop, ], probability=FALSE, kernel="linear")
-    ##     pred.pop <- predict(model, res.pca[, 5:14], probability=FALSE)
-    ## }else if(EV == 4){
     model <- svm(pop ~ EV1 + EV2 + EV3 + EV4, data=res.pca[ind.pop, ], probability=FALSE, kernel="linear")
     pred.pop <- predict(model, res.pca[, 5:8], probability=FALSE)
     ## }
@@ -119,12 +122,6 @@ PCACheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, missing.rat
     }
     ##res.pca <- cbind(res.pca, pred.pop, attributes(pred.pop)$probabilities)
     closefn.gds(gfile)
-
-    ## if("PCA" %in% ls.gdsn(index.gdsn(gfile, "results"))){
-    ##     delete.gdsn(index.gdsn(gfile, "results/PCA"), force=TRUE)
-    ## }
-    ## add.gdsn(results, "PCA", res.pca)
-    ## return(gfile)
 
     ## return the SeqSQC file with updated gds file and QC result.
     a <- QCresult(seqfile)

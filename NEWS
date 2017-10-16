@@ -1,3 +1,23 @@
+CHANGE IN VERSION 0.99.7
+----------------------------
+
+o Added checking for input in subsetGDS.
+o Removed commented code for subsetGDS.
+o SeqSQCclass renamed as SeqSQC.
+o mergeGDS.R. using lapply for some repeated functions like "read.gdsn(index.gdsn())". In SexCheck, Inbreeding, IBDCheck, PCACheck.  
+o sampleQC: 1. check the class of vfile for SeqSQC file or vcf/plink file, instead of using vfile / sfile. 
+o plotting function writing separately (not export), wrapper with plotQC().   
+o Removed IBDRemoveAll.R. Will check IBD for all sample pairs (including benchmark samples) by adding argument "all" in "IBDRemove.R". 
+o debugged warning messages from "LoadVfile" and using "rbokeh". 
+
+CHANGE IN VERSION 0.99.6
+----------------------------
+o modified SeqSQCclass to SeqSQC (not in vignette..).
+
+CHANGE IN VERSION 0.99.5
+----------------------------
+o Installed BiocGenerics locally.
+
 CHANGE IN VERSION 0.99.4
 ----------------------------
 

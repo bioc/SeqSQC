@@ -23,8 +23,6 @@
 #' tail(res.inb)
 #' @author Qian Liu \email{qliu7@@buffalo.edu}
 
-
-
 Inbreeding <- function(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=0.1, ss.cutoff = 300, maf = 0.01, hwe = 1e-6, ...){
 
     ## check
@@ -34,22 +32,23 @@ Inbreeding <- function(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=
     message("calculating inbreeding coefficients ...")
     
     gfile <- SeqOpen(seqfile, readonly=TRUE)
-    samples <- read.gdsn(index.gdsn(gfile, "sample.id"))
-    sampleanno <- read.gdsn(index.gdsn(gfile, "sample.annot"))   
-    snp.id <- read.gdsn(index.gdsn(gfile, "snp.id"))    
+
+    nds <- c("sample.id", "sample.annot", "snp.id") 
+    allnds <- lapply(nds, function(x) read.gdsn(index.gdsn(gfile, x)))
+    names(allnds) <- c("samples", "sampleanno", "snp.id")
     
     ## sample filters. (remove prespecified "remove.samples", and only keep samples within the study population)
-    study.pop <- unique(sampleanno[sampleanno$group == "study", "population"])
+    study.pop <- unique(allnds$sampleanno[allnds$sampleanno$group == "study", "population"])
     if(length(study.pop) > 1) stop("Study samples should be single population, please prepare input file accordingly.")
     
     if(study.pop == "ASN") study.pop <- c("EAS", "SAS", "ASN")
     
     if(!is.null(remove.samples)){
-        flag <- sampleanno$population %in% study.pop & !samples %in% remove.samples
+        flag <- allnds$sampleanno$population %in% study.pop & !allnds$samples %in% remove.samples
     }else{
-        flag <- sampleanno$population %in% study.pop
+        flag <- allnds$sampleanno$population %in% study.pop
     }
-    sample.inb <- samples[flag]
+    sample.inb <- allnds$samples[flag]
     
     ## calculate population-specific inbreeding coefficient.
 
@@ -58,14 +57,14 @@ Inbreeding <- function(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=
         snp.hwe <- snpgdsHWE(gfile, sample.id=sample.inb)
         hwe.idx <- snp.hwe > hwe & !is.na(snp.hwe)
     }else{
-        hwe.idx <- rep(TRUE, length(snp.id))
+        hwe.idx <- rep(TRUE, length(allnds$snp.id))
     }
     
     ## use LDpruned SNPs if LDprune == TRUE.
     if(LDprune){
         ld <- read.gdsn(index.gdsn(gfile, "snp.annot/LDprune"))
     }else{
-        ld <- rep(TRUE, length(snp.id))
+        ld <- rep(TRUE, length(allnds$snp.id))
     }
     
     ## SNP filters in together. (HWE+LDprune)
@@ -73,9 +72,9 @@ Inbreeding <- function(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=
     
     ## use maf filter if sample size >= 300.
     if (length(sample.inb) >= ss.cutoff){ 
-        rv <- snpgdsIndInb(gfile, snp.id=snp.id[snp.idx], sample.id=sample.inb, maf=maf, missing.rate=missing.rate, ...)
+        rv <- snpgdsIndInb(gfile, snp.id=allnds$snp.id[snp.idx], sample.id=sample.inb, maf=maf, missing.rate=missing.rate, ...)
     }else{
-        rv <- snpgdsIndInb(gfile, snp.id=snp.id[snp.idx], sample.id=sample.inb, maf=NaN, missing.rate=missing.rate, ...)
+        rv <- snpgdsIndInb(gfile, snp.id=allnds$snp.id[snp.idx], sample.id=sample.inb, maf=NaN, missing.rate=missing.rate, ...)
     }
     
     ## outliers
@@ -87,7 +86,7 @@ Inbreeding <- function(seqfile, remove.samples=NULL, LDprune=TRUE, missing.rate=
     res.inb <- data.frame(sample=sample.inb,  inbreeding=rv$inbreeding, outlier.5sd, stringsAsFactors=FALSE)
 
     ## set all outlier.* to be "NA" for 1000g benchmark samples. (We only use the 1000g samples to help identify inbreeding outliers from study cohort, and calculate inbreeding coef together with study samples within the sample population)
-    skip.idx <- sampleanno[match(sample.inb, sampleanno$sample), 5] != "study"
+    skip.idx <- allnds$sampleanno[match(sample.inb, allnds$sampleanno$sample), 5] != "study"
     res.inb[skip.idx, "outlier.5sd"] <- NA
     closefn.gds(gfile)
     

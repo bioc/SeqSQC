@@ -39,35 +39,37 @@ IBDCheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, kin.filter 
     message("calculating pairwise IBD ...")
     
     gfile <- SeqOpen(seqfile, readonly=TRUE)
-    samples <- read.gdsn(index.gdsn(gfile, "sample.id"))       
-    sampleanno <- read.gdsn(index.gdsn(gfile, "sample.annot"))
-    studyid <- sampleanno[sampleanno[,5] == "study", 1]
-    snp.id <- read.gdsn(index.gdsn(gfile, "snp.id"))    
 
+    nds <- c("sample.id", "sample.annot", "snp.id") 
+    allnds <- lapply(nds, function(x) read.gdsn(index.gdsn(gfile, x)))
+    names(allnds) <- c("samples", "sampleanno", "snp.id")
+        
+    studyid <- allnds$sampleanno[allnds$sampleanno[,5] == "study", 1]
+    
     ## sample filters. (remove prespecified "remove.samples", and only keep samples within the study population and benchmark data)
-    study.pop <- unique(sampleanno[sampleanno$group == "study", "population"])
+    study.pop <- unique(allnds$sampleanno[allnds$sampleanno$group == "study", "population"])
     if(length(study.pop) > 1) stop("Study samples should be single population, please prepare input file accordingly.")
     
     if(!is.null(remove.samples)){
-        flag <- (sampleanno$group != "study" | sampleanno$population == study.pop) & !samples %in% remove.samples
+        flag <- (allnds$sampleanno$group != "study" | allnds$sampleanno$population == study.pop) & !allnds$samples %in% remove.samples
     }else{
-        flag <- sampleanno$group != "study" | sampleanno$population == study.pop
+        flag <- allnds$sampleanno$group != "study" | allnds$sampleanno$population == study.pop
     }
-    sample.ibd <- samples[flag]
+    sample.ibd <- allnds$samples[flag]
     
     ## add hwe filter for variants when sample size >= 300.
     if (length(sample.ibd) >= ss.cutoff){
         snp.hwe <- snpgdsHWE(gfile, sample.id=sample.ibd)
         hwe.idx <- snp.hwe > hwe & !is.na(snp.hwe)
     }else{
-        hwe.idx <- rep(TRUE, length(snp.id))
+        hwe.idx <- rep(TRUE, length(allnds$snp.id))
     }
     
     ## use LDpruned SNPs if LDprune == TRUE.
     if(LDprune){
         ld <- read.gdsn(index.gdsn(gfile, "snp.annot/LDprune"))
     }else{
-        ld <- rep(TRUE, length(snp.id))
+        ld <- rep(TRUE, length(allnds$snp.id))
     }
     
     ## SNP filters in together. (HWE+LDprune)
@@ -75,9 +77,9 @@ IBDCheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, kin.filter 
     
     ## use maf filter if sample size >= 300.
     if (length(sample.ibd) >= ss.cutoff){ 
-        IBD.res <- snpgdsIBDMoM(gfile, sample.id=sample.ibd, snp.id=snp.id[snp.idx], kinship=TRUE, maf=maf, missing.rate=missing.rate, ...)
+        IBD.res <- snpgdsIBDMoM(gfile, sample.id=sample.ibd, snp.id=allnds$snp.id[snp.idx], kinship=TRUE, maf=maf, missing.rate=missing.rate, ...)
     }else{
-        IBD.res <- snpgdsIBDMoM(gfile, sample.id=sample.ibd, snp.id=snp.id[snp.idx], kinship=TRUE, maf=NaN, missing.rate=missing.rate, ...)
+        IBD.res <- snpgdsIBDMoM(gfile, sample.id=sample.ibd, snp.id=allnds$snp.id[snp.idx], kinship=TRUE, maf=NaN, missing.rate=missing.rate, ...)
     }
     
     k0 <- IBD.res$k0

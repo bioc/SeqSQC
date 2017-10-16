@@ -59,7 +59,7 @@ LoadVfile <- function(vfile, output, capture.region=NULL, sample.annot=NULL, LDp
         }
     }else{
         stop("wrong file type")
-0    }
+    }
     ## vtmp <- tempfile(tmpdir=tmpdir)
     ## file.copy(study.gds, vtmp)
     studycohort <- openfn.gds(study.gds, readonly=FALSE) 
@@ -164,11 +164,14 @@ LoadVfile <- function(vfile, output, capture.region=NULL, sample.annot=NULL, LDp
     unlink(study.gds)
     
     fn <- merge.out$filename
-    samples <- read.gdsn(index.gdsn(merge.out, "sample.id"))
-    snps <- read.gdsn(index.gdsn(merge.out, "snp.id"))
-    sampleanno <- read.gdsn(index.gdsn(merge.out, "sample.annot")) 
+
+    nds <- c("sample.id", "sample.annot", "snp.id") 
+    allnds <- lapply(nds, function(x) read.gdsn(index.gdsn(merge.out, x)))
+    names(allnds) <- c("samples", "sampleanno", "snps")
+    
+    ## sampleanno <- read.gdsn(index.gdsn(merge.out, "sample.annot")) 
     closefn.gds(merge.out)
 
-    output <- SeqSQC(gdsfile = fn, QCresult = SimpleList(dimension = c(length(samples), length(snps)), sample.annot = sampleanno))
+    output <- SeqSQC(gdsfile = fn, QCresult = SimpleList(dimension = c(length(allnds$samples), length(allnds$snps)), sample.annot = allnds$sampleanno))
     return(output)
 }
