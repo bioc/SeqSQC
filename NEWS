@@ -1,6 +1,12 @@
+CHANGE IN VERSION 0.99.11
+----------------------------
+- update the `sampleQCReport.Rmd` with `warning=FALSE` for interactive plotting.
+- add default values for `plotQC(QCstep=c())`.  
+
+
 CHANGE IN VERSION 0.99.10
 ----------------------------
--- updated the man for `sampleQC` and `LoadVfile`. 
+- updated the man for `sampleQC` and `LoadVfile`. 
 
 CHANGE IN VERSION 0.99.9
 ----------------------------

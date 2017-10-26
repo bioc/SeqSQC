@@ -56,7 +56,7 @@ load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 gfile <- system.file("extdata", "example.gds", package="SeqSQC")
 seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
 
-seqfile <- sampleQC(vfile = seqfile, output = "testWrapUp", QCreport = FALSE)
+seqfile <- sampleQC(vfile = seqfile, output = "testWrapUp", QCreport = TRUE)
 save(seqfile, file="seqfile.Rdata")
 ```
 Detailed descriptions of data structure and functionality usage of SeqSQC are provided as below. Users are recommended to use these specific QC functions for each QC step if they want to skip any of them by using `sampleQC()`.

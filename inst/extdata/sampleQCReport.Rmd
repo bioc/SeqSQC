@@ -35,7 +35,7 @@ Here is the list of all QC steps we have done.
 
 Samples with high missing rate (>0.1) are marked as "Yes" in the column of `outlier` and should be removed. The value of the `outlier` column is set to "NA" for benchmark samples.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning = FALSE}
 if("MissingRate" %in% qcresults){
     res.mr <- QCresult(seqfile)$MissingRate
     plotQC(seqfile, QCstep = "MissingRate", interactive = interactive)    
@@ -50,7 +50,7 @@ There are `r sum(res.mr$outlier %in% "Yes")` problematic samples due to high mis
 
 Samples are predicted to be female or male if the inbreeding coefficient is below 0.2, or greater than 0.8. The samples with discordant reported gender and predicted gender are considered as problematic. When the inbreeding coefficient is within the range of [0.2, 0.8], “0” will be shown in the column of `pred.sex` to indicate ambiguous gender, which would not be considered as problematic.  
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning = FALSE}
 if("SexCheck" %in% qcresults){
     res.sex <- QCresult(seqfile)$SexCheck
     tail(res.sex)
@@ -71,7 +71,7 @@ By using LD-pruned variants (by default), we calculate the inbreeding coefficien
 
 The estimate of inbreeding coefficient could be negative due to random sampling error, but a strongly negative value could reflect other factors, e.g. sample contamination events.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning = FALSE}
 if("Inbreeding" %in% qcresults){
     res.inb <- QCresult(seqfile)$Inbreeding
     tail(res.inb)
@@ -92,7 +92,7 @@ By using LD-pruned variants (by default), we calculate the IBD coefficients for 
 
 Sample pairs with discordant self-reported and predicted relationship are considered as problematic. All predicted related pairs are also required to have coefficient of kinship >= 0.08. The sample with higher missing rate in each related pair is selected for removal from further analysis by function of `IBDRemove`.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning = FALSE}
 if("IBD" %in% qcresults){
     res.ibd <- QCresult(seqfile)$IBD
     head(res.ibd)
@@ -113,7 +113,7 @@ By using LD-pruned variants (by default), and benchmark samples as training data
 
 Samples with discordant predicted and self-reported population groups are considered problematic. The function `PCA` performs the PCA analysis and identifies population outliers in study cohort.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning = FALSE}
 if("PCA" %in% qcresults){
     res.pca <- QCresult(seqfile)$PCA
     tail(res.pca)

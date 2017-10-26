@@ -4,13 +4,14 @@
 \alias{plotQC}
 \title{Plot the QC results for specific QC steps.}
 \usage{
-plotQC(seqfile, QCstep = NULL, interactive = FALSE, sdcoef = 5,
-  pc1 = "EV1", pc2 = "EV2", pairedScatter = FALSE, ...)
+plotQC(seqfile, QCstep = c("MissingRate", "SexCheck", "Inbreeding", "IBD",
+  "PCA"), interactive = FALSE, sdcoef = 5, pc1 = "EV1", pc2 = "EV2",
+  pairedScatter = FALSE, ...)
 }
 \arguments{
 \item{seqfile}{SeqSQC object with QC results.}
 
-\item{QCstep}{which QC step the user want to do plotting.}
+\item{QCstep}{which QC step the user want to do plotting. Takes values of \code{c("MissingRate", "SexCheck", "Inbreeding", "IBD", "PCA")}}
 
 \item{interactive}{whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format.}
 

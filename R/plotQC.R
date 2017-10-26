@@ -2,7 +2,7 @@
 #' 
 #' Plot QC results. 
 #' @param seqfile SeqSQC object with QC results.
-#' @param QCstep which QC step the user want to do plotting. 
+#' @param QCstep which QC step the user want to do plotting. Takes values of \code{c("MissingRate", "SexCheck", "Inbreeding", "IBD", "PCA")} 
 #' @param interactive whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format.
 #' @param sdcoef for inbreeding outlier check, how many standard deviation we need for identification of inbreeding outliers. The default is 5.
 #' @param pc1 the eigenvector on x axis for PCA result. The default is "EV1" for eigenvector 1.
@@ -23,11 +23,13 @@
 #' p
 #' @author Qian Liu \email{qliu7@buffalo.edu}
 
-plotQC <- function(seqfile, QCstep=NULL, interactive=FALSE, sdcoef=5, pc1="EV1", pc2="EV2", pairedScatter=FALSE, ...){
+plotQC <- function(seqfile, QCstep=c("MissingRate", "SexCheck", "Inbreeding", "IBD", "PCA"), interactive=FALSE, sdcoef=5, pc1="EV1", pc2="EV2", pairedScatter=FALSE, ...){
 
     res.qc <- plotQCData(seqfile, QCstep = QCstep)
+
+    ## plotting
+    QCstep <- match.arg(QCstep)
     
-    ## plotting -- MissingRate
     if(QCstep == "MissingRate"){
         p <- plotMissingRate(res.qc, interactive = interactive)
     }else if(QCstep == "SexCheck"){
