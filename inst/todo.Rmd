@@ -3,3 +3,4 @@
 todo: if missing, then run `seqfile <- MissingRate(seqfile)` and extract the missing rate info. -- done!
 - "plotInbreeding", interactive, xlab, ylab, refer to plotSexCheck.  -- done.
 - "dataset_docum.R". to document all files that are under inst/extdata/...  -- done for all 5 files. (except "sampleQCreport.Rmd" and "metadata.csv")
+- "PCACheck.R", add an argumnent of "npcs=4" for the # of pc axis to use for pop prediction in SVM. -- done. 

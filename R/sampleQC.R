@@ -1,29 +1,60 @@
 #' The wrap-up function for sample QC of sequencing/GWAS data.
 #' 
-#' A wrap-up function for sample QC. It reads in the variant genotypes in vcf/PLINK format, merges study cohort with benchmark data, and performs sample QC for the merged dataset.
+#' A wrap-up function for sample QC. It reads in the variant genotypes
+#' in vcf/PLINK format, merges study cohort with benchmark data, and
+#' performs sample QC for the merged dataset.
 #' 
-#' @param vfile vcf or PLINK input file (ped/map/bed/bim/fam with same basename). The default is NULL. Vfile could be a vector of character strings, see details. Could also take file in \code{SeqSQC} object generated from \code{LoadVfile}. 
-#' @param output a character string for name of merged data of SeqSQC object. The \code{dirname(output)} would be used as the directory to save the QC result and plots. The default is \code{sampleqc} in the working directory.
-#' @param capture.region the BED file of sequencing capture regions. The default is NULL. For exome-sequencing data, the capture region file must be provided.
-#' @param sample.annot sample annotation file with 3 columns (with header) in the order of sample id, sample population and sex info. The default is NULL.
-#' @param LDprune whether to use LD-pruned snp set. The default is TRUE.
-#' @param vfile.restrict whether the input vcf or plink file has already been restricted by capture region. The default is FALSE.
-#' @param slide.max.bp the window size of SNPs when calculating linkage disequilibrium. The default is 5e+05. 
-#' @param ld.threshold the r^2 threshold for LD-based SNP pruning if \code{LDprune = TRUE}. The default is 0.3.
-#' @param format.data the data source. The default is \code{NGS} for sequencing data. 
+#' @param vfile vcf or PLINK input file (ped/map/bed/bim/fam with same
+#'     basename). The default is NULL. Vfile could be a vector of
+#'     character strings, see details. Could also take file in
+#'     \code{SeqSQC} object generated from \code{LoadVfile}.
+#' @param output a character string for name of merged data of SeqSQC
+#'     object. The \code{dirname(output)} would be used as the
+#'     directory to save the QC result and plots. The default is
+#'     \code{sampleqc} in the working directory.
+#' @param capture.region the BED file of sequencing capture
+#'     regions. The default is NULL. For exome-sequencing data, the
+#'     capture region file must be provided.
+#' @param sample.annot sample annotation file with 3 columns (with
+#'     header) in the order of sample id, sample population and sex
+#'     info. The default is NULL.
+#' @param LDprune whether to use LD-pruned snp set. The default is
+#'     TRUE.
+#' @param vfile.restrict whether the input vcf or plink file has
+#'     already been restricted by capture region. The default is
+#'     FALSE.
+#' @param slide.max.bp the window size of SNPs when calculating
+#'     linkage disequilibrium. The default is 5e+05.
+#' @param ld.threshold the r^2 threshold for LD-based SNP pruning if
+#'     \code{LDprune = TRUE}. The default is 0.3.
+#' @param format.data the data source. The default is \code{NGS} for
+#'     sequencing data.
 #' @param format.file the data format. The default is \code{vcf}.
-#' @param QCreport Whether to generate the sample QC report in html format.
-#' @param out.report the file name for the sample QC report. The default is \code{report.html}.
-#' @param interactive whether to generate interactive plots in the sample QC report if \code{QCreport = TRUE}.
-#' @param results whether to write out the results for each QC steps in .txt files. The default is TRUE.
-#' @param plotting whether to output the plots for each QC steps in .pdf files. the default is TRUE. 
+#' @param QCreport Whether to generate the sample QC report in html
+#'     format.
+#' @param out.report the file name for the sample QC report. The
+#'     default is \code{report.html}.
+#' @param interactive whether to generate interactive plots in the
+#'     sample QC report if \code{QCreport = TRUE}.
+#' @param results whether to write out the results for each QC steps
+#'     in .txt files. The default is TRUE.
+#' @param plotting whether to output the plots for each QC steps in
+#'     .pdf files. the default is TRUE.
 #' @param ... Arguments to be passed to other methods.
 #' @export
-#' @return a SeqSQC object with the filepath to the gds file which stores the genotype, the summary of samples and variants, and the QCresults including the sample annotation information and all QC results.  
+#' @return a SeqSQC object with the filepath to the gds file which
+#'     stores the genotype, the summary of samples and variants, and
+#'     the QCresults including the sample annotation information and
+#'     all QC results.
 
-#' @details
-#' For \code{vfile} with more than one file names, \code{sampleQC} will merge all dataset together if they all contain the same samples. It is useful to combine genetic/genomic data together if VCF data is divided by chromosomes. \cr
-#' There are 3 columns in \code{sample.annot} file. col 1 is \code{sample} with sample ids, col 2 is \code{population} with values of "AFR/EUR/ASN/EAS/SAS", col 3 is \code{gender} with values of "male/female".
+#' @details For \code{vfile} with more than one file names,
+#'     \code{sampleQC} will merge all dataset together if they all
+#'     contain the same samples. It is useful to combine
+#'     genetic/genomic data together if VCF data is divided by
+#'     chromosomes. \cr There are 3 columns in \code{sample.annot}
+#'     file. col 1 is \code{sample} with sample ids, col 2 is
+#'     \code{population} with values of "AFR/EUR/ASN/EAS/SAS", col 3
+#'     is \code{gender} with values of "male/female".
 #' @importFrom utils write.table
 #' @examples
 #' \dontrun{
@@ -31,17 +62,27 @@
 #' sample.annot <- system.file("extdata", "sampleAnnotation.txt", package="SeqSQC")
 #' cr <- system.file("extdata", "CCDS.Hs37.3.reduced_chr1.bed", package="SeqSQC")
 #' outfile <- file.path(tempdir(), "testWrapUp")
-#' seqfile <- sampleQC(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE)
+#' seqfile <- sampleQC(vfile = infile, output = outfile, capture.region = cr,
+#' sample.annot = sample.annot, format.data = "NGS", format.file = "vcf",
+#' QCreport = TRUE, out.report="report.html", interactive = TRUE)
 #' ## save(seqfile, file="seqfile.RData")
 #'
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gfile <- system.file("extdata", "example.gds", package="SeqSQC")
 #' seqfile <- SeqSQC(gdsfile = gfile, QCresult = QCresult(seqfile))
-#' seqfile <- sampleQC(sfile = seqfile, output = outfile, QCreport = FALSE, out.report="report.html", interactive = TRUE)
+#' seqfile <- sampleQC(sfile = seqfile, output = outfile, QCreport = FALSE,
+#' out.report="report.html", interactive = TRUE)
 #' }
 #' @author Qian Liu \email{qliu7@buffalo.edu}
 
-sampleQC <- function(vfile = NULL, output="sampleqc", capture.region = NULL, sample.annot = NULL, LDprune = TRUE, vfile.restrict = FALSE, slide.max.bp = 5e+05, ld.threshold = 0.3, format.data = "NGS", format.file = "vcf", QCreport = TRUE, out.report="report.html", interactive = TRUE, results=TRUE, plotting=TRUE, ...){
+sampleQC <- function(vfile = NULL, output="sampleqc",
+                     capture.region = NULL, sample.annot = NULL,
+                     LDprune = TRUE, vfile.restrict = FALSE,
+                     slide.max.bp = 5e+05, ld.threshold = 0.3,
+                     format.data = "NGS", format.file = "vcf",
+                     QCreport = TRUE, out.report="report.html",
+                     interactive = TRUE, results=TRUE, plotting=TRUE,
+                     ...){
 
     ## check input
     if(inherits(vfile, "SeqSQC")){

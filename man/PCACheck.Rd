@@ -4,13 +4,15 @@
 \alias{PCACheck}
 \title{Population outlier check with SeqSQC object input file.}
 \usage{
-PCACheck(seqfile, remove.samples = NULL, LDprune = TRUE,
+PCACheck(seqfile, remove.samples = NULL, npcs = 4, LDprune = TRUE,
   missing.rate = 0.1, ss.cutoff = 300, maf = 0.01, hwe = 1e-06, ...)
 }
 \arguments{
 \item{seqfile}{SeqSQC object, which includes the merged gds file for study cohort and benchmark.}
 
 \item{remove.samples}{a vector of sample names for removal from PCA calculation. Could be problematic samples identified from previous QC steps, or user-defined samples.}
+
+\item{npcs}{the number principle components to use for the population prediction in SVM model. The default value is 4, and it is required to be <= 10.}
 
 \item{LDprune}{whether to use LD-pruned snp set, the default is TRUE.}
 
