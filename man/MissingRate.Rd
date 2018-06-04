@@ -7,18 +7,25 @@
 MissingRate(seqfile, remove.samples = NULL)
 }
 \arguments{
-\item{seqfile}{SeqSQC object, which includes the merged gds file for study cohort and benchmark.}
+\item{seqfile}{SeqSQC object, which includes the merged gds file
+for study cohort and benchmark.}
 
-\item{remove.samples}{a vector of sample names for removal from missing rate check. Could be problematic samples identified from other QC steps, or user-defined samples.}
+\item{remove.samples}{a vector of sample names for removal from
+missing rate check. Could be problematic samples identified
+from other QC steps, or user-defined samples.}
 }
 \value{
-a data frame with sample name, sample missing rate, and an indicator of whether the sample has a missing rate greater than 0.1.
+a data frame with sample name, sample missing rate, and an
+    indicator of whether the sample has a missing rate greater than
+    0.1.
 }
 \description{
-Function to calculate sample missing rate and to identify sample outlier with high missing rate (> 0.1).
+Function to calculate sample missing rate and to identify sample
+outlier with high missing rate (> 0.1).
 }
 \details{
-The value of the outlier column is set to NA for benchmark samples.
+The value of the outlier column is set to NA for benchmark
+    samples.
 }
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))

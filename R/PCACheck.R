@@ -41,7 +41,7 @@
 #'     self-reported population groups are considered problematic. The
 #'     function \code{PCACheck} performs the PCA analysis and
 #'     identifies population outliers in study cohort.
-#' @importFrom stats predict
+#' @importFrom stats predict as.formula
 #' @export
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
@@ -75,7 +75,8 @@ PCACheck <- function(seqfile, remove.samples = NULL, npcs = 4,
     ## snp.id <- read.gdsn(index.gdsn(gfile, "snp.id"))
     ## sampleanno <- read.gdsn(index.gdsn(gfile, "sample.annot"))
 
-    ## remove samples for family related samples from 1kg, and other problematic samples from previous QC steps.
+    ## remove samples for family related samples from 1kg, and other
+    ## problematic samples from previous QC steps.
     study.pop <- unique(allnds$sampleanno[allnds$sampleanno$group == "study", "population"])
     if(length(study.pop) > 1)
         stop("Study samples should be single population, please prepare input file accordingly.")
@@ -84,9 +85,11 @@ PCACheck <- function(seqfile, remove.samples = NULL, npcs = 4,
     sample.relate <- allnds$sampleanno[allnds$sampleanno[,5]=="fam", 1]
     
     if(!is.null(remove.samples)){
-        flag <- (allnds$sampleanno$group != "study" | allnds$sampleanno$population %in% study.pop) & ! allnds$samples %in% c(sample.relate, remove.samples)
+        flag <- (allnds$sampleanno$group != "study" | allnds$sampleanno$population %in% study.pop) &
+            ! allnds$samples %in% c(sample.relate, remove.samples)
     }else{
-        flag <- (allnds$sampleanno$group != "study" | allnds$sampleanno$population %in% study.pop) & ! allnds$samples %in% sample.relate
+        flag <- (allnds$sampleanno$group != "study" | allnds$sampleanno$population %in% study.pop) &
+            ! allnds$samples %in% sample.relate
     }
     sample.pca <- allnds$samples[flag]
     
@@ -162,7 +165,8 @@ PCACheck <- function(seqfile, remove.samples = NULL, npcs = 4,
     ## predict(model, res.pca[, 5:8], probability=FALSE) } res.pca <-
     ## cbind(res.pca[, c(1:3, 5:8)], pred.pop)
 
-    ## for "ASN" samples, prediction of either "EAS" or "SAS" would be correct and summarized as "ASN".
+    ## for "ASN" samples, prediction of either "EAS" or "SAS" would be
+    ## correct and summarized as "ASN".
     if("ASN" %in% levels(res.pca$pop)){
         res.pca[res.pca$pop == "ASN" & res.pca$pred.pop %in% c("EAS", "SAS"), "pred.pop"] <- "ASN"
     }

@@ -5,9 +5,12 @@
 \alias{example.gds}
 \title{example gds file used in vignette.}
 \description{
-This gds file contains genotype and phenotype for 92 whole-genome sequenced samples captured by CCDS region.
-This is a merged dataset of the 87 benchmark samples and the 5 study samples (all are assembled from the 1000 Genomes Project).
-The meta info for these 92 samples includes sample name, pupulation, age, relation note and group info (benchmark or study).
+This gds file contains genotype and phenotype for 92 whole-genome
+sequenced samples captured by CCDS region.  This is a merged
+dataset of the 87 benchmark samples and the 5 study samples (all
+are assembled from the 1000 Genomes Project).  The meta info for
+these 92 samples includes sample name, pupulation, age, relation
+note and group info (benchmark or study).
 }
 \author{
 Qian Liu \email{qliu7@buffalo.edu}

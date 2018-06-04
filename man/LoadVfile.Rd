@@ -10,44 +10,69 @@ LoadVfile(vfile, output = "sampleqc", capture.region = NULL,
   format.file = "vcf", ...)
 }
 \arguments{
-\item{vfile}{vcf or PLINK input file (ped/map/bed/bim/fam with same basename). Vfile could be a vector of character strings, see details.}
+\item{vfile}{vcf or PLINK input file (ped/map/bed/bim/fam with same
+basename). Vfile could be a vector of character strings, see
+details.}
 
-\item{output}{a character string for name of merged data of SeqSQC object. The \code{dirname(output)} would be used as the directory to save the QC results and plots. The default is \code{sampleqc} in working directory.}
+\item{output}{a character string for name of merged data of SeqSQC
+object. The \code{dirname(output)} would be used as the
+directory to save the QC results and plots. The default is
+\code{sampleqc} in working directory.}
 
-\item{capture.region}{the BED file of sequencing capture regions. The default is NULL. For exome-sequencing data, the capture region file must be provided.}
+\item{capture.region}{the BED file of sequencing capture
+regions. The default is NULL. For exome-sequencing data, the
+capture region file must be provided.}
 
-\item{sample.annot}{sample annotation file with 3 columns (with header) in the order of sample id, sample population and sex info. The default is NULL.}
+\item{sample.annot}{sample annotation file with 3 columns (with
+header) in the order of sample id, sample population and sex
+info. The default is NULL.}
 
-\item{LDprune}{whether to use LD-pruned snp set. The default is TRUE.}
+\item{LDprune}{whether to use LD-pruned snp set. The default is
+TRUE.}
 
-\item{vfile.restrict}{whether the input vcf or plink file has already been restricted by capture region. The default is FALSE.}
+\item{vfile.restrict}{whether the input vcf or plink file has
+already been restricted by capture region. The default is
+FALSE.}
 
-\item{slide.max.bp}{the window size of SNPs when calculating linkage disequilibrium. The default is 5e+05.}
+\item{slide.max.bp}{the window size of SNPs when calculating
+linkage disequilibrium. The default is 5e+05.}
 
-\item{ld.threshold}{the r^2 threshold for LD-based SNP pruning if \code{LDprune = TRUE}. The default is 0.3.}
+\item{ld.threshold}{the r^2 threshold for LD-based SNP pruning if
+\code{LDprune = TRUE}. The default is 0.3.}
 
-\item{format.data}{the data source. The default is \code{NGS} for sequencing data.}
+\item{format.data}{the data source. The default is \code{NGS} for
+sequencing data.}
 
 \item{format.file}{the data format. The default is \code{vcf}.}
 
 \item{...}{Arguments to be passed to other methods.}
 }
 \value{
-a SeqSQC object with the filepath to the gds file which stores the genotype, the summary of samples and variants, and the QCresults including the sample annotation information.
+a SeqSQC object with the filepath to the gds file which
+    stores the genotype, the summary of samples and variants, and
+    the QCresults including the sample annotation information.
 }
 \description{
-Function to read VCF or plink files, merge with benchmark data, and output as SeqSQC object.
+Function to read VCF or plink files, merge with benchmark data, and
+output as SeqSQC object.
 }
 \details{
-For \code{vfile} with more than one file names, \code{LoadVfile} will merge all dataset together if they all contain the same samples. It is useful to combine genetic/genomic data together if VCF data is divided by chromosomes. \cr
-\code{sample.annot} file contains 3 columns with column names. col 1 is \code{sample} with sample ids; col 2 is \code{population} with values of "AFR/EUR/ASN/EAS/SAS"; col 3 is \code{gender} with values of "male/female".
+For \code{vfile} with more than one file names,
+    \code{LoadVfile} will merge all dataset together if they all
+    contain the same samples. It is useful to combine
+    genetic/genomic data together if VCF data is divided by
+    chromosomes. \cr \code{sample.annot} file contains 3 columns
+    with column names. col 1 is \code{sample} with sample ids; col
+    2 is \code{population} with values of "AFR/EUR/ASN/EAS/SAS";
+    col 3 is \code{gender} with values of "male/female".
 }
 \examples{
 infile <- system.file("extdata", "example_sub.vcf", package="SeqSQC")
 sample.annot <- system.file("extdata", "sampleAnnotation.txt", package="SeqSQC")
 cr <- system.file("extdata", "CCDS.Hs37.3.reduced_chr1.bed", package="SeqSQC")
 outfile <- file.path(tempdir(), "testWrapUp")
-seqfile <- LoadVfile(vfile = infile, output = outfile, capture.region = cr, sample.annot = sample.annot)
+seqfile <- LoadVfile(vfile = infile, output = outfile, capture.region = cr,
+sample.annot = sample.annot)
 }
 \author{
 Qian Liu \email{qliu7@buffalo.edu}

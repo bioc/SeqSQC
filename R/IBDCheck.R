@@ -1,20 +1,49 @@
 #' Sample relationship check with SeqSQC object input file. 
 #'
-#' Function to calculate the IBD coefficients for all sample pairs and to predict related sample pairs in study cohort.
+#' Function to calculate the IBD coefficients for all sample pairs and
+#' to predict related sample pairs in study cohort.
 #'
-#' @param seqfile SeqSQC object, which includes the merged gds file for study cohort and benchmark.
-#' @param remove.samples a vector of sample names for removal from IBD calculation. Could be problematic samples identified from previous QC steps, or user-defined samples.
-#' @param LDprune whether to use LD-pruned snp set. The default is TRUE.
-#' @param kin.filter whether to use "kinship coefficient >= 0.08" as the additional criteria for related samples. The default is TRUE.
-#' @param missing.rate to use the SNPs with "<= \code{missing.rate}" only; if NaN, no threshold. By default, we use \code{missing.rate = 0.1} to filter out variants with missing rate greater than 10\%.
-#' @param ss.cutoff the minimum sample size (300 by default) to apply the MAF filter. This sample size is the sum of study samples and the benchmark samples of the same population as the study cohort.
-#' @param maf to use the SNPs with ">= \code{maf}" if sample size defined in above argument is greater than \code{ss.cutoff}; otherwise NaN is used by default for no MAF threshold.
-#' @param hwe to use the SNPs with Hardy-Weinberg equilibrium p >= \code{hwe} if sample size defined in above argument is greater than \code{ss.cutoff}; otherwise no hwe threshold. The default is 1e-6.
-#' @param ... Arguments to be passed to other methods. 
+#' @param seqfile SeqSQC object, which includes the merged gds file
+#'     for study cohort and benchmark.
+#' @param remove.samples a vector of sample names for removal from IBD
+#'     calculation. Could be problematic samples identified from
+#'     previous QC steps, or user-defined samples.
+#' @param LDprune whether to use LD-pruned snp set. The default is
+#'     TRUE.
+#' @param kin.filter whether to use "kinship coefficient >= 0.08" as
+#'     the additional criteria for related samples. The default is
+#'     TRUE.
+#' @param missing.rate to use the SNPs with "<= \code{missing.rate}"
+#'     only; if NaN, no threshold. By default, we use
+#'     \code{missing.rate = 0.1} to filter out variants with missing
+#'     rate greater than 10\%.
+#' @param ss.cutoff the minimum sample size (300 by default) to apply
+#'     the MAF filter. This sample size is the sum of study samples
+#'     and the benchmark samples of the same population as the study
+#'     cohort.
+#' @param maf to use the SNPs with ">= \code{maf}" if sample size
+#'     defined in above argument is greater than \code{ss.cutoff};
+#'     otherwise NaN is used by default for no MAF threshold.
+#' @param hwe to use the SNPs with Hardy-Weinberg equilibrium p >=
+#'     \code{hwe} if sample size defined in above argument is greater
+#'     than \code{ss.cutoff}; otherwise no hwe threshold. The default
+#'     is 1e-6.
+#' @param ... Arguments to be passed to other methods.
 #' @keywords IBD
-#' @return a data frame with sample names, the descent coefficients of k0, k1 and kinship, self-reported relationship and predicted relationship for each pair of samples.
-#' @details Using LD-pruned variants (by default), we calculate the IBD coefficients for all sample pairs, and then predict related sample pairs in study cohort using the support vector machine (SVM) method with linear kernel and the known relatedness embedded in benchmark data as training set. \cr
-#' Sample pairs with discordant self-reported and predicted relationship are considered as problematic. All predicted related pairs are also required to have coefficient of kinship >= 0.08 by default. The sample with higher missing rate in each related pair is selected for removal from further analysis by function of \code{IBDRemove}.
+#' @return a data frame with sample names, the descent coefficients of
+#'     k0, k1 and kinship, self-reported relationship and predicted
+#'     relationship for each pair of samples.
+#' @details Using LD-pruned variants (by default), we calculate the
+#'     IBD coefficients for all sample pairs, and then predict related
+#'     sample pairs in study cohort using the support vector machine
+#'     (SVM) method with linear kernel and the known relatedness
+#'     embedded in benchmark data as training set. \cr Sample pairs
+#'     with discordant self-reported and predicted relationship are
+#'     considered as problematic. All predicted related pairs are also
+#'     required to have coefficient of kinship >= 0.08 by default. The
+#'     sample with higher missing rate in each related pair is
+#'     selected for removal from further analysis by function of
+#'     \code{IBDRemove}.
 #' @import RColorBrewer
 #' @import e1071
 #' @import reshape2
@@ -29,7 +58,9 @@
 #' @author Qian Liu \email{qliu7@@buffalo.edu}
 
 
-IBDCheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, kin.filter = TRUE, missing.rate = 0.1, ss.cutoff = 300, maf = 0.01, hwe = 1e-6, ...){
+IBDCheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE,
+                     kin.filter = TRUE, missing.rate = 0.1,
+                     ss.cutoff = 300, maf = 0.01, hwe = 1e-6, ...){
 
     ## check
     if (!inherits(seqfile, "SeqSQC")){
@@ -39,20 +70,24 @@ IBDCheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, kin.filter 
     message("calculating pairwise IBD ...")
     
     gfile <- SeqOpen(seqfile, readonly=TRUE)
-
+    on.exit(closefn.gds(gfile))
+    
     nds <- c("sample.id", "sample.annot", "snp.id") 
     allnds <- lapply(nds, function(x) read.gdsn(index.gdsn(gfile, x)))
     names(allnds) <- c("samples", "sampleanno", "snp.id")
         
     studyid <- allnds$sampleanno[allnds$sampleanno[,5] == "study", 1]
     
-    ## sample filters. (remove prespecified "remove.samples", and only keep samples within the study population and benchmark data)
+    ## sample filters. (remove prespecified "remove.samples", and only
+    ## keep samples within the study population and benchmark data)
     study.pop <- unique(allnds$sampleanno[allnds$sampleanno$group == "study", "population"])
-    if(length(study.pop) > 1) stop("Study samples should be single population, please prepare input file accordingly.")
+    if (length(study.pop) > 1)
+        stop("Study samples should be single population, please prepare input file accordingly.")
     
-    if(!is.null(remove.samples)){
-        flag <- (allnds$sampleanno$group != "study" | allnds$sampleanno$population == study.pop) & !allnds$samples %in% remove.samples
-    }else{
+    if (!is.null(remove.samples)){
+        flag <- (allnds$sampleanno$group != "study" | allnds$sampleanno$population == study.pop) &
+            !allnds$samples %in% remove.samples
+    } else {
         flag <- allnds$sampleanno$group != "study" | allnds$sampleanno$population == study.pop
     }
     sample.ibd <- allnds$samples[flag]
@@ -61,7 +96,7 @@ IBDCheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, kin.filter 
     if (length(sample.ibd) >= ss.cutoff){
         snp.hwe <- snpgdsHWE(gfile, sample.id=sample.ibd)
         hwe.idx <- snp.hwe > hwe & !is.na(snp.hwe)
-    }else{
+    } else {
         hwe.idx <- rep(TRUE, length(allnds$snp.id))
     }
     
@@ -77,9 +112,15 @@ IBDCheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, kin.filter 
     
     ## use maf filter if sample size >= 300.
     if (length(sample.ibd) >= ss.cutoff){ 
-        IBD.res <- snpgdsIBDMoM(gfile, sample.id=sample.ibd, snp.id=allnds$snp.id[snp.idx], kinship=TRUE, maf=maf, missing.rate=missing.rate, ...)
+        IBD.res <- snpgdsIBDMoM(gfile, sample.id=sample.ibd,
+                                snp.id=allnds$snp.id[snp.idx],
+                                kinship=TRUE, maf=maf,
+                                missing.rate=missing.rate, ...)
     }else{
-        IBD.res <- snpgdsIBDMoM(gfile, sample.id=sample.ibd, snp.id=allnds$snp.id[snp.idx], kinship=TRUE, maf=NaN, missing.rate=missing.rate, ...)
+        IBD.res <- snpgdsIBDMoM(gfile, sample.id=sample.ibd,
+                                snp.id=allnds$snp.id[snp.idx],
+                                kinship=TRUE, maf=NaN,
+                                missing.rate=missing.rate, ...)
     }
     
     k0 <- IBD.res$k0
@@ -172,7 +213,6 @@ IBDCheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE, kin.filter 
     ##     res.ibd$pred.label[res.ibd$pred.label != "UN"] <- "Related"
     ##     res.ibd$pred.label <- factor(res.ibd$pred.label)
     ## }
-    closefn.gds(gfile)
     
     ## return the SeqSQC object with updated QC results.
     a <- QCresult(seqfile)

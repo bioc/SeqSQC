@@ -1,9 +1,16 @@
 #' Generate the problematic sample list.
 #'
-#' generate the problematic sample list from QC steps that have been done, and provide each problematic sample with a reason for removal (high missing rate, gender mismatch, inbreeding outlier, cryptic relationship or population outlier).
-#' @param seqfile SeqSQC object with sample QC results. 
+#' generate the problematic sample list from QC steps that have been
+#' done, and provide each problematic sample with a reason for removal
+#' (high missing rate, gender mismatch, inbreeding outlier, cryptic
+#' relationship or population outlier).
+#' @param seqfile SeqSQC object with sample QC results.
 #' @export
-#' @return a list of 2 datasets: 1) a data frame with 2 columns: \code{sample} for problematic sample name, and \code{remove.reason} for the reason of removing the sample. 2) a data frame with 1 column \code{sample} for problematic samples to be removed. 
+#' @return a list of 2 datasets: 1) a data frame with 2 columns:
+#'     \code{sample} for problematic sample name, and
+#'     \code{remove.reason} for the reason of removing the sample. 2)
+#'     a data frame with 1 column \code{sample} for problematic
+#'     samples to be removed.
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' problemList(seqfile)
@@ -26,7 +33,8 @@ problemList <- function(seqfile){
         
     if("SexCheck" %in% names(QCresult(seqfile))){
         res.sexcheck <- QCresult(seqfile)$SexCheck
-        prob.sex <- res.sexcheck[res.sexcheck$sex == "female" & res.sexcheck$pred.sex == "male" | res.sexcheck$sex == "male" & res.sexcheck$pred.sex == "female", ]
+        prob.sex <- res.sexcheck[res.sexcheck$sex == "female" & res.sexcheck$pred.sex == "male" |
+                                 res.sexcheck$sex == "male" & res.sexcheck$pred.sex == "female", ]
         remove.sex <- prob.sex[,1]
     }else{
         remove.sex <- NULL
@@ -74,7 +82,8 @@ problemList <- function(seqfile){
             rep("population outlier", length(remove.pca))),
         stringsAsFactors=FALSE
     )
-    remove.list <- data.frame(sample = c(remove.mr, remove.sex, remove.inb, remove.ibd, remove.pca), stringsAsFactors=FALSE)
+    remove.list <- data.frame(sample = c(remove.mr, remove.sex, remove.inb, remove.ibd, remove.pca),
+                              stringsAsFactors=FALSE)
     if(nrow(prob.list) != 0){
         a <- QCresult(seqfile)
         a$problem.list <- list(prob.list = prob.list, remove.list = remove.list)

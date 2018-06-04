@@ -22,11 +22,11 @@ SeqSQC(gdsfile, QCresult = List())
 
 gdsfile(x)
 
-gdsfile(x, ...) <- value
+gdsfile(x) <- value
 
 QCresult(x)
 
-QCresult(x, ...) <- value
+QCresult(x) <- value
 
 \S4method{gdsfile}{SeqSQC}(x)
 
@@ -42,6 +42,8 @@ QCresult(x, ...) <- value
 \item{QCresult}{A list with sample information and sample QC results.}
 
 \item{x}{an SeqSQCClass object.}
+
+\item{value}{the new value for the slot to be replaced.}
 }
 \value{
 The filepath to the gds file.

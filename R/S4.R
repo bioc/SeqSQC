@@ -34,7 +34,7 @@ setGeneric("gdsfile", function(x) standardGeneric("gdsfile"))
 
 #' @rdname SeqSQC-class
 #' @exportMethod "gdsfile<-"
-setGeneric("gdsfile<-", function(x, ...) standardGeneric("gdsfile<-"))
+setGeneric("gdsfile<-", function(x, value) standardGeneric("gdsfile<-"))
 
 #' QCresult getter and setter.
 #' @rdname SeqSQC-class
@@ -43,7 +43,7 @@ setGeneric("QCresult", function(x) standardGeneric("QCresult"))
 
 #' @rdname SeqSQC-class
 #' @exportMethod "QCresult<-"
-setGeneric("QCresult<-", function(x, ...) standardGeneric("QCresult<-"))
+setGeneric("QCresult<-", function(x, value) standardGeneric("QCresult<-"))
 
 #' @rdname SeqSQC-class
 #' @aliases gdsfile,SeqSQC-method
@@ -55,6 +55,7 @@ setGeneric("QCresult<-", function(x, ...) standardGeneric("QCresult<-"))
 setMethod("gdsfile", "SeqSQC",function(x) x@gdsfile)
 
 #' @rdname SeqSQC-class
+#' @param value the new value for the slot to be replaced.
 #' @aliases "gdsfile<-",SeqSQC-method
 setReplaceMethod("gdsfile", "SeqSQC", function(x, value) {
     x <- initialize(x, gdsfile = value)
@@ -91,6 +92,7 @@ setValidity("SeqSQC",
             function(object)
             {
                 dat <- openfn.gds(object@gdsfile)
+                on.exit(closefn.gds)
                 
                 if (!inherits(dat, "gds.class")){
                     return("object should inherit from 'gds.class'.")
@@ -98,7 +100,6 @@ setValidity("SeqSQC",
                 var.names <- ls.gdsn(dat)
                 sampleanno <- read.gdsn(index.gdsn(dat, "sample.annot"))
                 pops <- unique(sampleanno$population)
-                closefn.gds(dat)
                 
                 if (!all(c("sample.id", "sample.annot",
                            "snp.id", "snp.chromosome", "snp.position", "snp.allele", 
@@ -117,25 +118,4 @@ setValidity("SeqSQC",
             }
             )
 
-
-## load the benchmark data from ExperimentHub when installing the package
-## write a fun <-  function() ExperimentHub::ExperimentHub()[["EH550"]]
-## devtools::create("bigd")
-## NAMESPACE: export("ExperimentHub")
- 
-## .onload <- function(libpath, pkgname){
-##     message("libpath: ", libpath, " pkgname: ", pkgname)
-##     ## hubdir <- file.path(libpath, pkgname, ".ExperimentHub")
-##     ## supressMessages({
-##     ## ExperimentHub::ExperimentHub(cache = hubdir)[["EH550"]]
-##     ExperimentHub::ExperimentHub()[["EH550"]]
-##     ## })
-## }
-## #' @ export
-
-## myanalysis <- function(){
-##     hubdir <- system.file(package="bigd", ".ExperimentHub")
-##     mydata <- ExperimentHub::ExperimentHub(cache=hubdir)[["EH550"]]
-##     message("benchmark data:", mydata$filename)
-## }
 

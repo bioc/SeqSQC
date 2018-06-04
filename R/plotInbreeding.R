@@ -5,14 +5,17 @@ plotInbreeding <- function(res.qc, interactive = FALSE, sdcoef = 5){
     sd <- sd(inb)
     sd1 <- m + sdcoef*sd
     sd2 <- m - sdcoef*sd
-    res.pop.ord$outlier <- ifelse(res.pop.ord$inbreeding > sd1 | res.pop.ord$inbreeding < sd2, "Yes", "No")
+    res.pop.ord$outlier <- ifelse(res.pop.ord$inbreeding > sd1 | res.pop.ord$inbreeding < sd2,
+                                  "Yes", "No")
     res.pop.ord$problematic <- factor(res.pop.ord$outlier, levels=c("Yes", "No"))
     
     if(interactive){
         s1 <- max(max(res.pop.ord$inbreeding), sd1) + 0.1
         s2 <- min(min(res.pop.ord$inbreeding), sd2) - 0.1
         p1 <- figure(ylim=c(s2, s1)) %>%
-            ly_points(inbreeding, data=res.pop.ord, color = problematic, glyph = type, hover=list(sample, inbreeding)) %>%
+            ly_points(inbreeding, data=res.pop.ord,
+                      color = problematic, glyph = type,
+                      hover=list(sample, inbreeding)) %>%
             x_axis(label="Sample") %>%
             y_axis(label="Autosomal inbreeding coefficient") %>%
             ly_abline(h=sd1, type=2) %>%

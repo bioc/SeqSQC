@@ -4,7 +4,8 @@ plotSexCheck <- function(res.qc, interactive=FALSE){
         res.qc <- res.qc[res.qc$sex != "", ]
     }
     res.pop.ord <- res.qc
-    prob.ind <- res.pop.ord$sex == "female" & res.pop.ord$pred.sex == "male" | res.pop.ord$sex == "male" & res.pop.ord$pred.sex == "female"
+    prob.ind <- res.pop.ord$sex == "female" & res.pop.ord$pred.sex == "male" |
+        res.pop.ord$sex == "male" & res.pop.ord$pred.sex == "female"
     prob.sex <- res.pop.ord[prob.ind, ]
     
     if(interactive){
@@ -27,7 +28,9 @@ plotSexCheck <- function(res.qc, interactive=FALSE){
                       y="Sex inbreeding coefficient")
         p <- p + geom_hline(yintercept=c(0.2, 0.8), colour="grey")
         if(nrow(prob.sex) > 0){
-            p <- p + geom_point(data=prob.sex, aes(x=sample, y=sexinb), shape=1, colour="red", size=4)
+            p <- p + geom_point(data=prob.sex,
+                                aes(x=sample, y=sexinb), shape=1,
+                                colour="red", size=4)
         }
         p <- p + theme_classic()
         p <- p + theme(axis.text.x=element_blank(),

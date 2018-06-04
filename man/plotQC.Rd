@@ -11,22 +11,35 @@ plotQC(seqfile, QCstep = c("MissingRate", "SexCheck", "Inbreeding", "IBD",
 \arguments{
 \item{seqfile}{SeqSQC object with QC results.}
 
-\item{QCstep}{which QC step the user want to do plotting. Takes values of \code{c("MissingRate", "SexCheck", "Inbreeding", "IBD", "PCA")}}
+\item{QCstep}{which QC step the user want to do plotting. Takes
+values of \code{c("MissingRate", "SexCheck", "Inbreeding",
+"IBD", "PCA")}}
 
-\item{interactive}{whether to generate interactive plot. Recommend to use \code{interactive = TRUE} if user perform sample QC using an rmarkdown script and output plot to html format.}
+\item{interactive}{whether to generate interactive plot. Recommend
+to use \code{interactive = TRUE} if user perform sample QC
+using an rmarkdown script and output plot to html format.}
 
-\item{sdcoef}{for inbreeding outlier check, how many standard deviation we need for identification of inbreeding outliers. The default is 5.}
+\item{sdcoef}{for inbreeding outlier check, how many standard
+deviation we need for identification of inbreeding
+outliers. The default is 5.}
 
-\item{pc1}{the eigenvector on x axis for PCA result. The default is "EV1" for eigenvector 1.}
+\item{pc1}{the eigenvector on x axis for PCA result. The default is
+"EV1" for eigenvector 1.}
 
-\item{pc2}{the eigenvector on y axis for PCA result. The default is "EV2" for eigenvector 2.}
+\item{pc2}{the eigenvector on y axis for PCA result. The default is
+"EV2" for eigenvector 2.}
 
-\item{pairedScatter}{for PCA result, whether to plot the paired scatterplot for the first 4 PC axes.}
+\item{pairedScatter}{for PCA result, whether to plot the paired
+scatterplot for the first 4 PC axes.}
 
 \item{...}{Arguments to be passed to other methods.}
 }
 \value{
-the ggplot or interactive plot (if output is in html format) for specific QC result. If "interactive=FALSE", it returns a ggplot and author could have the flexibility to add on any layers, scales, faceting specifications and coordinate systems.
+the ggplot or interactive plot (if output is in html
+    format) for specific QC result. If "interactive=FALSE", it
+    returns a ggplot and author could have the flexibility to add
+    on any layers, scales, faceting specifications and coordinate
+    systems.
 }
 \description{
 Plot QC results.

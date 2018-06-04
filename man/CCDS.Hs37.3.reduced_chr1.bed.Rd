@@ -5,7 +5,10 @@
 \alias{CCDS.Hs37.3.reduced_chr1.bed}
 \title{Example capture region file used in vignette.}
 \description{
-This \code{.bed} file contains only CCDS capture region only in chromosome 1, which is meant to be used together with the \code{example_sub.vcf} as a runnable example in the function of \code{LoadVfile} and \code{sampleQC} in the vignette.
+This \code{.bed} file contains only CCDS capture region only in
+chromosome 1, which is meant to be used together with the
+\code{example_sub.vcf} as a runnable example in the function of
+\code{LoadVfile} and \code{sampleQC} in the vignette.
 }
 \author{
 Qian Liu \email{qliu7@buffalo.edu}

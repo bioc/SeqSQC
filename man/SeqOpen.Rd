@@ -7,11 +7,16 @@
 SeqOpen(seqfile, readonly = TRUE, allow.duplicate = FALSE)
 }
 \arguments{
-\item{seqfile}{SeqSQC object, which has been merged with benchmark data.}
+\item{seqfile}{SeqSQC object, which has been merged with benchmark
+data.}
 
-\item{readonly}{whether to open the gds file in read-only mode. If "FALSE", it is allowed to write data to the file. The default is TRUE.}
+\item{readonly}{whether to open the gds file in read-only mode. If
+"FALSE", it is allowed to write data to the file. The default
+is TRUE.}
 
-\item{allow.duplicate}{whether to allow to open a GDS file with read-only mode when it has been opened in the same R session. The default is FALSE.}
+\item{allow.duplicate}{whether to allow to open a GDS file with
+read-only mode when it has been opened in the same R
+session. The default is FALSE.}
 }
 \value{
 a gds file with the filepath in the input SeqSQC object.

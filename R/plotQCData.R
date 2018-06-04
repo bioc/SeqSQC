@@ -27,7 +27,9 @@ plotQCData <- function(seqfile, QCstep=NULL){
         res.qc$population <- factor(pop)
         rm(type, pop)
         
-        ## by default, "study.pop" is a single population for missing rate, sexcheck and inbreeding. If not single population, give error message.
+        ## by default, "study.pop" is a single population for missing
+        ## rate, sexcheck and inbreeding. If not single population,
+        ## give error message.
         study.pop <- unique(sampleanno[sampleanno$group == "study", "population"])
         if(length(study.pop)>1) stop("Study samples should be single population.")
         

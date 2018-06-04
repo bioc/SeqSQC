@@ -91,7 +91,9 @@ sampleQC <- function(vfile = NULL, output="sampleqc",
         format.file <- NULL
         vfile.restrict <- NULL
     }else{
-        seqfile <- LoadVfile(vfile = vfile, output = output, capture.region = capture.region, sample.annot = sample.annot, ...)
+        seqfile <- LoadVfile(vfile = vfile, output = output,
+                             capture.region = capture.region,
+                             sample.annot = sample.annot, ...)
     }
     fn <- gdsfile(seqfile)
     print(paste("gds file generated:", fn))
@@ -110,7 +112,9 @@ sampleQC <- function(vfile = NULL, output="sampleqc",
     remove.mr <- prob.mr[,1]
     remove.samples <- unique(remove.mr)
     if(results){
-        write.table(res.mr, file=paste0(dirname(output), "/result.missingrate.txt"), quote=FALSE, sep="\t", row.names=FALSE)
+        write.table(res.mr,
+                    file=paste0(dirname(output), "/result.missingrate.txt"),
+                    quote=FALSE, sep="\t", row.names=FALSE)
     }
     if(plotting){
         p <- plotQC(seqfile, "MissingRate")
@@ -122,8 +126,8 @@ sampleQC <- function(vfile = NULL, output="sampleqc",
 
     ## check chrX variants
     gfile <- SeqOpen(seqfile)
+    on.exit(closefn.gds(gfile))
     snp.chr <- read.gdsn(index.gdsn(gfile, "snp.chromosome"))
-    closefn.gds(gfile)
     rm(gfile)
     if(!"X" %in% snp.chr){
         message("\nDo not have chrX variants, skip sex check.\n")
@@ -132,11 +136,14 @@ sampleQC <- function(vfile = NULL, output="sampleqc",
         seqfile <- SexCheck(seqfile)
         res.sexcheck <- QCresult(seqfile)$SexCheck
         table(res.sexcheck$sex, res.sexcheck$pred.sex)
-        prob.sex <- res.sexcheck[res.sexcheck$sex != res.sexcheck$pred.sex & res.sexcheck$pred.sex != "0", ]
+        prob.sex <- res.sexcheck[res.sexcheck$sex != res.sexcheck$pred.sex &
+                                 res.sexcheck$pred.sex != "0", ]
         remove.sex <- prob.sex[,1]
         remove.samples <- unique(c(remove.samples, remove.sex))
         if(results){
-            write.table(res.sexcheck, file=paste0(dirname(output), "/result.sexcheck.txt"), quote=FALSE, sep="\t", row.names=FALSE)
+            write.table(res.sexcheck,
+                        file=paste0(dirname(output), "/result.sexcheck.txt"),
+                        quote=FALSE, sep="\t", row.names=FALSE)
         }
         if(plotting){
             p <- plotQC(seqfile, "SexCheck")
@@ -153,7 +160,9 @@ sampleQC <- function(vfile = NULL, output="sampleqc",
     remove.inb <- prob.inb[,1]
     remove.samples <- unique(c(remove.samples, remove.inb))
     if(results){
-    write.table(res.inb, file=paste0(dirname(output), "/result.inbreeding.txt"), quote=FALSE, sep="\t", row.names=FALSE)
+        write.table(res.inb,
+                    file=paste0(dirname(output), "/result.inbreeding.txt"),
+                    quote=FALSE, sep="\t", row.names=FALSE)
     }   
     ## plot Inbreeding.
     if(plotting){
@@ -176,7 +185,9 @@ sampleQC <- function(vfile = NULL, output="sampleqc",
     remove.ibd <- prob.ibd$ibd.remove
     remove.samples <- unique(c(remove.samples, remove.ibd))
     if(results){
-        write.table(res.ibd, file=paste0(dirname(output), "/result.ibd.txt"), quote=FALSE, sep="\t", row.names=FALSE)
+        write.table(res.ibd,
+                    file=paste0(dirname(output), "/result.ibd.txt"),
+                    quote=FALSE, sep="\t", row.names=FALSE)
     }
     ## plot IBD.
     if(plotting){
@@ -193,7 +204,9 @@ sampleQC <- function(vfile = NULL, output="sampleqc",
     remove.pca <- res.study[res.study$pop != res.study$pred.pop, 1]
 
     if(results){
-    write.table(res.pca, file=paste0(dirname(output), "/result.pca.txt"), quote=FALSE, sep="\t", row.names=FALSE)   
+        write.table(res.pca,
+                    file=paste0(dirname(output), "/result.pca.txt"),
+                    quote=FALSE, sep="\t", row.names=FALSE)   
     }
     ## plot PCA.
     if(plotting){
@@ -211,8 +224,13 @@ sampleQC <- function(vfile = NULL, output="sampleqc",
         a <- QCresult(seqfile)
         a$problem.list <- prob.list
         a$remove.list <- rm.list
-        write.table(prob.list, file=paste0(dirname(output), "/result.problemSamples.txt"), quote=FALSE, sep="\t", row.names=FALSE)
-        write.table(rm.list, file=paste0(dirname(output), "/result.removeSamples.txt"), quote=FALSE, sep="\t", row.names=FALSE, col.names=FALSE)
+        write.table(prob.list,
+                    file=paste0(dirname(output), "/result.problemSamples.txt"),
+                    quote=FALSE, sep="\t", row.names=FALSE)
+        write.table(rm.list,
+                    file=paste0(dirname(output), "/result.removeSamples.txt"),
+                    quote=FALSE, sep="\t", row.names=FALSE,
+                    col.names=FALSE)
     }
 
     if(QCreport){

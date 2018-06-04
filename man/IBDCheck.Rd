@@ -9,33 +9,62 @@ IBDCheck(seqfile, remove.samples = NULL, LDprune = TRUE,
   hwe = 1e-06, ...)
 }
 \arguments{
-\item{seqfile}{SeqSQC object, which includes the merged gds file for study cohort and benchmark.}
+\item{seqfile}{SeqSQC object, which includes the merged gds file
+for study cohort and benchmark.}
 
-\item{remove.samples}{a vector of sample names for removal from IBD calculation. Could be problematic samples identified from previous QC steps, or user-defined samples.}
+\item{remove.samples}{a vector of sample names for removal from IBD
+calculation. Could be problematic samples identified from
+previous QC steps, or user-defined samples.}
 
-\item{LDprune}{whether to use LD-pruned snp set. The default is TRUE.}
+\item{LDprune}{whether to use LD-pruned snp set. The default is
+TRUE.}
 
-\item{kin.filter}{whether to use "kinship coefficient >= 0.08" as the additional criteria for related samples. The default is TRUE.}
+\item{kin.filter}{whether to use "kinship coefficient >= 0.08" as
+the additional criteria for related samples. The default is
+TRUE.}
 
-\item{missing.rate}{to use the SNPs with "<= \code{missing.rate}" only; if NaN, no threshold. By default, we use \code{missing.rate = 0.1} to filter out variants with missing rate greater than 10\%.}
+\item{missing.rate}{to use the SNPs with "<= \code{missing.rate}"
+only; if NaN, no threshold. By default, we use
+\code{missing.rate = 0.1} to filter out variants with missing
+rate greater than 10\%.}
 
-\item{ss.cutoff}{the minimum sample size (300 by default) to apply the MAF filter. This sample size is the sum of study samples and the benchmark samples of the same population as the study cohort.}
+\item{ss.cutoff}{the minimum sample size (300 by default) to apply
+the MAF filter. This sample size is the sum of study samples
+and the benchmark samples of the same population as the study
+cohort.}
 
-\item{maf}{to use the SNPs with ">= \code{maf}" if sample size defined in above argument is greater than \code{ss.cutoff}; otherwise NaN is used by default for no MAF threshold.}
+\item{maf}{to use the SNPs with ">= \code{maf}" if sample size
+defined in above argument is greater than \code{ss.cutoff};
+otherwise NaN is used by default for no MAF threshold.}
 
-\item{hwe}{to use the SNPs with Hardy-Weinberg equilibrium p >= \code{hwe} if sample size defined in above argument is greater than \code{ss.cutoff}; otherwise no hwe threshold. The default is 1e-6.}
+\item{hwe}{to use the SNPs with Hardy-Weinberg equilibrium p >=
+\code{hwe} if sample size defined in above argument is greater
+than \code{ss.cutoff}; otherwise no hwe threshold. The default
+is 1e-6.}
 
 \item{...}{Arguments to be passed to other methods.}
 }
 \value{
-a data frame with sample names, the descent coefficients of k0, k1 and kinship, self-reported relationship and predicted relationship for each pair of samples.
+a data frame with sample names, the descent coefficients of
+    k0, k1 and kinship, self-reported relationship and predicted
+    relationship for each pair of samples.
 }
 \description{
-Function to calculate the IBD coefficients for all sample pairs and to predict related sample pairs in study cohort.
+Function to calculate the IBD coefficients for all sample pairs and
+to predict related sample pairs in study cohort.
 }
 \details{
-Using LD-pruned variants (by default), we calculate the IBD coefficients for all sample pairs, and then predict related sample pairs in study cohort using the support vector machine (SVM) method with linear kernel and the known relatedness embedded in benchmark data as training set. \cr
-Sample pairs with discordant self-reported and predicted relationship are considered as problematic. All predicted related pairs are also required to have coefficient of kinship >= 0.08 by default. The sample with higher missing rate in each related pair is selected for removal from further analysis by function of \code{IBDRemove}.
+Using LD-pruned variants (by default), we calculate the
+    IBD coefficients for all sample pairs, and then predict related
+    sample pairs in study cohort using the support vector machine
+    (SVM) method with linear kernel and the known relatedness
+    embedded in benchmark data as training set. \cr Sample pairs
+    with discordant self-reported and predicted relationship are
+    considered as problematic. All predicted related pairs are also
+    required to have coefficient of kinship >= 0.08 by default. The
+    sample with higher missing rate in each related pair is
+    selected for removal from further analysis by function of
+    \code{IBDRemove}.
 }
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))

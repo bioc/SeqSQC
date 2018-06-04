@@ -9,15 +9,20 @@ RenderReport(input, output, interactive = TRUE)
 \arguments{
 \item{input}{SeqSQC object with QC results.}
 
-\item{output}{a character string to define the file name for the QC report.}
+\item{output}{a character string to define the file name for the QC
+report.}
 
-\item{interactive}{whether to generate interative plots in the report. The default is TRUE.}
+\item{interactive}{whether to generate interative plots in the
+report. The default is TRUE.}
 }
 \value{
-Will incure the rendering of the rmarkdown file for generating the sample QC report. The report will return to the file denoted in \code{output} in the function.
+Will incure the rendering of the rmarkdown file for
+    generating the sample QC report. The report will return to the
+    file denoted in \code{output} in the function.
 }
 \description{
-Function to render the pre-compiled rmarkdown file to generate the sample QC report.
+Function to render the pre-compiled rmarkdown file to generate the
+sample QC report.
 }
 \examples{
 load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
