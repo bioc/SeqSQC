@@ -6,10 +6,12 @@
 \alias{SeqSQC-class}
 \alias{SeqSQC}
 \alias{gdsfile}
+\alias{gdsfile<-}
 \alias{QCresult}
 \alias{QCresult<-}
-\alias{gdsfile}
 \alias{gdsfile,SeqSQC-method}
+\alias{gdsfile<-,SeqSQC-method}
+\alias{"gdsfile<-",SeqSQC-method}
 \alias{QCresult}
 \alias{QCresult,SeqSQC-method}
 \alias{QCresult<-,SeqSQC-method}
@@ -20,11 +22,15 @@ SeqSQC(gdsfile, QCresult = List())
 
 gdsfile(x)
 
+gdsfile(x, ...) <- value
+
 QCresult(x)
 
 QCresult(x, ...) <- value
 
 \S4method{gdsfile}{SeqSQC}(x)
+
+\S4method{gdsfile}{SeqSQC}(x) <- value
 
 \S4method{QCresult}{SeqSQC}(x)
 
@@ -45,7 +51,7 @@ A SeqSQC object is a list of two objects. The first object \code{gdsfile} is the
 
 SeqSQC object Constructor
 
-Method gdsfile.
+gdsfile getter and setter.
 
 QCresult getter and setter.
 }

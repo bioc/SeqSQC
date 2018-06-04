@@ -27,11 +27,14 @@ SeqSQC <- function(gdsfile, QCresult=List()){
     new("SeqSQC", gdsfile = gdsfile, QCresult = QCresult)
 }
 
-#' Method gdsfile.
-#' @name gdsfile
+#' gdsfile getter and setter.
 #' @rdname SeqSQC-class
 #' @exportMethod gdsfile
 setGeneric("gdsfile", function(x) standardGeneric("gdsfile"))
+
+#' @rdname SeqSQC-class
+#' @exportMethod "gdsfile<-"
+setGeneric("gdsfile<-", function(x, ...) standardGeneric("gdsfile<-"))
 
 #' QCresult getter and setter.
 #' @rdname SeqSQC-class
@@ -43,15 +46,20 @@ setGeneric("QCresult", function(x) standardGeneric("QCresult"))
 setGeneric("QCresult<-", function(x, ...) standardGeneric("QCresult<-"))
 
 #' @rdname SeqSQC-class
-#' @name gdsfile
 #' @aliases gdsfile,SeqSQC-method
 #' @param x an SeqSQCClass object.
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gdsfile(seqfile)
 #' @return The filepath to the gds file. 
-
 setMethod("gdsfile", "SeqSQC",function(x) x@gdsfile)
+
+#' @rdname SeqSQC-class
+#' @aliases "gdsfile<-",SeqSQC-method
+setReplaceMethod("gdsfile", "SeqSQC", function(x, value) {
+    x <- initialize(x, gdsfile = value)
+    x
+})  
 
 #' @rdname SeqSQC-class
 #' @name QCresult
@@ -63,7 +71,8 @@ setMethod("QCresult", "SeqSQC", function(x) x@QCresult)
 #' @rdname SeqSQC-class
 #' @aliases "QCresult<-",SeqSQC-method
 setReplaceMethod("QCresult", "SeqSQC", function(x, value) {
-    x@QCresult <- values
+    x <- initialize(x, QCresult = value)
+    x
 })
 
 ## set show methods
