@@ -5,7 +5,7 @@
 #' @param vfile vcf or PLINK input file (ped/map/bed/bim/fam with same basename). The default is NULL. Vfile could be a vector of character strings, see details. Could also take file in \code{SeqSQC} object generated from \code{LoadVfile}. 
 #' @param output a character string for name of merged data of SeqSQC object. The \code{dirname(output)} would be used as the directory to save the QC result and plots. The default is \code{sampleqc} in the working directory.
 #' @param capture.region the BED file of sequencing capture regions. The default is NULL. For exome-sequencing data, the capture region file must be provided.
-#' @param sample.annot sample annotation file with 3 columns including the sample id, sample population and sex info. The default is NULL.
+#' @param sample.annot sample annotation file with 3 columns (with header) in the order of sample id, sample population and sex info. The default is NULL.
 #' @param LDprune whether to use LD-pruned snp set. The default is TRUE.
 #' @param vfile.restrict whether the input vcf or plink file has already been restricted by capture region. The default is FALSE.
 #' @param slide.max.bp the window size of SNPs when calculating linkage disequilibrium. The default is 5e+05. 

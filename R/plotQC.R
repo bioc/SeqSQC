@@ -13,8 +13,9 @@
 #' @import RColorBrewer
 #' @import GGally
 #' @import rbokeh
+## #' @import extrafont
 #' @export
-#' @return the ggplot or interactive plot (if output is in html format) for specific QC result.
+#' @return the ggplot or interactive plot (if output is in html format) for specific QC result. If "interactive=FALSE", it returns a ggplot and author could have the flexibility to add on any layers, scales, faceting specifications and coordinate systems. 
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gfile <- system.file("extdata", "example.gds", package="SeqSQC")

@@ -28,16 +28,19 @@ SeqSQC <- function(gdsfile, QCresult=List()){
 }
 
 #' Method gdsfile.
-#' @name SeqSQC-class
+#' @name gdsfile
 #' @rdname SeqSQC-class
 #' @exportMethod gdsfile
 setGeneric("gdsfile", function(x) standardGeneric("gdsfile"))
 
-#' Method QCresult.
-#' @name SeqSQC-class
+#' QCresult getter and setter.
 #' @rdname SeqSQC-class
 #' @exportMethod QCresult
 setGeneric("QCresult", function(x) standardGeneric("QCresult"))
+
+#' @rdname SeqSQC-class
+#' @exportMethod "QCresult<-"
+setGeneric("QCresult<-", function(x, ...) standardGeneric("QCresult<-"))
 
 #' @rdname SeqSQC-class
 #' @name gdsfile
@@ -56,6 +59,12 @@ setMethod("gdsfile", "SeqSQC",function(x) x@gdsfile)
 #' @examples
 #' QCresult(seqfile)
 setMethod("QCresult", "SeqSQC", function(x) x@QCresult)
+
+#' @rdname SeqSQC-class
+#' @aliases "QCresult<-",SeqSQC-method
+setReplaceMethod("QCresult", "SeqSQC", function(x, value) {
+    x@QCresult <- values
+})
 
 ## set show methods
 setMethod("show", "SeqSQC",

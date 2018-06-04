@@ -74,11 +74,13 @@ problemList <- function(seqfile){
             rep("population outlier", length(remove.pca))),
         stringsAsFactors=FALSE
     )
-    remove.list <- data.frame(sample = c(remove.mr, remove.sex, remove.inb, remove.ibd, remove.pca))
+    remove.list <- data.frame(sample = c(remove.mr, remove.sex, remove.inb, remove.ibd, remove.pca), stringsAsFactors=FALSE)
     if(nrow(prob.list) != 0){
         a <- QCresult(seqfile)
         a$problem.list <- list(prob.list = prob.list, remove.list = remove.list)
+        return(a$problem.list)
+    } else {
+        NULL
     }
-    return(a$problem.list)
 }
 

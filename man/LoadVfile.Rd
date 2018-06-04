@@ -16,7 +16,7 @@ LoadVfile(vfile, output = "sampleqc", capture.region = NULL,
 
 \item{capture.region}{the BED file of sequencing capture regions. The default is NULL. For exome-sequencing data, the capture region file must be provided.}
 
-\item{sample.annot}{sample annotation file with 3 columns including the sample id, sample population and sex info. The default is NULL.}
+\item{sample.annot}{sample annotation file with 3 columns (with header) in the order of sample id, sample population and sex info. The default is NULL.}
 
 \item{LDprune}{whether to use LD-pruned snp set. The default is TRUE.}
 

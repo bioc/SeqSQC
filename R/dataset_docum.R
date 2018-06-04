@@ -21,6 +21,16 @@ NULL
 #' @keywords datasets
 NULL
 
+#' Example capture region file used in vignette.
+#'
+#' This \code{.bed} file contains only CCDS capture region only in chromosome 1, which is meant to be used together with the \code{example_sub.vcf} as a runnable example in the function of \code{LoadVfile} and \code{sampleQC} in the vignette. 
+#'
+#' @name CCDS.Hs37.3.reduced_chr1.bed
+#' @docType data
+#' @author Qian Liu \email{qliu7@@buffalo.edu}
+#' @keywords datasets
+NULL
+
 #' Example SeqSQC file used in vignette.
 #'
 #' The SeqSQC object is a list of two objects.
@@ -34,11 +44,12 @@ NULL
 
 #' Sample annotation file for the example data used in vignette.
 #'
-#' This sample annotation file is a required input from the user when using SeqSQC.
+#' This sample annotation file is a required input from the user when using SeqSQC. 
 #' It includes the sample info with sample name stored in the column of \code{sample}, the population info stored in the column of \code{population}, and the gender info stored in the column of \code{gender}.
-#' The \code{population} column must be a in the format of "AFR/EUR/ASN/EAS/SAS". The \code{gender} column must be in the format of "female/male". 
+#' The \code{population} column must be a in the format of "AFR/EUR/ASN/EAS/SAS". The \code{gender} column must be in the format of "female/male". This file is meant to be used together with the \code{example_sub.vcf} as a runnable example in the function of \code{LoadVfile} and \code{sampleQC} in the vignette. 
 #' @name sampleAnnotation.txt
 #' @docType data
 #' @author Qian Liu \email{qliu7@@buffalo.edu}
 #' @keywords datasets
 NULL
+

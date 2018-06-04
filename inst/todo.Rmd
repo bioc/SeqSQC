@@ -1,0 +1,5 @@
+## to do: 
+- "IBDRemove.R". if QCresult(seqfile)$MissingRate is missing, recalculate the missing rate by opening the gfile connection. 
+todo: if missing, then run `seqfile <- MissingRate(seqfile)` and extract the missing rate info. -- done!
+- "plotInbreeding", interactive, xlab, ylab, refer to plotSexCheck.  -- done.
+- "dataset_docum.R". to document all files that are under inst/extdata/...  -- done for all 5 files. (except "sampleQCreport.Rmd" and "metadata.csv")

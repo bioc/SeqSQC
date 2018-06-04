@@ -5,12 +5,15 @@
 \alias{SeqSQC-class}
 \alias{SeqSQC-class}
 \alias{SeqSQC}
-\alias{SeqSQC-class}
-\alias{SeqSQC-class}
+\alias{gdsfile}
+\alias{QCresult}
+\alias{QCresult<-}
 \alias{gdsfile}
 \alias{gdsfile,SeqSQC-method}
 \alias{QCresult}
 \alias{QCresult,SeqSQC-method}
+\alias{QCresult<-,SeqSQC-method}
+\alias{"QCresult<-",SeqSQC-method}
 \title{A data format to store genotype phenotype and sample QC results from SeqSQC.}
 \usage{
 SeqSQC(gdsfile, QCresult = List())
@@ -19,9 +22,13 @@ gdsfile(x)
 
 QCresult(x)
 
+QCresult(x, ...) <- value
+
 \S4method{gdsfile}{SeqSQC}(x)
 
 \S4method{QCresult}{SeqSQC}(x)
+
+\S4method{QCresult}{SeqSQC}(x) <- value
 }
 \arguments{
 \item{gdsfile}{A character string for the filepath of the GDS file.}
@@ -40,7 +47,7 @@ SeqSQC object Constructor
 
 Method gdsfile.
 
-Method QCresult.
+QCresult getter and setter.
 }
 \section{Slots}{
 

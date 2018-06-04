@@ -58,6 +58,12 @@ plotPop <- function(res.qc, pc1="EV1", pc2="EV2", interactive=FALSE, pairedScatt
                         aes(x=PC1, y=PC2), shape=1, colour="red", size=4
                     )
             }
+            p <- p + theme_classic()
+            ## p <- p + theme(legend.position = c(0.7, 0.8))
+            p <- p + labs(x="Principle component 1",
+                          y="Principle component 2",
+                          col="Population",
+                          shape="Type")
         }
         return(p)
     }

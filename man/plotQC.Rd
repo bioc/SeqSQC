@@ -26,7 +26,7 @@ plotQC(seqfile, QCstep = c("MissingRate", "SexCheck", "Inbreeding", "IBD",
 \item{...}{Arguments to be passed to other methods.}
 }
 \value{
-the ggplot or interactive plot (if output is in html format) for specific QC result.
+the ggplot or interactive plot (if output is in html format) for specific QC result. If "interactive=FALSE", it returns a ggplot and author could have the flexibility to add on any layers, scales, faceting specifications and coordinate systems.
 }
 \description{
 Plot QC results.

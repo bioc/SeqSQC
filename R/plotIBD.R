@@ -20,6 +20,12 @@ plotIBD <- function(res.qc, interactive = FALSE){
         if(nrow(prob.ibd) > 0){
             p <- p + geom_point(data=prob.ibd, aes(x=k0, y=k1), shape=1, colour="red", size=4)
         }
+        p <- p + theme_classic()
+        p <- p + theme(legend.position = c(0.9, 0.8))
+        p <- p + labs(x="K0 (probability that two individuals share 0 alleles)",
+                      y="K1 (probability that two individuals share 1 alleles)",
+                      col="Relation",
+                      shape="Type")
         return(p)
     }
 }

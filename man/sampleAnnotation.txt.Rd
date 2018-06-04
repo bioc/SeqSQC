@@ -5,9 +5,9 @@
 \alias{sampleAnnotation.txt}
 \title{Sample annotation file for the example data used in vignette.}
 \description{
-This sample annotation file is a required input from the user when using SeqSQC.
+This sample annotation file is a required input from the user when using SeqSQC. 
 It includes the sample info with sample name stored in the column of \code{sample}, the population info stored in the column of \code{population}, and the gender info stored in the column of \code{gender}.
-The \code{population} column must be a in the format of "AFR/EUR/ASN/EAS/SAS". The \code{gender} column must be in the format of "female/male".
+The \code{population} column must be a in the format of "AFR/EUR/ASN/EAS/SAS". The \code{gender} column must be in the format of "female/male". This file is meant to be used together with the \code{example_sub.vcf} as a runnable example in the function of \code{LoadVfile} and \code{sampleQC} in the vignette.
 }
 \author{
 Qian Liu \email{qliu7@buffalo.edu}
