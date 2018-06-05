@@ -61,7 +61,6 @@ Inbreeding <- function(seqfile, remove.samples=NULL, LDprune=TRUE,
     message("calculating inbreeding coefficients ...")
     
     gfile <- SeqOpen(seqfile, readonly=TRUE)
-    on.exit(closefn.gds(gfile))
     
     nds <- c("sample.id", "sample.annot", "snp.id") 
     allnds <- lapply(nds, function(x) read.gdsn(index.gdsn(gfile, x)))
@@ -112,7 +111,8 @@ Inbreeding <- function(seqfile, remove.samples=NULL, LDprune=TRUE,
                            sample.id=sample.inb, maf=NaN,
                            missing.rate=missing.rate, ...)
     }
-    
+    closefn.gds(gfile)
+        
     ## outliers
     m <- mean(rv$inbreeding)
     s <- sd(rv$inbreeding)

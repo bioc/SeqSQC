@@ -92,8 +92,7 @@ LoadVfile <- function(vfile, output="sampleqc", capture.region=NULL,
     }
     ## vtmp <- tempfile(tmpdir=tmpdir)
     ## file.copy(study.gds, vtmp)
-    studycohort <- openfn.gds(study.gds, readonly=FALSE)
-    on.exit(closefn.gds(studycohort))
+    studycohort <- openfn.gds(study.gds, readonly=FALSE) 
     samples <- read.gdsn(index.gdsn(studycohort, "sample.id"))
     
     ## 2. read in the annotation for the study samples.
@@ -136,14 +135,13 @@ LoadVfile <- function(vfile, output="sampleqc", capture.region=NULL,
     message("Load 1kg data to temp directory...")
     ## gds.1kg <- system.file("extdata", "benchmark_1000genomes.gds", package="SeqSQC")
     dfile <- ExperimentHub()[["EH550"]]
-    on.exit(closefn.gds(dfile))
     gds.1kg <- dfile$filename
+    closefn.gds(dfile)
     ## gds.1kg <- fileName(ExperimentHub())[["EH550"]]
     tmp.1kg <- tempfile(tmpdir=tmpdir)
     file.copy(gds.1kg, tmp.1kg)
     genofile <- openfn.gds(tmp.1kg, readonly = FALSE)
-    on.exit(closefn.gds(genofile))
-    
+
     ## 4. capture benchmark data (and/or) study data with Capture region
     if(!is.null(capture.region)){
         cp <- read.table(capture.region, sep="\t", stringsAsFactors=FALSE)
@@ -193,7 +191,6 @@ LoadVfile <- function(vfile, output="sampleqc", capture.region=NULL,
                               output=output.merge, missing.fill=FALSE)
     }
     class(merge.out) <- c("SNPGDSFileClass", "gds.class")
-    on.exit(closefn.gds(merge.out))
     
     ## LD pruning
     if(LDprune){
@@ -210,8 +207,8 @@ LoadVfile <- function(vfile, output="sampleqc", capture.region=NULL,
         add.gdsn(af, "LDprune", storage="logical", ldtf)
     }
 
-    ## closefn.gds(genofile)
-    ## closefn.gds(studycohort)
+    closefn.gds(genofile)
+    closefn.gds(studycohort)
     unlink(tmp.1kg)
     unlink(study.gds)
     
@@ -221,7 +218,8 @@ LoadVfile <- function(vfile, output="sampleqc", capture.region=NULL,
     allnds <- lapply(nds, function(x) read.gdsn(index.gdsn(merge.out, x)))
     names(allnds) <- c("samples", "sampleanno", "snps")
     
-    ## closefn.gds(merge.out)
+    ## sampleanno <- read.gdsn(index.gdsn(merge.out, "sample.annot")) 
+    closefn.gds(merge.out)
 
     output <- SeqSQC(gdsfile = fn,
                      QCresult = SimpleList(dimension = c(length(allnds$samples), length(allnds$snps)),

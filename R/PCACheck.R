@@ -65,7 +65,6 @@ PCACheck <- function(seqfile, remove.samples = NULL, npcs = 4,
     message("calculating sample principle components ...")
     
     gfile <- SeqOpen(seqfile, readonly=TRUE)
-    on.exit(closefn.gds(gfile))
     
     nds <- c("sample.id", "sample.annot", "snp.id") 
     allnds <- lapply(nds, function(x) read.gdsn(index.gdsn(gfile, x)))
@@ -121,7 +120,8 @@ PCACheck <- function(seqfile, remove.samples = NULL, npcs = 4,
                          snp.id=allnds$snp.id[snp.idx],
                          missing.rate=missing.rate, maf=NaN, ...)
     }   
-    
+    closefn.gds(gfile)
+
     ## Make a data.frame and save result.
     res.pca <- data.frame(
         sample = pca$sample.id,

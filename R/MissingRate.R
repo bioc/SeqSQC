@@ -33,7 +33,6 @@ MissingRate <- function(seqfile, remove.samples=NULL){
     message("calculating sample missing rates...")
     
     gfile <- SeqOpen(seqfile, readonly=TRUE)
-    on.exit(closefn.gds(gfile))
     samples <- read.gdsn(index.gdsn(gfile, "sample.id"))
     sampleanno <- read.gdsn(index.gdsn(gfile, "sample.annot"))
 
@@ -59,6 +58,8 @@ MissingRate <- function(seqfile, remove.samples=NULL){
 
     skip.idx <- sampleanno[match(sample.mr, sampleanno$sample), 5] != "study"
     res.mr[skip.idx, "outlier"] <- NA
+
+    closefn.gds(gfile)
 
     ## return the SeqSQC file with updated QC results.
     a <- QCresult(seqfile)

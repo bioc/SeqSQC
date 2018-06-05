@@ -1,6 +1,13 @@
 #' A data format to store genotype phenotype and sample QC results from SeqSQC.
 #'
-#' A SeqSQC object is a list of two objects. The first object \code{gdsfile} is the filepath of the GDS (discussed in section below) file which stores the genotype information from the original VCF file. The second object \code{QCresult} is a list of sample information and QC results, which include the dimension (# of samples and variants), sample annotation, and QC results for sample missing rate, sex check, inbreeding outlier check, IBD check, and population outlier check.
+#' A SeqSQC object is a list of two objects. The first object
+#' \code{gdsfile} is the filepath of the GDS (discussed in section
+#' below) file which stores the genotype information from the original
+#' VCF file. The second object \code{QCresult} is a list of sample
+#' information and QC results, which include the dimension (# of
+#' samples and variants), sample annotation, and QC results for sample
+#' missing rate, sex check, inbreeding outlier check, IBD check, and
+#' population outlier check.
 #'
 #' @slot gdsfile A character string for the filepath of the GDS file. 
 #' @slot QCresult A list with sample information and sample QC results. 
@@ -48,6 +55,7 @@ setGeneric("QCresult<-", function(x, value) standardGeneric("QCresult<-"))
 #' @rdname SeqSQC-class
 #' @aliases gdsfile,SeqSQC-method
 #' @param x an SeqSQCClass object.
+#' @param value the new value for the SeqSQC object slots.
 #' @examples
 #' load(system.file("extdata", "example.seqfile.Rdata", package="SeqSQC"))
 #' gdsfile(seqfile)
@@ -55,7 +63,6 @@ setGeneric("QCresult<-", function(x, value) standardGeneric("QCresult<-"))
 setMethod("gdsfile", "SeqSQC",function(x) x@gdsfile)
 
 #' @rdname SeqSQC-class
-#' @param value the new value for the slot to be replaced.
 #' @aliases "gdsfile<-",SeqSQC-method
 setReplaceMethod("gdsfile", "SeqSQC", function(x, value) {
     x <- initialize(x, gdsfile = value)
@@ -82,7 +89,9 @@ setMethod("show", "SeqSQC",
               res <- object@QCresult
               cat("SeqSQC\n")
               cat("gds file:", object@gdsfile, "\n")
-              cat("summary: 87 benchmark samples,", res$dimension[1]-87, "study samples,", res$dimension[2], "variants\n")
+              cat("summary: 87 benchmark samples,",
+                  res$dimension[1]-87, "study samples,",
+                  res$dimension[2], "variants\n")
               cat("QC result:", paste(names(res), collapse=", "), "\n")
           }
           )
@@ -92,7 +101,6 @@ setValidity("SeqSQC",
             function(object)
             {
                 dat <- openfn.gds(object@gdsfile)
-                on.exit(closefn.gds)
                 
                 if (!inherits(dat, "gds.class")){
                     return("object should inherit from 'gds.class'.")
@@ -100,6 +108,7 @@ setValidity("SeqSQC",
                 var.names <- ls.gdsn(dat)
                 sampleanno <- read.gdsn(index.gdsn(dat, "sample.annot"))
                 pops <- unique(sampleanno$population)
+                closefn.gds(dat)
                 
                 if (!all(c("sample.id", "sample.annot",
                            "snp.id", "snp.chromosome", "snp.position", "snp.allele", 
@@ -117,5 +126,4 @@ setValidity("SeqSQC",
                 TRUE
             }
             )
-
 

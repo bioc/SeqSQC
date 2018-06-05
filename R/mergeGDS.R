@@ -7,10 +7,8 @@ mergeGDS <- function(gds1, gds2, output, missing.fill=TRUE){
     gds.out <- createfn.gds(output, allow.duplicate = TRUE)
 
     message("merging sample information...")
-    ids <- c(read.gdsn(index.gdsn(gds1, "sample.id")),
-             read.gdsn(index.gdsn(gds2, "sample.id")))
-    anno <- rbind(read.gdsn(index.gdsn(gds1, "sample.annot")),
-                  read.gdsn(index.gdsn(gds2, "sample.annot")))
+    ids <- c(read.gdsn(index.gdsn(gds1, "sample.id")), read.gdsn(index.gdsn(gds2, "sample.id")))
+    anno <- rbind(read.gdsn(index.gdsn(gds1, "sample.annot")), read.gdsn(index.gdsn(gds2, "sample.annot")))
     add.gdsn(gds.out, "sample.id", ids)
     add.gdsn(gds.out, "sample.annot", anno, check = FALSE)
     message("merging sample information... done!")
@@ -18,8 +16,7 @@ mergeGDS <- function(gds1, gds2, output, missing.fill=TRUE){
     ## merge snps
     message("merging snp information...")
 
-    snpn <- c("snp.id", "snp.rs.id", "snp.chromosome", "snp.position",
-              "snp.allele") 
+    snpn <- c("snp.id", "snp.rs.id", "snp.chromosome", "snp.position", "snp.allele") 
     snpnodes1 <- lapply(
         snpn,
         function(x){
@@ -79,16 +76,13 @@ mergeGDS <- function(gds1, gds2, output, missing.fill=TRUE){
         message("merging snp information... done!")
         
         message("merging genotypes...")
-        add.gdsn(gds.out, "genotype", storage = "bit2",
-                 valdim=c(length(snps1), 0))
+        add.gdsn(gds.out, "genotype", storage = "bit2", valdim=c(length(snps1), 0))
 
         apply.gdsn(index.gdsn(gds1, "genotype"), 2, function(x){
-            append.gdsn(index.gdsn(gds.out, "genotype"),
-                        c(x, rep(2, sum(d21)))) ## fill as homo ref.
+            append.gdsn(index.gdsn(gds.out, "genotype"), c(x, rep(2, sum(d21)))) ## fill as homo ref.
         })
         apply.gdsn(index.gdsn(gds2, "genotype"), 2, function(x){
-            append.gdsn(index.gdsn(gds.out, "genotype"),
-                        c(x, rep(2, sum(d12)))[match(snps1, snps2)])
+            append.gdsn(index.gdsn(gds.out, "genotype"), c(x, rep(2, sum(d12)))[match(snps1, snps2)])
         })
         message("mergeing genotypes... done!")
         

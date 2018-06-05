@@ -70,12 +70,11 @@ IBDCheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE,
     message("calculating pairwise IBD ...")
     
     gfile <- SeqOpen(seqfile, readonly=TRUE)
-    on.exit(closefn.gds(gfile))
     
     nds <- c("sample.id", "sample.annot", "snp.id") 
     allnds <- lapply(nds, function(x) read.gdsn(index.gdsn(gfile, x)))
     names(allnds) <- c("samples", "sampleanno", "snp.id")
-        
+    
     studyid <- allnds$sampleanno[allnds$sampleanno[,5] == "study", 1]
     
     ## sample filters. (remove prespecified "remove.samples", and only
@@ -122,7 +121,8 @@ IBDCheck <- function(seqfile, remove.samples = NULL, LDprune = TRUE,
                                 kinship=TRUE, maf=NaN,
                                 missing.rate=missing.rate, ...)
     }
-    
+    closefn.gds(gfile)
+
     k0 <- IBD.res$k0
     k1 <- IBD.res$k1
     kin <- IBD.res$kinship

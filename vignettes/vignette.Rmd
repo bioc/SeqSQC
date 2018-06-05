@@ -100,6 +100,7 @@ head(QCresult(seqfile)$sample.annot)
 The genotype information and variant annotation from the input VCF file will be stored in Genomic Data Structure (GDS) format (`r Biocpkg("gdsfmt")`). Compared to VCF format, the GDS format could increase the storage efficiency by 5 fold and data access speed by 2-3 fold. We only include the bi-allelic single nucleotide variants (SNVs) from the VCF input for sample QC analysis. Other information from the VCF file, including the chromosome, position, snp rs id, reference allele, alternative allele, quality score and filter can also be passed into the gds file. The functions `SeqOpen` and `closefn.gds` can be used to open and close the gds file in `SeqSQC` object. It is recommended to close the gds file once it has been opened.
 
 ```{r gds}
+showfile.gds(closeall=TRUE)
 dat <- SeqOpen(seqfile)
 dat
 closefn.gds(dat)

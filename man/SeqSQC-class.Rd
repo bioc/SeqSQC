@@ -43,13 +43,20 @@ QCresult(x) <- value
 
 \item{x}{an SeqSQCClass object.}
 
-\item{value}{the new value for the slot to be replaced.}
+\item{value}{the new value for the SeqSQC object slots.}
 }
 \value{
 The filepath to the gds file.
 }
 \description{
-A SeqSQC object is a list of two objects. The first object \code{gdsfile} is the filepath of the GDS (discussed in section below) file which stores the genotype information from the original VCF file. The second object \code{QCresult} is a list of sample information and QC results, which include the dimension (# of samples and variants), sample annotation, and QC results for sample missing rate, sex check, inbreeding outlier check, IBD check, and population outlier check.
+A SeqSQC object is a list of two objects. The first object
+\code{gdsfile} is the filepath of the GDS (discussed in section
+below) file which stores the genotype information from the original
+VCF file. The second object \code{QCresult} is a list of sample
+information and QC results, which include the dimension (# of
+samples and variants), sample annotation, and QC results for sample
+missing rate, sex check, inbreeding outlier check, IBD check, and
+population outlier check.
 
 SeqSQC object Constructor
 

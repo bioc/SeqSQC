@@ -50,7 +50,6 @@ SexCheck <- function(seqfile, remove.samples=NULL, missing.rate = 0.1,
     message("calculating sex inbreeding ...")
     
     gfile <- SeqOpen(seqfile, readonly=TRUE)
-    on.exit(closefn.gds(gfile))
     
     nds <- c("sample.id", "sample.annot", "snp.chromosome", "snp.position", "snp.id") 
     allnds <- lapply(nds, function(x) read.gdsn(index.gdsn(gfile, x)))
@@ -97,6 +96,7 @@ SexCheck <- function(seqfile, remove.samples=NULL, missing.rate = 0.1,
                                snp.id=snp.x.final, maf=NaN,
                                missing.rate=missing.rate, ...)
     }
+    closefn.gds(gfile)
     
     ## extract gender info
     sex <- allnds$sampleanno[match(sample.sex, allnds$sampleanno[,1]), 3]
