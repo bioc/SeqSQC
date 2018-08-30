@@ -24,8 +24,9 @@ Here we use an exemplar NGS dataset as a study cohort to demonstrate the executi
 The code chunk below assumes that you have a vcf file called `infile` with samples from a single population, a sample annotation file called `sample.annot` with sample name, population (e.g., AFR, EUR, EAS (East Asian), SAS (South Asian), or ASN (Asian)) and gender info (male/female), and a bed file called `cr` which  contains capture regions. User need to specify the name for output files, incuding the gds file containing genotypes, and the `SeqSQC`(discussed in section below) object with QC results.
 
 ```{r setup, eval=FALSE}
-source("https://bioconductor.org/biocLite.R")
-biocLite("SeqSQC")
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("SeqSQC")
 ```
 
 ```{r load packages}
