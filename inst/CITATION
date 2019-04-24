@@ -1,0 +1,17 @@
+citHeader("To cite SeqSQC in publications use:")
+
+citEntry(entry="Article",
+         title = "SeqSQC: A Bioconductor Package for Evaluating the Sample Quality of Next-generation Sequencing Data", 
+         author = personList(person("Qian", "Liu"), person("Qiang", "Hu"),
+                             person("Song", "Yao"), as.person("Marilyn L. Kwan"),
+                             as.person("Janise M. Roh"), person("Hua", "Zhao"),
+                             as.person("Christine B. Ambrosone"), as.person("Lawrence H. Kushi"),
+                             person("Song", "Liu"), person("Qianqian", "Zhu")),
+         journal = "Genomics, Proteomics & Bioinformatics", year = "2019",
+         doi = "10.1016/j.gpb.2018.07.006", 
+         textVersion =
+             paste("Qian Liu, Qiang Hu, Song Yao, Marilyn L. Kwan, Janise M. Roh, Hua Zhao, Christine B.Ambrosone, Lawrence H. Kushi, SongLiu, Qianqian Zhu",
+                   "SeqSQC: A Bioconductor Package for Evaluating the Sample Quality of Next-generation Sequencing Data",
+                   "Genomics, Proteomics & Bioinformatics 2019; doi: 10.1016/j.gpb.2018.07.006")
+         )
+

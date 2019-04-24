@@ -4,9 +4,9 @@
 \alias{plotQC}
 \title{Plot the QC results for specific QC steps.}
 \usage{
-plotQC(seqfile, QCstep = c("MissingRate", "SexCheck", "Inbreeding", "IBD",
-  "PCA"), interactive = FALSE, sdcoef = 5, pc1 = "EV1", pc2 = "EV2",
-  pairedScatter = FALSE, ...)
+plotQC(seqfile, QCstep = c("MissingRate", "SexCheck", "Inbreeding",
+  "IBD", "PCA"), interactive = FALSE, sdcoef = 5, pc1 = "EV1",
+  pc2 = "EV2", pairedScatter = FALSE, ...)
 }
 \arguments{
 \item{seqfile}{SeqSQC object with QC results.}

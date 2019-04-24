@@ -3,7 +3,6 @@
 \docType{class}
 \name{SeqSQC-class}
 \alias{SeqSQC-class}
-\alias{SeqSQC-class}
 \alias{SeqSQC}
 \alias{gdsfile}
 \alias{gdsfile<-}
@@ -12,7 +11,6 @@
 \alias{gdsfile,SeqSQC-method}
 \alias{gdsfile<-,SeqSQC-method}
 \alias{"gdsfile<-",SeqSQC-method}
-\alias{QCresult}
 \alias{QCresult,SeqSQC-method}
 \alias{QCresult<-,SeqSQC-method}
 \alias{"QCresult<-",SeqSQC-method}
@@ -57,12 +55,6 @@ information and QC results, which include the dimension (# of
 samples and variants), sample annotation, and QC results for sample
 missing rate, sex check, inbreeding outlier check, IBD check, and
 population outlier check.
-
-SeqSQC object Constructor
-
-gdsfile getter and setter.
-
-QCresult getter and setter.
 }
 \section{Slots}{
 
