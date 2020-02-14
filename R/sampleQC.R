@@ -126,11 +126,11 @@ sampleQC <- function(vfile = NULL, output="sampleqc",
 
     ## check chrX variants
     gfile <- SeqOpen(seqfile)
-    on.exit(closefn.gds(gfile))
     snp.chr <- read.gdsn(index.gdsn(gfile, "snp.chromosome"))
+    closefn.gds(gfile)
     rm(gfile)
     if(!"X" %in% snp.chr){
-        message("\nDo not have chrX variants, skip sex check.\n")
+        message("\nNOTE: Do not have chrX variants, skip sex check.\n")
         remove.samples <- remove.samples
     } else{
         seqfile <- SexCheck(seqfile)
