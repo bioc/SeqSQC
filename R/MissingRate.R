@@ -50,8 +50,10 @@ MissingRate <- function(seqfile, remove.samples=NULL){
     }
     sample.mr <- samples[flag]
     
-    gt <- readex.gdsn(index.gdsn(gfile, "genotype"), list(NULL, samples %in% sample.mr))
-    mr <- apply(gt, 2, function(x) sum(! x %in% c(0, 1, 2))/length(x))
+    gt <- index.gdsn(gfile, "genotype")
+    mr <- apply.gdsn(gt, 2, function(x) sum(! x %in% c(0, 1, 2))/length(x))
+    mr <- unlist(mr)
+    mr <- mr[samples %in% sample.mr]
     outlier <- ifelse(mr > 0.1, "Yes", "No")
     res.mr <- data.frame(sample = sample.mr, missingRate = mr,
                          outlier = outlier, stringsAsFactors = FALSE)
