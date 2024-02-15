@@ -4,8 +4,14 @@
 \alias{SexCheck}
 \title{Sample gender check with SeqSQC object input file.}
 \usage{
-SexCheck(seqfile, remove.samples = NULL, missing.rate = 0.1,
-  ss.cutoff = 300, maf = 0.01, ...)
+SexCheck(
+  seqfile,
+  remove.samples = NULL,
+  missing.rate = 0.1,
+  ss.cutoff = 300,
+  maf = 0.01,
+  ...
+)
 }
 \arguments{
 \item{seqfile}{SeqSQC object, which includes the merged gds file
