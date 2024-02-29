@@ -1,6 +1,6 @@
 Package: SeqSQC
 Title: A bioconductor package for sample quality check with next generation sequencing data
-Version: 1.25.0
+Version: 1.25.1
 Authors@R: person("Qian", "Liu", email = "qliu7@buffalo.edu", role = c("aut", "cre"))
 Description: The SeqSQC is designed to identify problematic samples in NGS data,
     including samples with gender mismatch, contamination, cryptic relatedness, and
@@ -36,3 +36,4 @@ Suggests:
 	BiocStyle,
 	knitr,
     testthat
+PackageStatus: Deprecated
