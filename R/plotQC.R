@@ -21,7 +21,7 @@
 #' @import ggplot2
 #' @import RColorBrewer
 #' @import GGally
-#' @import rbokeh
+#' @import plotly
 #' @export
 #' @return the ggplot or interactive plot (if output is in html
 #'     format) for specific QC result. If "interactive=FALSE", it

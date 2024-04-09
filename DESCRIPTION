@@ -15,7 +15,7 @@ Encoding: UTF-8
 URL: https://github.com/Liubuntu/SeqSQC
 BugReports: https://github.com/Liubuntu/SeqSQC/issues
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.3.1
 VignetteBuilder: knitr
 Imports:
 	e1071,
@@ -25,7 +25,7 @@ Imports:
 	GGally, 
 	IRanges,
 	methods,
-	rbokeh,
+	plotly,
 	RColorBrewer,
 	reshape2,
 	rmarkdown,
@@ -35,5 +35,4 @@ Imports:
 Suggests:
 	BiocStyle,
 	knitr,
-    testthat
-PackageStatus: Deprecated
+        testthat
