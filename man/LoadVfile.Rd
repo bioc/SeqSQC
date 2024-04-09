@@ -4,10 +4,19 @@
 \alias{LoadVfile}
 \title{Data preprocessing for VCF or plink input from NGS or GWAS data.}
 \usage{
-LoadVfile(vfile, output = "sampleqc", capture.region = NULL,
-  sample.annot = NULL, LDprune = TRUE, vfile.restrict = FALSE,
-  slide.max.bp = 5e+05, ld.threshold = 0.3, format.data = "NGS",
-  format.file = "vcf", ...)
+LoadVfile(
+  vfile,
+  output = "sampleqc",
+  capture.region = NULL,
+  sample.annot = NULL,
+  LDprune = TRUE,
+  vfile.restrict = FALSE,
+  slide.max.bp = 5e+05,
+  ld.threshold = 0.3,
+  format.data = "NGS",
+  format.file = "vcf",
+  ...
+)
 }
 \arguments{
 \item{vfile}{vcf or PLINK input file (ped/map/bed/bim/fam with same

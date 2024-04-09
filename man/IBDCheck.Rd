@@ -4,9 +4,17 @@
 \alias{IBDCheck}
 \title{Sample relationship check with SeqSQC object input file.}
 \usage{
-IBDCheck(seqfile, remove.samples = NULL, LDprune = TRUE,
-  kin.filter = TRUE, missing.rate = 0.1, ss.cutoff = 300,
-  maf = 0.01, hwe = 1e-06, ...)
+IBDCheck(
+  seqfile,
+  remove.samples = NULL,
+  LDprune = TRUE,
+  kin.filter = TRUE,
+  missing.rate = 0.1,
+  ss.cutoff = 300,
+  maf = 0.01,
+  hwe = 1e-06,
+  ...
+)
 }
 \arguments{
 \item{seqfile}{SeqSQC object, which includes the merged gds file

@@ -4,11 +4,24 @@
 \alias{sampleQC}
 \title{The wrap-up function for sample QC of sequencing/GWAS data.}
 \usage{
-sampleQC(vfile = NULL, output = "sampleqc", capture.region = NULL,
-  sample.annot = NULL, LDprune = TRUE, vfile.restrict = FALSE,
-  slide.max.bp = 5e+05, ld.threshold = 0.3, format.data = "NGS",
-  format.file = "vcf", QCreport = TRUE, out.report = "report.html",
-  interactive = TRUE, results = TRUE, plotting = TRUE, ...)
+sampleQC(
+  vfile = NULL,
+  output = "sampleqc",
+  capture.region = NULL,
+  sample.annot = NULL,
+  LDprune = TRUE,
+  vfile.restrict = FALSE,
+  slide.max.bp = 5e+05,
+  ld.threshold = 0.3,
+  format.data = "NGS",
+  format.file = "vcf",
+  QCreport = TRUE,
+  out.report = "report.html",
+  interactive = TRUE,
+  results = TRUE,
+  plotting = TRUE,
+  ...
+)
 }
 \arguments{
 \item{vfile}{vcf or PLINK input file (ped/map/bed/bim/fam with same
